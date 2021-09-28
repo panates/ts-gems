@@ -57,21 +57,23 @@ describe('Keys', function () {
         interface I1 {
             readonly a: number;
             b?: undefined,
-            c: () => string
+            c: () => string,
+            d: any
         }
 
         exact<PickReadable<I1>,
-            { readonly a: number, b?: undefined }>(true);
+            { readonly a: number, b?: undefined, d: any }>(true);
     });
 
     test('WritableKeys<T>', () => {
         interface I1 {
             readonly a: number;
             b?: undefined
-            c: () => string
+            c: () => string,
+            d: any
         }
 
-        exact<WritableKeys<I1>, 'b'>(true);
+        exact<WritableKeys<I1>, 'b' | 'd'>(true);
     });
 
     test('PickWritable<T>', () => {

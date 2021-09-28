@@ -1,4 +1,4 @@
-import {IfEquals, IfUndefined} from './type-check';
+import {IfEquals, IsUndefined} from './type-check';
 
 /**
  * Gets optional keys of an object
@@ -16,8 +16,8 @@ export type RequiredKeys<T> = Exclude<keyof T, OptionalKeys<T>>;
  * Gets Function keys of an object
  */
 export type FunctionKeys<T> = {
-    [K in keyof T]-?: IfUndefined<T[K], never,
-        T[K] extends Function ? K : never>;
+    [K in keyof T]-?: IsUndefined<T[K]> extends false ?
+        T[K] extends Function ? K : never : never;
 }[keyof T];
 
 /**
