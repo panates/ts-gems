@@ -1,0 +1,40 @@
+{
+  "name": "ts-gems",
+  "description": "Valuable typing extensions for TypeScript",
+  "keywords": [
+    "typescript",
+    "types",
+    "gems",
+    "essentials",
+    "utils",
+    "toolbox",
+    "toolbelt",
+    "lodash",
+    "underscore"
+  ],
+  "version": "0.0.1",
+  "types": "lib/index.d.ts",
+  "repository": "git@github.com:panates/ts-gems.git",
+  "author": "Eray Hanoglu <e.hanoglu@panates.com>",
+  "license": "MIT",
+  "scripts": {
+    "test:common": "jest --clearCache && jest --config=./test/jest.config.js",
+    "test:strict-null": "jest --clearCache && jest --config=./test/jest.strict-null.config.js",
+    "test": "npm run test:common && npm run test:strict-null",
+    "release": "npm run test && npm publish"
+  },
+  "files": [
+    "LICENSE",
+    "README",
+    "lib/"
+  ],
+  "peerDependencies": {
+    "typescript": ">=4.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3"
+  }
+}
