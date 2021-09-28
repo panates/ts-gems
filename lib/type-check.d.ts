@@ -96,3 +96,15 @@ type IfEquals<T1, T2, Y = T1, N = never> =
  * Returns true if T1 is exactly same with T2, false otherwise
  */
 export type IsEquals<T1, T2> = IfEquals<T1, T2, true, false>;
+
+
+/**
+ * Returns Y if T1 is exactly same with T2, N otherwise
+ */
+export type IfUndefined<T, Y = T, N = never> =
+    T extends undefined ? Y: N;
+
+/**
+ * Returns true if T is undefined type
+ */
+export type IsUndefined<T> = IfUndefined<T, true, false>;

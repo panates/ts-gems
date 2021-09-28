@@ -1,20 +1,24 @@
-import {IfEquals, IsEquals} from './type-check';
+import {IfEquals, IfUndefined} from './type-check';
 
 /**
  * Gets optional keys of an object
  */
-export type OptionalKeys<T> = keyof {
-    [K in keyof T as IsEquals<{ [P in K]+?: T[K]; }, { [P in K]: T[K]; }> extends true
-        ? K
-        : never
-    ]: T[K];
-};
-
+export type OptionalKeys<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? K : never;
+}[keyof T];
 
 /**
  * Gets required keys of an object
  */
 export type RequiredKeys<T> = Exclude<keyof T, OptionalKeys<T>>;
+
+/**
+ * Gets Function keys of an object
+ */
+export type FunctionKeys<T> = {
+    [K in keyof T]-?: IfUndefined<T[K], never,
+        T[K] extends Function ? K : never>;
+}[keyof T];
 
 /**
  * Gets readonly keys of an object
@@ -24,9 +28,16 @@ export type ReadonlyKeys<T> = {
 }[keyof T];
 
 /**
- * Gets readonly keys of an object
+ * Gets readable keys of an object
  */
-export type WritableKeys<T> = Exclude<keyof T, ReadonlyKeys<T>>;
+export type ReadableKeys<T> = Exclude<keyof T, FunctionKeys<T>>;
+
+/**
+ * Gets writable keys of an object
+ */
+export type WritableKeys<T> = Exclude<{
+    [K in keyof T]-?: IfEquals<{ [Q in K]: T[K] }, { -readonly [Q in K]: T[K] }, K>
+}[keyof T], FunctionKeys<T>>;
 
 /**
  * Gets keys that matches V of T

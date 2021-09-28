@@ -1,20 +1,23 @@
 import {assert, exact} from './_support/asserts';
 import {
     IsEquals, OptionalKeys, ReadonlyKeys, RequiredKeys, TypeKeys, WritableKeys,
-    PickOptional, PickReadonly, PickRequired, PickWritable, PickType,
+    PickOptional, PickReadonly, PickRequired, PickWritable, PickType, ReadableKeys, PickReadable,
 } from '../lib';
 
 describe('Keys', function () {
 
     test('OptionalKeys<T>', () => {
-        interface Example1 {
+        interface I1 {
             a: number;
             b?: undefined;
-            c?: {},
-            d: undefined,
-            e: null
+            c?: {};
+            d: undefined;
+            e: null;
+
+            hello(): string;
         }
-        exact<OptionalKeys<Example1>, 'b' | 'c'>(true);
+
+        exact<OptionalKeys<I1>, 'b' | 'c'>(true);
     });
 
     test('PickOptional<T>', () => {
@@ -40,12 +43,45 @@ describe('Keys', function () {
             { readonly a: number }>(true);
     });
 
+    test('ReadableKeys<T>', () => {
+        interface I1 {
+            readonly a: number;
+            b?: undefined
+            c: () => string
+        }
+
+        exact<ReadableKeys<I1>, 'a' | 'b'>(true);
+    });
+
+    test('PickReadable<T>', () => {
+        interface I1 {
+            readonly a: number;
+            b?: undefined,
+            c: () => string
+        }
+
+        exact<PickReadable<I1>,
+            { readonly a: number, b?: undefined }>(true);
+    });
+
     test('WritableKeys<T>', () => {
-        exact<WritableKeys<{ readonly a: number; b?: undefined }>, 'b'>(true);
+        interface I1 {
+            readonly a: number;
+            b?: undefined
+            c: () => string
+        }
+
+        exact<WritableKeys<I1>, 'b'>(true);
     });
 
     test('PickWritable<T>', () => {
-        exact<PickWritable<{ readonly a: number; b?: undefined }>,
+        interface I1 {
+            readonly a: number;
+            b?: undefined,
+            c: () => string
+        }
+
+        exact<PickWritable<I1>,
             { b?: undefined }>(true);
     });
 

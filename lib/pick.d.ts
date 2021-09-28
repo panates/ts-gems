@@ -1,7 +1,7 @@
 /** Like Partial but recursive */
 import {Builtin} from './common';
 import {IsTuple} from './type-check';
-import {KnownKeys, OptionalKeys, ReadonlyKeys, RequiredKeys, TypeKeys, WritableKeys} from './keys';
+import {OptionalKeys, ReadableKeys, ReadonlyKeys, RequiredKeys, TypeKeys, WritableKeys} from './keys';
 
 /**
  * Pick all optional properties in object type
@@ -19,6 +19,11 @@ export type PickRequired<T> = Pick<T, RequiredKeys<T>>;
 export type PickReadonly<T> = Pick<T, ReadonlyKeys<T>>;
 
 /**
+ * Pick all readable properties in object type
+ */
+export type PickReadable<T> = Pick<T, ReadableKeys<T>>;
+
+/**
  * Pick all writable properties in object type
  */
 export type PickWritable<T> = Pick<T, WritableKeys<T>>;
@@ -27,12 +32,6 @@ export type PickWritable<T> = Pick<T, WritableKeys<T>>;
  * Pick all properties of given type in object type
  */
 export type PickType<T, S> = Pick<T, TypeKeys<T, S>>;
-
-/**
- * Pick all known properties in object type
- */
-export type PickKnown<T> = Pick<T, KnownKeys<T>>;
-
 
 /**
  * Pick all optional properties in T deeply
