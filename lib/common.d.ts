@@ -1,19 +1,83 @@
-export type Primitive = string | number | boolean | null | bigint | symbol | undefined;
-export type Builtin = Primitive | Function | Date | Error | RegExp;
-export type NonObj = Primitive | Function;
-export type NonSymbol = Exclude<Builtin, symbol>;
+/**
+ * BasicPrimitive
+ * @desc Type representing [`BasicPrimitive`](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html#smarter-type-alias-preservation) types in TypeScript
+ */
+type BasicPrimitive = number | string | boolean;
 
+
+/**
+ * Primitive
+ * @desc Type representing [`Primitive`](https://developer.mozilla.org/en-US/docs/Glossary/Primitive) types
+ * in TypeScript: `string | number | bigint | boolean |  symbol | null | undefined`
+ */
+export type Primitive = BasicPrimitive | null | bigint | symbol | undefined;
+
+/**
+ * JsonTypes
+ * @desc Type representing JSON types in TypeScript
+ */
+type JsonType = BasicPrimitive | null | object | (BasicPrimitive | object)[]
+
+
+/**
+ * Builtin
+ * @desc Type representing Builtin types in JavaScript
+ */
+export type Builtin = Primitive | Function | String | Number | Date | Error | RegExp | JSON | Math |
+    ArrayBuffer | DataView | Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array |
+    Int32Array | Uint32Array | Float32Array | Float64Array;
+
+/**
+ * Maybe
+ * @desc Type representing T | undefined
+ */
 export type Maybe<T> = T | undefined;
-export type Nullable<T> = T | undefined | null;
 
+/**
+ * Nullish
+ * @desc Type representing [nullish values][https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#nullish-coalescing] in TypeScript: `null | undefined`
+ */
+export type Nullish<T = null> = T | undefined | null;
+
+/**
+ * Falsy
+ * @desc Type representing falsy values in TypeScript: `false | "" | 0 | null | undefined`
+ */
+export type Falsy = false | '' | 0 | null | undefined;
+
+
+export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
+
+
+export type Thunk<T, Args extends any[] = any[]> = T | ((...args: Args) => T);
+export type AsyncThunk<T, Args extends any[] = any[]> = Thunk<T> | ((...args: Args) => Promise<T>);
+
+
+/**
+ * PropertyType
+ * @desc Returns the type of property at a given key `K`
+ */
+export type PropertyType<T, K extends keyof T> = T[K];
+
+/**
+ * $ElementType
+ * @desc Returns the type of elements inside of array, tuple or object of type `T`, that matches the given index type `K`
+ */
+export type ElementType<T extends { [P in K & any]: any },
+    K extends keyof T | number> = T[K];
+
+
+/**
+ * Class
+ * @desc Represents constructor of type T
+ */
 export interface Type<T = any> {
     new(...args: any[]): T;
 }
 
-export type Awaited<T> = T extends PromiseLike<infer PT> ? PT : T;
-
+/**
+ * Class
+ * @desc Represents Class constructor of type T
+ */
 export type Class<Args extends any[] = any[], Instance = {}, Static = {}> =
     (new(...args: Args) => Instance) & Static;
-
-export type Thunk<T, Args extends any[] = any[]> = T | ((...args: Args) => T);
-export type AsyncThunk<T, Args extends any[] = any[]> = T | ((...args: Args) => T) | ((...args: Args) => Promise<T>);

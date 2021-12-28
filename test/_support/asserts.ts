@@ -1,7 +1,7 @@
-import {IsEquals} from '../../lib';
+import {IfEquals} from '../../lib';
 
 // noinspection JSUnusedLocalSymbols
-export function exact<T, Expected extends T>(result: IsEquals<T, Expected>) {
+export function exact<T, Expected>(result: IfEquals<T, Expected>) {
     //
 }
 

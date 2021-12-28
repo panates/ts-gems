@@ -1,190 +1,405 @@
 import {assert} from './_support/asserts';
-import {IsAny, IsEmptyObject, IsEquals, IsNever, IsObject, IsTuple, IsUnknown} from '../lib';
+import {
+    IfAny,
+    IfEmptyObject,
+    IfEquals,
+    IfNever,
+    IfObject,
+    IfTuple,
+    IfCompatible,
+    IfUndefined,
+    IfUnknown,
+    IfFunction,
+    IfClass,
+    IfNull,
+    IfNullish,
+    IfPrimitive,
+    IfJson,
+    IfTupleOrAny,
+    IfPrimitiveOrAny,
+    IfJsonOrAny,
+    IfObjectOrAny,
+    IfFunctionOrAny,
+    IfClassOrAny,
+} from '../lib';
 
 interface NotEmptyObj {
     x: 1;
+}
+
+class ClassA {
+
+}
+
+function FunctionA() {
+
 }
 
 type Indexed<T = any> = Record<string, T>;
 
 describe('Type checks', function () {
 
-    test('IsNever<T>', () => {
-        assert<IsNever<never>>(true);
-        assert<IsNever<number>>(false);
-        assert<IsNever<false>>(false);
-        assert<IsNever<{}>>(false);
-        assert<IsNever<NotEmptyObj>>(false);
-        assert<IsNever<any>>(false);
-        assert<IsNever<unknown>>(false);
+    test('IfNever', () => {
+        assert<IfNever<never>>(true);
+        assert<IfNever<unknown>>(false);
+        assert<IfNever<null>>(false);
+        assert<IfNever<undefined>>(false);
+        assert<IfNever<any>>(false);
+        assert<IfNever<number>>(false);
+        assert<IfNever<false>>(false);
+        assert<IfNever<{}>>(false);
+        assert<IfNever<NotEmptyObj>>(false);
     });
 
-    test('IsUnknown<T>', () => {
-        assert<IsUnknown<unknown>>(true);
-        assert<IsUnknown<never>>(false);
-        assert<IsUnknown<number>>(false);
-        assert<IsUnknown<false>>(false);
-        assert<IsUnknown<{}>>(false);
-        assert<IsUnknown<NotEmptyObj>>(false);
-        assert<IsUnknown<any>>(false);
+    test('IfUndefined', () => {
+        assert<IfUndefined<undefined>>(true);
+        assert<IfUndefined<never>>(false);
+        assert<IfUndefined<any>>(false);
+        assert<IfUndefined<unknown>>(false);
+        assert<IfUndefined<number>>(false);
+        assert<IfUndefined<false>>(false);
+        assert<IfUndefined<null>>(false);
+        assert<IfUndefined<{}>>(false);
+        assert<IfUndefined<NotEmptyObj>>(false);
     });
 
-    test('IsAny<T>', () => {
-        assert<IsAny<any>>(true);
-        assert<IsAny<number>>(false);
-        assert<IsAny<boolean>>(false);
-        assert<IsAny<any[]>>(false);
-        assert<IsAny<object>>(false);
-        assert<IsAny<{}>>(false);
-        assert<IsAny<{}>>(false);
-        assert<IsAny<Indexed>>(false);
-        assert<IsAny<Function>>(false);
-        assert<IsAny<never>>(false);
-        assert<IsAny<unknown>>(false);
-        assert<IsAny<undefined>>(false);
-        assert<IsAny<null>>(false);
+    test('IfUnknown', () => {
+        assert<IfUnknown<any>>(false);
+        assert<IfUnknown<never>>(false);
+        assert<IfUnknown<unknown>>(true);
+        assert<IfUnknown<null>>(false);
+        assert<IfUnknown<undefined>>(false);
+        assert<IfUnknown<number>>(false);
+        assert<IfUnknown<false>>(false);
+        assert<IfUnknown<{}>>(false);
+        assert<IfUnknown<NotEmptyObj>>(false);
     });
 
-    test('IsTuple<T>', () => {
-        assert<IsTuple<[any]>>(true);
-        assert<IsTuple<any[]>>(false);
-        assert<IsTuple<any>>(false);
-        assert<IsTuple<never>>(false);
-        assert<IsTuple<undefined>>(false);
+    test('IfNull', () => {
+        assert<IfNull<never>>(false);
+        assert<IfNull<unknown>>(false);
+        assert<IfNull<null>>(true);
+        assert<IfNull<undefined>>(false);
+        assert<IfNull<any>>(false);
+        assert<IfNull<number>>(false);
+        assert<IfNull<false>>(false);
+        assert<IfNull<{}>>(false);
+        assert<IfNull<NotEmptyObj>>(false);
     });
 
-    test('IsObject<T>', () => {
-        assert<IsObject<object>>(true);
-        assert<IsObject<{}>>(true);
-        assert<IsObject<Indexed>>(true);
-        assert<IsObject<Indexed | Object | {}>>(true);
-        assert<IsObject<Indexed & Object & {}>>(true);
-        assert<IsObject<NotEmptyObj | {}>>(true);
-        assert<IsObject<NotEmptyObj>>(true);
-        assert<IsObject<number>>(false);
-        assert<IsObject<boolean>>(false);
-        assert<IsObject<any[]>>(false);
-        assert<IsObject<Function>>(false);
-        assert<IsObject<never>>(false);
-        assert<IsObject<unknown>>(false);
-        assert<IsObject<any>>(false);
-        assert<IsObject<null>>(false);
-        assert<IsObject<undefined>>(false);
-        assert<IsObject<object | number>>(false);
-        assert<IsObject<{} | boolean>>(false);
-        assert<IsObject<Indexed | string>>(false);
-        assert<IsObject<object | any[]>>(false);
-        assert<IsObject<object & number>>(false);
-        assert<IsObject<{} & boolean>>(false);
-        assert<IsObject<Indexed & string>>(false);
-        assert<IsObject<Indexed & any[]>>(false);
+    test('IfNullish', () => {
+        assert<IfNullish<never>>(false);
+        assert<IfNullish<unknown>>(false);
+        assert<IfNullish<null>>(true);
+        assert<IfNullish<undefined>>(true);
+        assert<IfNullish<any>>(false);
+        assert<IfNullish<number>>(false);
+        assert<IfNullish<false>>(false);
+        assert<IfNullish<{}>>(false);
+        assert<IfNullish<NotEmptyObj>>(false);
     });
 
-    test('IsEmptyObject<T>', () => {
-        assert<IsEmptyObject<{}>>(true);
-        assert<IsEmptyObject<any>>(false);
-        assert<IsEmptyObject<NotEmptyObj>>(false);
-        assert<IsEmptyObject<boolean>>(false);
-        assert<IsEmptyObject<never>>(false);
+    test('IfAny', () => {
+        assert<IfAny<never>>(false);
+        assert<IfAny<unknown>>(false);
+        assert<IfAny<null>>(false);
+        assert<IfAny<undefined>>(false);
+        assert<IfAny<any>>(true);
+        assert<IfAny<number>>(false);
+        assert<IfAny<false>>(false);
+        assert<IfAny<{}>>(false);
+        assert<IfAny<NotEmptyObj>>(false);
+        assert<IfAny<boolean>>(false);
+        assert<IfAny<any[]>>(false);
+        assert<IfAny<object>>(false);
+        assert<IfAny<{}>>(false);
+        assert<IfAny<Indexed>>(false);
+        assert<IfAny<Function>>(false);
     });
 
-    test('IsEquals<T>', () => {
+    test('IfTuple', () => {
+        assert<IfTuple<[any]>>(true);
+        assert<IfTuple<any[]>>(false);
+        assert<IfTuple<any>>(false);
+        assert<IfTuple<never>>(false);
+        assert<IfTuple<undefined>>(false);
+        assert<IfTuple<null>>(false);
+    });
 
-        assert<IsEquals<number, number>>(true);
-        assert<IsEquals<number, any>>(false);
-        assert<IsEquals<number, unknown>>(false);
-        assert<IsEquals<number, never>>(false);
-        assert<IsEquals<number, null>>(false);
-        assert<IsEquals<number, undefined>>(false);
-        assert<IsEquals<number, number | string>>(false);
-        assert<IsEquals<number, number & string>>(false);
-        assert<IsEquals<number, number | {}>>(false);
+    test('IfTupleOrAny', () => {
+        assert<IfTupleOrAny<any>>(true);
+    });
 
-        assert<IsEquals<any, any>>(true);
-        assert<IsEquals<any, any | string>>(true);
-        assert<IsEquals<any, any & string>>(true);
-        assert<IsEquals<any, any | {}>>(true);
-        assert<IsEquals<any, never>>(false);
-        assert<IsEquals<any, unknown>>(false);
-        assert<IsEquals<any, null>>(false);
-        assert<IsEquals<any, undefined>>(false);
+    test('IfPrimitive', () => {
+        assert<IfPrimitive<any>>(true);
+        assert<IfPrimitive<number>>(true);
+        assert<IfPrimitive<string>>(true);
+        assert<IfPrimitive<boolean>>(true);
+        assert<IfPrimitive<null>>(true);
+        assert<IfJson<object>>(true);
+        assert<IfJson<{}>>(true);
+        assert<IfJson<{ a: string }>>(true);
+        assert<IfPrimitive<bigint>>(true);
+        assert<IfPrimitive<symbol>>(true);
+        assert<IfPrimitive<undefined>>(true);
+        assert<IfPrimitive<[any]>>(false);
+        assert<IfPrimitive<any[]>>(false);
+        assert<IfPrimitive<symbol[]>>(false);
+        assert<IfPrimitive<object>>(false);
+        assert<IfPrimitive<never>>(false);
+        assert<IfPrimitive<Function>>(false);
+    });
 
-        assert<IsEquals<undefined, undefined>>(true);
-        assert<IsEquals<undefined, null>>(false);
-        assert<IsEquals<undefined, never>>(false);
-        assert<IsEquals<undefined, unknown>>(false);
+    test('IfPrimitiveOrAny', () => {
+        assert<IfPrimitiveOrAny<any>>(true);
+    });
 
-        assert<IsEquals<never, never>>(true);
-        assert<IsEquals<never, never & string>>(true);
-        assert<IsEquals<never, never | string>>(false);
-        assert<IsEquals<never, never | {}>>(false);
-        assert<IsEquals<never, unknown>>(false);
-        assert<IsEquals<never, null>>(false);
+    test('IfJson', () => {
+        assert<IfJson<number>>(true);
+        assert<IfJson<string>>(true);
+        assert<IfJson<boolean>>(true);
+        assert<IfJson<null>>(true);
+        assert<IfJson<object>>(true);
+        assert<IfJson<{}>>(true);
+        assert<IfJson<{ a: string }>>(true);
+        assert<IfJson<bigint>>(false);
+        assert<IfJson<symbol>>(false);
+        assert<IfJson<undefined>>(false);
+        assert<IfJson<[string]>>(true);
+        assert<IfJson<string[]>>(true);
+        assert<IfJson<any[]>>(false);
+        assert<IfJson<symbol[]>>(false);
+        assert<IfJson<any>>(false);
+        assert<IfJson<never>>(false);
+        assert<IfJson<() => void>>(false);
+        assert<IfJson<Function>>(false);
+    });
 
-        assert<IsEquals<unknown, unknown>>(true);
-        assert<IsEquals<unknown, unknown | string>>(true);
-        assert<IsEquals<unknown, unknown | {}>>(true);
-        assert<IsEquals<unknown, unknown & string>>(false);
-        assert<IsEquals<unknown, never>>(false);
-        assert<IsEquals<unknown, null>>(false);
-        assert<IsEquals<unknown, any>>(false);
-        assert<IsEquals<unknown, Indexed>>(false);
+    test('IfJsonOrAny', () => {
+        assert<IfJsonOrAny<any>>(true);
+    });
 
-        assert<IsEquals<object, object>>(true);
-        assert<IsEquals<object, Indexed>>(false);
-        assert<IsEquals<object, object | NotEmptyObj>>(false);
-        assert<IsEquals<object, object & NotEmptyObj>>(false);
-        assert<IsEquals<object, object | Indexed>>(false);
-        assert<IsEquals<object, object & Indexed>>(false);
-        assert<IsEquals<object, object & NotEmptyObj>>(false);
-        assert<IsEquals<object, NotEmptyObj>>(false);
-        assert<IsEquals<object, object | string>>(false);
-        assert<IsEquals<object, object & string>>(false);
-        assert<IsEquals<object, never>>(false);
-        assert<IsEquals<object, null>>(false);
-        assert<IsEquals<object, any>>(false);
-        assert<IsEquals<object, unknown>>(false);
+    test('IfObject', () => {
+        assert<IfObject<object>>(true);
+        assert<IfObject<{}>>(true);
+        assert<IfObject<Indexed>>(true);
+        assert<IfObject<Indexed | Object | {}>>(true);
+        assert<IfObject<Indexed & Object & {}>>(true);
+        assert<IfObject<NotEmptyObj | {}>>(true);
+        assert<IfObject<NotEmptyObj>>(true);
+        assert<IfObject<number>>(false);
+        assert<IfObject<boolean>>(false);
+        assert<IfObject<any[]>>(false);
+        assert<IfObject<Function>>(false);
+        assert<IfObject<never>>(false);
+        assert<IfObject<unknown>>(false);
+        assert<IfObject<any>>(false);
+        assert<IfObject<null>>(false);
+        assert<IfObject<undefined>>(false);
+        assert<IfObject<{} | boolean>>(true);
+        assert<IfObject<Indexed | string>>(true);
+        assert<IfObject<object | any[]>>(true);
+        assert<IfObject<object & number>>(false);
+        assert<IfObject<{} & boolean>>(false);
+        assert<IfObject<Indexed & string>>(false);
+        assert<IfObject<Indexed & any[]>>(false);
+    });
 
-        assert<IsEquals<Indexed, Indexed>>(true);
-        assert<IsEquals<Indexed<string>, Indexed>>(false);
-        assert<IsEquals<Indexed, Indexed | NotEmptyObj>>(false);
-        assert<IsEquals<Indexed, Indexed & NotEmptyObj>>(false);
-        assert<IsEquals<Indexed, NotEmptyObj>>(false);
-        assert<IsEquals<Indexed, Indexed | string>>(false);
-        assert<IsEquals<Indexed, Indexed & string>>(false);
-        assert<IsEquals<Indexed, never>>(false);
-        assert<IsEquals<Indexed, null>>(false);
-        assert<IsEquals<Indexed, any>>(false);
-        assert<IsEquals<Indexed<string>, Indexed<number>>>(false);
+    test('IfObjectOrAny', () => {
+        assert<IfObjectOrAny<any>>(true);
+    });
 
-        assert<IsEquals<{ x: 1 }, { x?: 1 }>>(false);
-        assert<IsEquals<{ x: 1 }, { x?: unknown }>>(false);
-        assert<IsEquals<{ x: 1 }, { x?: never }>>(false);
-        assert<IsEquals<{ x: 1 }, { x: any }>>(false);
+    test('IfEmptyObject', () => {
+        assert<IfEmptyObject<{}>>(true);
+        assert<IfEmptyObject<NotEmptyObj>>(false);
+        assert<IfEmptyObject<unknown>>(false);
+        assert<IfEmptyObject<undefined>>(false);
+        assert<IfEmptyObject<never>>(false);
+        assert<IfEmptyObject<null>>(false);
+        assert<IfEmptyObject<any>>(false);
+        assert<IfEmptyObject<boolean>>(false);
+        assert<IfEmptyObject<() => void>>(false);
+    });
 
-        assert<IsEquals<{ x: undefined }, { x: undefined }>>(true);
-        assert<IsEquals<{ x?: undefined }, { x?: undefined }>>(true);
-        assert<IsEquals<{ x: undefined }, { x?: undefined }>>(false);
+    test('IfFunction', () => {
+        assert<IfFunction<() => void>>(true);
+        assert<IfFunction<(a: string) => boolean>>(true);
+        assert<IfFunction<ClassA>>(false);
+        assert<IfFunction<{}>>(false);
+        assert<IfFunction<NotEmptyObj>>(false);
+        assert<IfFunction<any>>(false);
+        assert<IfFunction<boolean>>(false);
+        assert<IfFunction<never>>(false);
+        assert<IfFunction<unknown>>(false);
+        assert<IfFunction<null>>(false);
+        assert<IfFunction<undefined>>(false);
+    });
 
-        assert<IsEquals<{ x: null }, { x: null }>>(true);
-        assert<IsEquals<{ x?: null }, { x?: null }>>(true);
-        assert<IsEquals<{ x: null }, { x?: null }>>(false);
+    test('IfFunctionOrAny', () => {
+        assert<IfFunctionOrAny<any>>(true);
+    });
 
-        assert<IsEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y: Array<{ z: 1 }>; a?: number } }>>(false);
-        assert<IsEquals<{ x: { y: Array<{ z: 1 }>; a?: string } }, { x: { y: Array<{ z: 1 }>; a?: number } }>>(false);
-        assert<IsEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y: Array<{ z: 1 }> } }>>(true);
-        assert<IsEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y: Array<{ z?: 1 }> } }>>(false);
-        assert<IsEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y?: Array<{ z: 1 }> } }>>(false);
+    test('IfClass', () => {
+        assert<IfClass<typeof ClassA>>(true);
+        assert<IfClass<typeof FunctionA>>(false);
+        assert<IfClass<() => void>>(false);
+        assert<IfClass<(a: string) => boolean>>(false);
+        assert<IfClass<{}>>(false);
+        assert<IfClass<NotEmptyObj>>(false);
+        assert<IfClass<any>>(false);
+        assert<IfClass<boolean>>(false);
+        assert<IfClass<never>>(false);
+        assert<IfClass<unknown>>(false);
+        assert<IfClass<undefined>>(false);
+    });
 
-        assert<IsEquals<(a: number, b: string) => void, (a: number, b: string) => number>>(false);
-        assert<IsEquals<(a: number, b: string) => void, (a: number, b: string) => void>>(true);
-        assert<IsEquals<(a: number, b: string) => any, (a: number, b: string) => number>>(false);
-        assert<IsEquals<(a: number, b: number) => any, (a: number, b: string) => any>>(false);
-        assert<IsEquals<(a: number, b?: string) => any, (a: number, b: string) => any>>(false);
+    test('IfClassOrAny', () => {
+        assert<IfClassOrAny<any>>(true);
+    });
 
-        assert<IsEquals<'a' | 'b', 'a' | 'b'>>(true);
-        assert<IsEquals<'a' | 'b', 'a'>>(false);
-        assert<IsEquals<'a', 'a' | 'b'>>(false);
+    test('IfCompatible', () => {
+        assert<IfCompatible<number, number>>(true);
+        assert<IfCompatible<number, string>>(false);
+        assert<IfCompatible<undefined, number>>(false);
+        assert<IfCompatible<null, number>>(false);
+        assert<IfCompatible<number, number | string>>(true);
+        assert<IfCompatible<number | string, number>>(true);
+        assert<IfCompatible<() => void, number>>(false);
+
+        assert<IfCompatible<any, number>>(true);
+        assert<IfCompatible<number, any>>(true);
+        assert<IfCompatible<{}, number>>(false);
+        assert<IfCompatible<number, {}>>(false);
+        assert<IfCompatible<object, {}>>(true);
+        assert<IfCompatible<NotEmptyObj, {}>>(true);
+        assert<IfCompatible<{}, NotEmptyObj>>(true);
+
+        assert<IfCompatible<string, unknown>>(true);
+        assert<IfCompatible<any, unknown>>(true);
+        assert<IfCompatible<1, unknown>>(true);
+        assert<IfCompatible<{}, unknown>>(true);
+        assert<IfCompatible<undefined, unknown>>(false);
+        assert<IfCompatible<null, unknown>>(false);
+        assert<IfCompatible<() => void, unknown>>(true);
+
+        assert<IfCompatible<() => boolean, Function>>(true);
+        assert<IfCompatible<() => void, (...args: any) => any>>(true);
+        assert<IfCompatible<() => boolean, (...args: any) => number>>(false);
+        assert<IfCompatible<(...args: any[]) => any, () => void>>(true);
+        assert<IfCompatible<(a: string) => any, (...args: any[]) => any>>(true);
+        assert<IfCompatible<(b: number) => void, (a: string) => void>>(false);
+        assert<IfCompatible<(a: string) => any, () => void>>(false);
+        assert<IfCompatible<() => void, (a: string) => void>>(true);
+        assert<IfCompatible<() => boolean, () => string>>(false);
+        assert<IfCompatible<() => boolean, () => any>>(true);
+
+        assert<IfCompatible<any, (a: string) => void>>(true);
+        assert<IfCompatible<'1', (a: string) => void>>(false);
+        assert<IfCompatible<{}, (a: string) => void>>(false);
+        assert<IfCompatible<undefined, (a: string) => void>>(false);
+        assert<IfCompatible<unknown, (a: string) => void>>(true);
+        assert<IfCompatible<null, (a: string) => void>>(false);
+        assert<IfCompatible<() => number, (a: string) => void | string>>(false);
+        assert<IfCompatible<(a: string) => void | string, (a: string) => void>>(true);
+
+    });
+
+    test('IfEquals', () => {
+        assert<IfEquals<number, number>>(true);
+        assert<IfEquals<number, any>>(false);
+        assert<IfEquals<number, unknown>>(false);
+        assert<IfEquals<number, never>>(false);
+        assert<IfEquals<number, null>>(false);
+        assert<IfEquals<number, undefined>>(false);
+        assert<IfEquals<number, number | string>>(false);
+        assert<IfEquals<number, number & string>>(false);
+        assert<IfEquals<number, number | {}>>(false);
+
+        assert<IfEquals<any, any>>(true);
+        assert<IfEquals<any, any | string>>(true);
+        assert<IfEquals<any, any & string>>(true);
+        assert<IfEquals<any, any | {}>>(true);
+        assert<IfEquals<any, never>>(false);
+        assert<IfEquals<any, unknown>>(false);
+        assert<IfEquals<any, null>>(false);
+        assert<IfEquals<any, undefined>>(false);
+
+        assert<IfEquals<undefined, undefined>>(true);
+        assert<IfEquals<undefined, null>>(false);
+        assert<IfEquals<undefined, never>>(false);
+        assert<IfEquals<undefined, unknown>>(false);
+
+        assert<IfEquals<never, never>>(true);
+        assert<IfEquals<never, never & string>>(true);
+        assert<IfEquals<never, never | string>>(false);
+        assert<IfEquals<never, never | {}>>(false);
+        assert<IfEquals<never, unknown>>(false);
+        assert<IfEquals<never, null>>(false);
+
+        assert<IfEquals<unknown, unknown>>(true);
+        assert<IfEquals<unknown, unknown | string>>(true);
+        assert<IfEquals<unknown, unknown | {}>>(true);
+        assert<IfEquals<unknown, unknown & string>>(false);
+        assert<IfEquals<unknown, never>>(false);
+        assert<IfEquals<unknown, null>>(false);
+        assert<IfEquals<unknown, any>>(false);
+        assert<IfEquals<unknown, Indexed>>(false);
+
+        assert<IfEquals<object, object>>(true);
+        assert<IfEquals<object, Indexed>>(false);
+        assert<IfEquals<object, object | NotEmptyObj>>(false);
+        assert<IfEquals<object, object & NotEmptyObj>>(false);
+        assert<IfEquals<object, object | Indexed>>(false);
+        assert<IfEquals<object, object & Indexed>>(false);
+        assert<IfEquals<object, object & NotEmptyObj>>(false);
+        assert<IfEquals<object, NotEmptyObj>>(false);
+        assert<IfEquals<object, object | string>>(false);
+        assert<IfEquals<object, object & string>>(false);
+        assert<IfEquals<object, never>>(false);
+        assert<IfEquals<object, null>>(false);
+        assert<IfEquals<object, any>>(false);
+        assert<IfEquals<object, unknown>>(false);
+
+        assert<IfEquals<Indexed, Indexed>>(true);
+        assert<IfEquals<Indexed<string>, Indexed>>(false);
+        assert<IfEquals<Indexed, Indexed | NotEmptyObj>>(false);
+        assert<IfEquals<Indexed, Indexed & NotEmptyObj>>(false);
+        assert<IfEquals<Indexed, NotEmptyObj>>(false);
+        assert<IfEquals<Indexed, Indexed | string>>(false);
+        assert<IfEquals<Indexed, Indexed & string>>(false);
+        assert<IfEquals<Indexed, never>>(false);
+        assert<IfEquals<Indexed, null>>(false);
+        assert<IfEquals<Indexed, any>>(false);
+        assert<IfEquals<Indexed<string>, Indexed<number>>>(false);
+
+        assert<IfEquals<{ x: 1 }, { x?: 1 }>>(false);
+        assert<IfEquals<{ x: 1 }, { x?: unknown }>>(false);
+        assert<IfEquals<{ x: 1 }, { x?: never }>>(false);
+        assert<IfEquals<{ x: 1 }, { x: any }>>(false);
+
+        assert<IfEquals<{ x: undefined }, { x: undefined }>>(true);
+        assert<IfEquals<{ x?: undefined }, { x?: undefined }>>(true);
+        assert<IfEquals<{ x: undefined }, { x?: undefined }>>(false);
+
+        assert<IfEquals<{ x: null }, { x: null }>>(true);
+        assert<IfEquals<{ x?: null }, { x?: null }>>(true);
+        assert<IfEquals<{ x: null }, { x?: null }>>(false);
+
+        assert<IfEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y: Array<{ z: 1 }>; a?: number } }>>(false);
+        assert<IfEquals<{ x: { y: Array<{ z: 1 }>; a?: string } }, { x: { y: Array<{ z: 1 }>; a?: number } }>>(false);
+        assert<IfEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y: Array<{ z: 1 }> } }>>(true);
+        assert<IfEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y: Array<{ z?: 1 }> } }>>(false);
+        assert<IfEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y?: Array<{ z: 1 }> } }>>(false);
+
+        assert<IfEquals<(a: number, b: string) => void, (a: number, b: string) => number>>(false);
+        assert<IfEquals<(a: number, b: string) => void, (a: number, b: string) => void>>(true);
+        assert<IfEquals<(a: number, b: string) => any, (a: number, b: string) => number>>(false);
+        assert<IfEquals<(a: number, b: number) => any, (a: number, b: string) => any>>(false);
+        assert<IfEquals<(a: number, b?: string) => any, (a: number, b: string) => any>>(false);
+
+        assert<IfEquals<'a' | 'b', 'a' | 'b'>>(true);
+        assert<IfEquals<'a' | 'b', 'a'>>(false);
+        assert<IfEquals<'a', 'a' | 'b'>>(false);
     });
 
 

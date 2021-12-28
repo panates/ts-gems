@@ -1,93 +1,90 @@
-import {assert, exact} from './_support/asserts';
+import {exact} from './_support/asserts';
 import {
-    IsEquals, OptionalKeys, ReadonlyKeys, RequiredKeys, TypeKeys, WritableKeys,
-    PickOptional, PickReadonly, PickRequired, PickWritable, PickType, ReadableKeys, PickReadable,
+    KeysOf,
+    ValuesOf,
+    OptionalKeys,
+    ReadonlyKeys,
+    RequiredKeys,
+    WritableKeys,
+    NonFunctionKeys,
+    FunctionKeys, KeysCompatible, JsonKeys, WritableJsonKeys, KeysEquals
 } from '../lib';
 
 describe('Keys', function () {
 
-    test('OptionalKeys<T>', () => {
+    test('KeysOf', () => {
+        type I1 = { a: number; b?: undefined; c?: {}, d: undefined, e: null, f: never };
+        exact<KeysOf<I1>, 'a' | 'b' | 'c' | 'd' | 'e' | 'f'>(true);
+    });
+
+    test('ValuesOf', () => {
+        type I1 = { a: number; b?: undefined; c?: {}, d: undefined, e: null, f: never };
+        exact<ValuesOf<I1>, number | undefined | null | {}>(true);
+    });
+
+    test('OptionalKeys', () => {
+        type I1 = { a: number; b?: undefined; c?: {}; d: undefined; e: null; hello(): string; }
+        exact<OptionalKeys<I1>, 'b' | 'c'>(true);
+    });
+
+    test('RequiredKeys', () => {
+        type I1 = { a: number; b?: undefined; c?: {}, d: undefined, e: null };
+        exact<RequiredKeys<I1>, 'a' | 'd' | 'e'>(true);
+    });
+
+    test('ReadonlyKeys', () => {
+        type I1 = { readonly a: number; b?: undefined };
+        exact<ReadonlyKeys<I1>, 'a'>(true);
+    });
+
+    test('NonFunctionKeys', () => {
+        type I1 = { readonly a: number; b?: undefined; c: () => string }
+        exact<NonFunctionKeys<I1>, 'a' | 'b'>(true);
+    });
+
+    test('JsonKeys', () => {
+        type I1 = {
+            a: number; b?: string; c: boolean, d: null,
+            e: symbol; f: undefined, g: never, h: unknown,
+            k: () => string,
+            [Symbol.species]: string
+        }
+        exact<JsonKeys<I1>, 'a' | 'b' | 'c' | 'd'>(true);
+    });
+
+    test('WritableKeys', () => {
+        type I1 = { readonly a: number; b?: undefined; c: () => string, d: any }
+        exact<WritableKeys<I1>, 'b' | 'd' | 'c'>(true);
+    });
+
+    test('WritableJsonKeys', () => {
+        type I1 = {
+            readonly a: number; b?: string; c: boolean, d: null,
+            e: symbol; f: undefined, g: never, h: unknown,
+            k: () => string
+        }
+        exact<WritableJsonKeys<I1>, 'b' | 'c' | 'd'>(true);
+    });
+
+    test('FunctionKeys', () => {
+        function fn1() {
+        }
+
         interface I1 {
             a: number;
             b?: undefined;
             c?: {};
-            d: undefined;
-            e: null;
+            d: () => void;
+            e: typeof fn1
 
             hello(): string;
         }
 
-        exact<OptionalKeys<I1>, 'b' | 'c'>(true);
+        exact<FunctionKeys<I1>, 'd' | 'e' | 'hello'>(true);
+        exact<FunctionKeys<I1>, 'a'>(false);
     });
 
-    test('PickOptional<T>', () => {
-        exact<PickOptional<{ a: number; b?: undefined; c?: {}, d: undefined, e: null }>,
-            { b?: undefined; c?: {} }>(true);
-    });
-
-    test('RequiredKeys<T>', () => {
-        exact<RequiredKeys<{ a: number; b?: undefined; c?: {}, d: undefined, e: null }>, 'a' | 'd' | 'e'>(true);
-    });
-
-    test('PickRequired<T>', () => {
-        exact<PickRequired<{ a: number; b?: undefined; c?: {}, d: undefined, e: null }>,
-            { a: number, d: undefined, e: null }>(true);
-    });
-
-    test('ReadonlyKeys<T>', () => {
-        exact<ReadonlyKeys<{ readonly a: number; b?: undefined }>, 'a'>(true);
-    });
-
-    test('PickReadonly<T>', () => {
-        exact<PickReadonly<{ readonly a: number; b?: undefined }>,
-            { readonly a: number }>(true);
-    });
-
-    test('ReadableKeys<T>', () => {
-        interface I1 {
-            readonly a: number;
-            b?: undefined
-            c: () => string
-        }
-
-        exact<ReadableKeys<I1>, 'a' | 'b'>(true);
-    });
-
-    test('PickReadable<T>', () => {
-        interface I1 {
-            readonly a: number;
-            b?: undefined,
-            c: () => string,
-            d: any
-        }
-
-        exact<PickReadable<I1>,
-            { readonly a: number, b?: undefined, d: any }>(true);
-    });
-
-    test('WritableKeys<T>', () => {
-        interface I1 {
-            readonly a: number;
-            b?: undefined
-            c: () => string,
-            d: any
-        }
-
-        exact<WritableKeys<I1>, 'b' | 'd'>(true);
-    });
-
-    test('PickWritable<T>', () => {
-        interface I1 {
-            readonly a: number;
-            b?: undefined,
-            c: () => string
-        }
-
-        exact<PickWritable<I1>,
-            { b?: undefined }>(true);
-    });
-
-    test('TypeKeys<T, V>', () => {
+    test('KeysCompatible', () => {
         interface Example1 {
             a: number;
             b: undefined,
@@ -97,30 +94,40 @@ describe('Keys', function () {
             f: never,
             h: any,
             i: unknown,
-            j: string | number
+            j: string | number,
+            k: () => void
         }
 
-        assert<IsEquals<TypeKeys<Example1, number>, 'a' | 'd'>>(true);
-        exact<TypeKeys<Example1, {}>, 'c'>(true);
-        exact<TypeKeys<Example1, null>, 'e'>(true);
-        exact<TypeKeys<Example1, undefined>, 'b'>(true);
+        exact<KeysCompatible<Example1, number>, 'a' | 'd' | 'h' | 'i' | 'j'>(true);
+        exact<KeysCompatible<Example1, {}>, 'c' | 'h' | 'i'>(true);
+        exact<KeysCompatible<Example1, null>, 'e'>(true);
+        exact<KeysCompatible<Example1, undefined>, 'b'>(true);
+        exact<KeysCompatible<Example1, () => void>, 'h' | 'i' | 'k'>(true);
+        exact<KeysCompatible<Example1, Function>, 'h' | 'i' | 'k'>(true);
     });
 
-    test('PickType<T, V>', () => {
+    test('KeysEquals', () => {
         interface Example1 {
             a: number;
-            b?: undefined;
+            b: undefined,
             c: {},
             d: number,
             e: null,
             f: never,
-            g: undefined,
             h: any,
             i: unknown,
-            j: string | number
+            j: string | number,
+            k: () => void,
+            l: Function
         }
 
-        exact<PickType<Example1, number>, { a: number; d: number; }>(true);
+        exact<KeysEquals<Example1, number>, 'a' | 'd'>(true);
+        exact<KeysEquals<Example1, number | string>, 'j'>(true);
+        exact<KeysEquals<Example1, {}>, 'c'>(true);
+        exact<KeysEquals<Example1, null>, 'e'>(true);
+        exact<KeysEquals<Example1, undefined>, 'b'>(true);
+        exact<KeysEquals<Example1, () => void>, 'k'>(true);
+        exact<KeysEquals<Example1, Function>, 'l'>(true);
     });
 
 });

@@ -18,8 +18,8 @@
   "author": "Eray Hanoglu <e.hanoglu@panates.com>",
   "license": "MIT",
   "scripts": {
-    "test:common": "jest --clearCache && jest --config=./test/jest.config.js",
-    "test:strict-null": "jest --clearCache && jest --config=./test/jest.strict-null.config.js",
+    "test:common": "jest --clearCache && jest --config=./jest.config.js",
+    "test:strict-null": "jest --clearCache && jest --config=./jest.strict-null.config.js",
     "test": "npm run test:common && npm run test:strict-null",
     "release": "npm run test && npm publish"
   },
@@ -32,9 +32,9 @@
     "typescript": ">=4.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.2",
-    "prettier": "^2.4.1",
-    "ts-jest": "^27.0.5",
-    "typescript": "^4.4.3"
+    "@types/jest": "^27.0.3",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.4"
   }
 }
