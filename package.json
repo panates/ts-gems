@@ -12,7 +12,7 @@
     "lodash",
     "underscore"
   ],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "types": "lib/index.d.ts",
   "repository": "git@github.com:panates/ts-gems.git",
   "author": "Eray Hanoglu <e.hanoglu@panates.com>",
