@@ -1,11 +1,11 @@
 import {exact} from './_support/asserts';
 import {
-    DeepOmitJson, DeepOmitOptional, DeepOmitReadonly, DeepOmitRequired, DeepOmitWritable
+    OmitJson, OmitOptional, OmitReadonly, OmitRequired, OmitWritable,
 } from '../lib';
 
-describe('DeepOmit', function () {
+describe('Omit', function () {
 
-    test('DeepOmitOptional', () => {
+    test('OmitOptional', () => {
         type I1 = {
             a?: number;
             b: string,
@@ -20,14 +20,17 @@ describe('DeepOmit', function () {
             e: { a?: string; b: number }[],
             f?: { a?: string; b: number }[]
         }
-        exact<DeepOmitOptional<I1>, {
+        exact<OmitOptional<I1>, {
             b: string,
-            c: { b: number },
-            e: { b: number }[],
+            c: {
+                a?: string;
+                b: number
+            },
+            e: { a?: string; b: number }[]
         }>(true);
     });
 
-    test('DeepOmitRequired', () => {
+    test('OmitRequired', () => {
         type I1 = {
             a?: number;
             b: string,
@@ -42,17 +45,17 @@ describe('DeepOmit', function () {
             e: { a?: string; b: number }[],
             f?: { a?: string; b: number }[]
         }
-
-        exact<DeepOmitRequired<I1>, {
+        exact<OmitRequired<I1>, {
             a?: number;
             d?: {
                 a?: string;
+                b: number;
             },
-            f?: { a?: string }[]
+            f?: { a?: string; b: number }[]
         }>(true);
     });
 
-    test('DeepOmitReadonly', () => {
+    test('OmitReadonly', () => {
         type I1 = {
             a: number;
             readonly b: string;
@@ -69,14 +72,14 @@ describe('DeepOmit', function () {
             g: () => void;
             readonly h: () => void;
         }
-        exact<DeepOmitReadonly<I1>, {
+        exact<OmitReadonly<I1>, {
             a: number;
-            e: { a?: string }[];
+            e: { a?: string; readonly b: number }[];
             g: () => void;
         }>(true);
     });
 
-    test('DeepOmitWritable', () => {
+    test('OmitWritable', () => {
         type I1 = {
             a: number;
             readonly b: string;
@@ -94,17 +97,18 @@ describe('DeepOmit', function () {
             readonly h: () => void;
         }
 
-        exact<DeepOmitWritable<I1>, {
+        exact<OmitWritable<I1>, {
             readonly b: string;
             readonly d?: {
                 readonly a?: string;
+                b: number;
             };
-            readonly f?: { readonly a?: string; }[];
+            readonly f?: { readonly a?: string; b: number }[];
             readonly h: () => void;
         }>(true);
     });
 
-    test('DeepOmitJson', () => {
+    test('OmitJson', () => {
         type I1 = {
             a?: number;
             b: string;
@@ -118,7 +122,7 @@ describe('DeepOmit', function () {
             h: () => void
             [Symbol.species]: number;
         }
-        exact<DeepOmitJson<I1>, {
+        exact<OmitJson<I1>, {
             h: () => void
             [Symbol.species]: number;
         }>(true);

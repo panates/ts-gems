@@ -12,27 +12,33 @@ export type KeysOf<T> = keyof T;
  */
 export type ValuesOf<T> = T[keyof T];
 
+/**
+ * RequiredKeys
+ * @desc Returns required keys of an object
+ */
+export type RequiredKeys<T> = {
+    [K in keyof T]-?: IfUndefined<T[K]> extends true
+        ? never
+        : T extends { [K1 in K]: any } ? K : never
+}[keyof T];
 
 /**
  * OptionalKeys
  * @desc Returns optional keys of an object
  */
-export type OptionalKeys<T> = ValuesOf<{
-    [K in keyof T]-?: {} extends Pick<T, K> ? K : never;
-}>;
+export type OptionalKeys<T> = {
+    [K in keyof T]-?: IfUndefined<T[K]> extends true
+        ? never
+        : T extends { [K1 in K]: any } ? never : K
+}[keyof T];
 
-/**
- * RequiredKeys
- * @desc Returns required keys of an object
- */
-export type RequiredKeys<T> = Exclude<keyof T, OptionalKeys<T>>;
 
 /**
  * @desc Returns readonly keys of an object
  */
-export type ReadonlyKeys<T> = ValuesOf<{
+export type ReadonlyKeys<T> = {
     [K in keyof T]-?: IfEquals<{ [Q in K]: T[K] }, { -readonly [Q in K]: T[K] }, never, K>
-}>;
+}[keyof T];
 
 /**
  * @desc Returns non function keys of an object
@@ -41,13 +47,18 @@ export type NonFunctionKeys<T> = Exclude<keyof T, FunctionKeys<T>>;
 
 
 /**
- * @desc Returns non function keys of an object
+ * @desc Returns JSON friendly keys of an object
  */
-export type JsonKeys<T> = ValuesOf<{
-    [K in keyof T]-?: IfUndefined<T[K]> extends false ?
-        K extends symbol ? never :
-            IfJson<T[K]> extends true ?
-                K : never : never;
+export type JsonKeys<T> = _JsonKeys<T>;
+type _JsonKeys<T, J = Required<T>> = ValuesOf<{
+    [K in keyof J]: IfUndefined<J[K]> extends true
+        ? never
+        : K extends symbol
+            ? never
+            : IfJson<J[K]> extends true
+                ? K
+                : never
+
 }>;
 
 /**

@@ -1,5 +1,4 @@
 import {exact} from './_support/asserts';
-import {Nullish} from '../lib';
 import {DeepBuildable, DeepNullish, DeepPartial, DeepReadonly, DeepRequired, DeepWritable} from '../lib/deep-modify';
 
 describe('Deep Modify', function () {
@@ -108,14 +107,17 @@ describe('Deep Modify', function () {
             };
             readonly c: { readonly a: string }[]
         }
+
+
         exact<DeepNullish<I1>, {
-            a: Nullish<number>;
-            b: Nullish<{
-                a: Nullish<string>;
-                readonly b: Nullish<number>
-            }>;
-            readonly c: Nullish<Nullish<{ readonly a: string }>[]>
+            a: number | null | undefined;
+            b: {
+                a: string | null | undefined;
+                readonly b: number | null | undefined
+            } | null | undefined;
+            readonly c: { readonly a: string | null | undefined }[] | null | undefined
         }>(true);
+
     });
 
 });

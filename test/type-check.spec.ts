@@ -162,7 +162,7 @@ describe('Type checks', function () {
         assert<IfJson<object>>(true);
         assert<IfJson<{}>>(true);
         assert<IfJson<{ a: string }>>(true);
-        assert<IfJson<bigint>>(false);
+        assert<IfJson<bigint>>(true);
         assert<IfJson<symbol>>(false);
         assert<IfJson<undefined>>(false);
         assert<IfJson<[string]>>(true);

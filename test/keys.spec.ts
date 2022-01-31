@@ -24,12 +24,12 @@ describe('Keys', function () {
 
     test('OptionalKeys', () => {
         type I1 = { a: number; b?: undefined; c?: {}; d: undefined; e: null; hello(): string; }
-        exact<OptionalKeys<I1>, 'b' | 'c'>(true);
+        exact<OptionalKeys<I1>, 'c'>(true);
     });
 
     test('RequiredKeys', () => {
         type I1 = { a: number; b?: undefined; c?: {}, d: undefined, e: null };
-        exact<RequiredKeys<I1>, 'a' | 'd' | 'e'>(true);
+        exact<RequiredKeys<I1>, 'a' | 'e'>(true);
     });
 
     test('ReadonlyKeys', () => {

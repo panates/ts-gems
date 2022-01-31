@@ -17,7 +17,7 @@ type _DeepOmitOptional<T, K extends keyof T = Exclude<keyof T, OptionalKeys<T>>>
                                 : T extends WeakSet<infer U> ? WeakSet<DeepOmitOptional<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepOmitOptional<T[K]> }
                                         : T extends (infer U)[] ? DeepOmitOptional<U>[]
-                                            : { [P in K]: DeepOmitOptional<T[P]> };
+                                            : { [P in K]: DeepOmitOptional<Exclude<T[P], undefined>> };
 
 /**
  * Omit all required properties in T deeply
@@ -34,7 +34,7 @@ type _DeepOmitRequired<T, J extends keyof T = Exclude<keyof T, RequiredKeys<T>>>
                                 : T extends WeakSet<infer U> ? WeakSet<DeepOmitRequired<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepOmitRequired<T[K]> }
                                         : T extends (infer U)[] ? DeepOmitRequired<U>[]
-                                            : { [P in J]: DeepOmitRequired<T[P]> };
+                                            : { [P in J]: DeepOmitRequired<Exclude<T[P], undefined>> };
 
 /**
  * Omit all readonly properties in T deeply
@@ -51,7 +51,7 @@ type _DeepOmitReadonly<T, J extends keyof T = Exclude<keyof T, ReadonlyKeys<T>>>
                                 : T extends WeakSet<infer U> ? WeakSet<DeepOmitReadonly<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepOmitReadonly<T[K]> }
                                         : T extends (infer U)[] ? DeepOmitReadonly<U>[]
-                                            : { [P in J]: DeepOmitReadonly<T[P]> };
+                                            : { [P in J]: DeepOmitReadonly<Exclude<T[P], undefined>> };
 
 /**
  * Omit all writable properties in T deeply
@@ -68,10 +68,10 @@ type _DeepOmitWritable<T, K extends keyof T = Exclude<keyof T, WritableKeys<T>>>
                                 : T extends WeakSet<infer U> ? WeakSet<DeepOmitWritable<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepOmitWritable<T[K]> }
                                         : T extends (infer U)[] ? DeepOmitWritable<U>[]
-                                            : { [P in K]: DeepOmitWritable<T[P]> }
+                                            : { [P in K]: DeepOmitWritable<Exclude<T[P], undefined>> }
 
 /**
- * Omit all JSON properties in T deeply
+ * Omit all JSON friendly properties in T deeply
  */
 export type DeepOmitJson<T> = _DeepOmitJson<T>
 type _DeepOmitJson<T, K extends keyof T = Exclude<keyof T, JsonKeys<T>>> =
@@ -85,4 +85,4 @@ type _DeepOmitJson<T, K extends keyof T = Exclude<keyof T, JsonKeys<T>>> =
                                 : T extends WeakSet<infer U> ? WeakSet<DeepOmitJson<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepOmitJson<T[K]> }
                                         : T extends (infer U)[] ? DeepOmitJson<U>[]
-                                            : { [P in K]: DeepOmitJson<T[P]> };
+                                            : { [P in K]: DeepOmitJson<Exclude<T[P], undefined>> };

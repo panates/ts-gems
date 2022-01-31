@@ -69,17 +69,15 @@ export type IfPrimitiveOrAny<T, Y = true, N = false> =
  * Returns Y if typeof T is JSON like, N otherwise
  */
 export type IfJson<T, Y = true, N = false> =
-    IfNever<T> extends true ? N :
-        IfClass<T> extends true ? N :
-            IfFunction<T> extends true ? N :
-                IfUndefined<T> extends true ? N :
-                    IfEquals<T, number> extends true ? Y :
-                        IfEquals<T, string> extends true ? Y :
-                            IfEquals<T, boolean> extends true ? Y :
-                                IfEquals<T, null> extends true ? Y :
-                                    IfObject<T, Y> extends true ? Y :
-                                        T extends (infer U)[] ? IfJson<U> extends true ? Y : N
-                                            : N;
+    IfNull<T> extends true ? Y :
+        IfNever<T> extends true ? N :
+            IfUnknown<T> extends true ? N :
+                IfClass<T> extends true ? N :
+                    IfFunction<T> extends true ? N :
+                        IfUndefined<T> extends true ? N :
+                            T extends symbol ? N :
+                                T extends (infer U)[] ? IfJson<U> extends true ? Y : N
+                                    : Y;
 
 export type IfJsonOrAny<T, Y = true, N = false> =
     IfAny<T> extends true ? Y : IfJson<T, Y, N>;
