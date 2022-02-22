@@ -4,5 +4,6 @@ export * from "./type-check";
 export * from "./modify";
 export * from "./deep-pick";
 export * from "./deep-omit";
+export * from "./deep-modify";
 export * from "./pick";
 export * from "./omit";
