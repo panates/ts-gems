@@ -1,5 +1,5 @@
 import {exact} from './_support/asserts';
-import {DeepBuildable, DeepNullish, DeepPartial, DeepReadonly, DeepRequired, DeepWritable} from '../lib/deep-modify';
+import {DeepBuildable, DeepNullish, DeepPartial, DeepReadonly, DeepRequired, DeepWritable} from '../lib';
 
 describe('Deep Modify', function () {
 
