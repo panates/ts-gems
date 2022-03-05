@@ -71,13 +71,11 @@ export type IfPrimitiveOrAny<T, Y = true, N = false> =
 export type IfJson<T, Y = true, N = false> =
     IfNull<T> extends true ? Y :
         IfNever<T> extends true ? N :
-            IfUnknown<T> extends true ? N :
-                IfClass<T> extends true ? N :
-                    IfFunction<T> extends true ? N :
-                        IfUndefined<T> extends true ? N :
-                            T extends symbol ? N :
-                                T extends (infer U)[] ? IfJson<U> extends true ? Y : N
-                                    : Y;
+            T extends Function ? N :
+                T extends symbol ? N :
+                    IfUndefined<T> extends true ? N :
+                        T extends (infer U)[] ? IfJson<U> extends true ? Y : N
+                            : Y;
 
 export type IfJsonOrAny<T, Y = true, N = false> =
     IfAny<T> extends true ? Y : IfJson<T, Y, N>;

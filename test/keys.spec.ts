@@ -49,7 +49,7 @@ describe('Keys', function () {
             k: () => string,
             [Symbol.species]: string
         }
-        exact<JsonKeys<I1>, 'a' | 'b' | 'c' | 'd'>(true);
+        exact<JsonKeys<I1>, 'a' | 'b' | 'c' | 'd' | 'h'>(true);
     });
 
     test('WritableKeys', () => {
@@ -63,7 +63,7 @@ describe('Keys', function () {
             e: symbol; f: undefined, g: never, h: unknown,
             k: () => string
         }
-        exact<WritableJsonKeys<I1>, 'b' | 'c' | 'd'>(true);
+        exact<WritableJsonKeys<I1>, 'b' | 'c' | 'd' | 'h'>(true);
     });
 
     test('FunctionKeys', () => {

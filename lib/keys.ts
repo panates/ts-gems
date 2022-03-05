@@ -51,9 +51,8 @@ export type NonFunctionKeys<T> = Exclude<keyof T, FunctionKeys<T>>;
  */
 export type JsonKeys<T> = _JsonKeys<T>;
 type _JsonKeys<T, J = Required<T>> = ValuesOf<{
-    [K in keyof J]: IfUndefined<J[K]> extends true
-        ? never
-        : K extends symbol
+    [K in keyof J]: K extends symbol ? never
+        : IfUndefined<J[K]> extends true
             ? never
             : IfJson<J[K]> extends true
                 ? K

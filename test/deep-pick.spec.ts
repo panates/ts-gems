@@ -1,6 +1,6 @@
 import {exact} from './_support/asserts';
 import {
-    DeepPickJson, DeepPickOptional, DeepPickReadonly, DeepPickRequired, DeepPickWritable,
+    DeepPickJson, DeepPickOptional, DeepPickReadonly, DeepPickRequired, DeepPickWritable, DeepPickWritableJson,
 } from '../lib';
 
 describe('DeepPick', function () {
@@ -122,6 +122,29 @@ describe('DeepPick', function () {
         exact<DeepPickJson<I1>, {
             a?: number;
             b: string;
+            c: { a?: string; };
+            d: string[];
+            e?: RegExp;
+            f: Date;
+        }>(true);
+    });
+
+    test('DeepPickWritableJson', () => {
+        type I1 = {
+            a?: number;
+            readonly b: string;
+            c: {
+                a?: string;
+                b: () => void;
+            };
+            d: string[];
+            e?: RegExp;
+            f: Date;
+            h: () => void
+            [Symbol.species]: number;
+        }
+        exact<DeepPickWritableJson<I1>, {
+            a?: number;
             c: { a?: string; };
             d: string[];
             e?: RegExp;

@@ -74,7 +74,7 @@ type _DeepPickWritable<T, K extends keyof T = WritableKeys<T>> =
  * Pick all JSON friendly properties in T deeply
  */
 export type DeepPickJson<T> = _DeepPickJson<T>
-type _DeepPickJson<T, K extends keyof T = JsonKeys<T>> =
+type _DeepPickJson<T, Keys extends keyof T = JsonKeys<T>> =
     T extends Builtin ? T
         : T extends Promise<infer U> ? Promise<DeepPickJson<U>>
             : T extends Map<infer K, infer V> ? Map<K, DeepPickJson<V>>
@@ -85,4 +85,22 @@ type _DeepPickJson<T, K extends keyof T = JsonKeys<T>> =
                                 : T extends WeakSet<infer U> ? WeakSet<DeepPickJson<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPickJson<T[K]> }
                                         : T extends (infer U)[] ? DeepPickJson<U>[]
-                                            : { [P in K]: DeepPickJson<Exclude<T[P], undefined>> };
+                                            : { [P in Keys]: DeepPickJson<Exclude<T[P], undefined>> };
+
+
+/**
+ * Pick all JSON friendly properties in T deeply
+ */
+export type DeepPickWritableJson<T> = _DeepPickWritableJson<T>
+type _DeepPickWritableJson<T, Keys extends keyof T = Exclude<JsonKeys<T>, ReadonlyKeys<T>>> =
+    T extends Builtin ? T
+        : T extends Promise<infer U> ? Promise<DeepPickWritableJson<U>>
+            : T extends Map<infer K, infer V> ? Map<K, DeepPickWritableJson<V>>
+                : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepPickWritableJson<V>>
+                    : T extends WeakMap<infer K, infer V> ? WeakMap<K, DeepPickWritableJson<V>>
+                        : T extends Set<infer U> ? Set<DeepPickWritableJson<U>>
+                            : T extends ReadonlySet<infer U> ? ReadonlySet<DeepPickWritableJson<U>>
+                                : T extends WeakSet<infer U> ? WeakSet<DeepPickWritableJson<U>>
+                                    : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPickWritableJson<T[K]> }
+                                        : T extends (infer U)[] ? DeepPickWritableJson<U>[]
+                                            : { [P in Keys]: DeepPickWritableJson<Exclude<T[P], undefined>> };
