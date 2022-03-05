@@ -18,10 +18,11 @@
   "author": "Eray Hanoglu <e.hanoglu@panates.com>",
   "license": "MIT",
   "scripts": {
+    "compile": "tsc -b tsconfig.json",
+    "lint": "eslint --no-error-on-unmatched-pattern",
     "test:common": "jest --clearCache && jest --config=./jest.config.js",
     "test:strict-null": "jest --clearCache && jest --config=./jest.strict-null.config.js",
-    "test": "npm run test:common && npm run test:strict-null",
-    "release": "npm run test && npm publish"
+    "test": "npm run test:common && npm run test:strict-null"
   },
   "files": [
     "LICENSE",
