@@ -167,9 +167,9 @@ describe('Type checks', function () {
         assert<IfJson<undefined>>(false);
         assert<IfJson<[string]>>(true);
         assert<IfJson<string[]>>(true);
-        assert<IfJson<any[]>>(false);
+        assert<IfJson<any[]>>(true);
         assert<IfJson<symbol[]>>(false);
-        assert<IfJson<any>>(false);
+        assert<IfJson<any>>(true);
         assert<IfJson<never>>(false);
         assert<IfJson<() => void>>(false);
         assert<IfJson<Function>>(false);

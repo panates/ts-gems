@@ -117,6 +117,7 @@ describe('DeepPick', function () {
             e?: RegExp;
             f: Date;
             h: () => void
+            k?: string | undefined,
             [Symbol.species]: number;
         }
         exact<DeepPickJson<I1>, {
@@ -126,6 +127,7 @@ describe('DeepPick', function () {
             d: string[];
             e?: RegExp;
             f: Date;
+            k?: string | undefined,
         }>(true);
     });
 
@@ -140,7 +142,8 @@ describe('DeepPick', function () {
             d: string[];
             e?: RegExp;
             f: Date;
-            h: () => void
+            h: () => void,
+            k?: string,
             [Symbol.species]: number;
         }
         exact<DeepPickWritableJson<I1>, {
@@ -149,6 +152,7 @@ describe('DeepPick', function () {
             d: string[];
             e?: RegExp;
             f: Date;
+            k?: string,
         }>(true);
     });
 

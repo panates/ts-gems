@@ -7,7 +7,7 @@ import {OptionalKeys} from './keys';
  */
 export type DeepPartial<T> = _DeepPartial<T>;
 type _DeepPartial<T> =
-    T extends Builtin ? Exclude<T, undefined>
+    T extends Builtin ? T
         : T extends Promise<infer U> ? Promise<DeepPartial<U>>
             : T extends Map<infer K, infer V> ? Map<K, DeepPartial<V>>
                 : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepPartial<V>>
@@ -24,7 +24,7 @@ type _DeepPartial<T> =
  */
 export type DeepBuildable<T> = _DeepBuildable<T>;
 type _DeepBuildable<T> =
-    T extends Builtin ? Exclude<T, undefined>
+    T extends Builtin ? T
         : T extends Promise<infer U> ? Promise<DeepBuildable<U>>
             : T extends Map<infer K, infer V> ? Map<K, DeepBuildable<V>>
                 : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepBuildable<V>>
@@ -41,7 +41,7 @@ type _DeepBuildable<T> =
  */
 export type DeepRequired<T> = _DeepRequired<T>;
 type _DeepRequired<T> =
-    T extends Builtin ? Exclude<T, undefined>
+    T extends Builtin ? T
         : T extends Promise<infer U> ? Promise<DeepRequired<U>>
             : T extends Map<infer K, infer V> ? Map<K, DeepRequired<V>>
                 : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepRequired<V>>
@@ -59,7 +59,7 @@ type _DeepRequired<T> =
  */
 export type DeepReadonly<T> = _DeepReadonly<T>;
 type _DeepReadonly<T> =
-    T extends Builtin ? Exclude<T, undefined>
+    T extends Builtin ? T
         : T extends Promise<infer U> ? Promise<DeepReadonly<U>>
             : T extends Map<infer K, infer V> ? Map<K, DeepReadonly<V>>
                 : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepReadonly<V>>
@@ -76,7 +76,7 @@ type _DeepReadonly<T> =
  */
 export type DeepWritable<T> = _DeepWritable<T>;
 type _DeepWritable<T> =
-    T extends Builtin ? Exclude<T, undefined>
+    T extends Builtin ? T
         : T extends Promise<infer U> ? Promise<DeepWritable<U>>
             : T extends Map<infer K, infer V> ? Map<K, DeepWritable<V>>
                 : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepWritable<V>>

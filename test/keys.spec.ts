@@ -47,9 +47,10 @@ describe('Keys', function () {
             a: number; b?: string; c: boolean, d: null,
             e: symbol; f: undefined, g: never, h: unknown,
             k: () => string,
+            l?: string | undefined,
             [Symbol.species]: string
         }
-        exact<JsonKeys<I1>, 'a' | 'b' | 'c' | 'd' | 'h'>(true);
+        exact<JsonKeys<I1>, 'a' | 'b' | 'c' | 'd' | 'h' | 'l'>(true);
     });
 
     test('WritableKeys', () => {
