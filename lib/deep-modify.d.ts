@@ -17,7 +17,7 @@ type _DeepPartial<T> =
                                 : T extends WeakSet<infer U> ? WeakSet<DeepPartial<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPartial<T[K]> }
                                         : T extends (infer U)[] ? DeepPartial<U>[]
-                                            : { [P in keyof T]?: DeepPartial<T[P]> };
+                                            : { [P in keyof T]?: DeepPartial<Exclude<T[P], undefined>> };
 
 /**
  * Combination of Partial and Writable but deeply
@@ -34,7 +34,7 @@ type _DeepBuildable<T> =
                                 : T extends WeakSet<infer U> ? WeakSet<DeepBuildable<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepBuildable<T[K]> }
                                         : T extends (infer U)[] ? DeepBuildable<U>[]
-                                            : { -readonly [P in keyof T]?: DeepBuildable<T[P]> };
+                                            : { -readonly [P in keyof T]?: DeepBuildable<Exclude<T[P], undefined>> };
 
 /**
  * Make all properties in T required deeply
@@ -51,7 +51,7 @@ type _DeepRequired<T> =
                                 : T extends WeakSet<infer U> ? WeakSet<DeepRequired<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepRequired<T[K]> }
                                         : T extends (infer U)[] ? DeepRequired<U>[]
-                                            : { [P in keyof T]-?: DeepRequired<T[P]> };
+                                            : { [P in keyof T]-?: DeepRequired<Exclude<T[P], undefined>> };
 
 
 /**
@@ -69,7 +69,7 @@ type _DeepReadonly<T> =
                                 : T extends WeakSet<infer U> ? WeakSet<DeepReadonly<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepReadonly<T[K]> }
                                         : T extends (infer U)[] ? DeepReadonly<U>[]
-                                            : { readonly [P in keyof T]: DeepReadonly<T[P]> };
+                                            : { readonly [P in keyof T]: DeepReadonly<Exclude<T[P], undefined>> };
 
 /**
  * Make all properties in T writable deeply
@@ -86,7 +86,7 @@ type _DeepWritable<T> =
                                 : T extends WeakSet<infer U> ? WeakSet<DeepWritable<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepWritable<T[K]> }
                                         : T extends (infer U)[] ? DeepWritable<U>[]
-                                            : { -readonly [P in keyof T]: DeepWritable<T[P]> };
+                                            : { -readonly [P in keyof T]: DeepWritable<Exclude<T[P], undefined>> };
 
 /**
  * Make all properties in T nullable deeply
@@ -103,4 +103,4 @@ type _DeepNullish<T> =
                                 : T extends WeakSet<infer U> ? WeakSet<DeepNullish<U>>
                                     : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepNullish<T[K]> }
                                         : T extends (infer U)[] ? DeepNullish<U>[] | null | undefined
-                                            : { [P in keyof T]: DeepNullish<T[P]> | null | undefined };
+                                            : { [P in keyof T]: DeepNullish<Exclude<T[P], undefined>> | null | undefined };
