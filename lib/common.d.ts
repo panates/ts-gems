@@ -80,4 +80,4 @@ export interface Type<T = any> {
  * @desc Represents Class constructor of type T
  */
 export type Class<Args extends any[] = any[], Instance = {}, Static = {}> =
-    (new(...args: Args) => Instance) & Omit<Static, 'constructor'>;
+    (new(...args: Args) => Instance) & Static;
