@@ -1,4 +1,4 @@
-import {Builtin, Type} from './common';
+import {Builtin} from './common';
 import {IfClass, IfTuple} from './type-check';
 import {JsonKeys, OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys} from './keys';
 
@@ -8,68 +8,144 @@ import {JsonKeys, OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys} from '
 export type DeepPickOptional<T> = _DeepPickOptional<T>;
 type _DeepPickOptional<T, K extends keyof T = OptionalKeys<T>> =
     T extends Builtin ? T
-        : T extends Promise<infer U> ? Promise<DeepPickOptional<U>>
-            : T extends Map<infer K, infer V> ? Map<K, DeepPickOptional<V>>
-                : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepPickOptional<V>>
-                    : T extends WeakMap<infer K, infer V> ? WeakMap<K, DeepPickOptional<V>>
-                        : T extends Set<infer U> ? Set<DeepPickOptional<U>>
-                            : T extends ReadonlySet<infer U> ? ReadonlySet<DeepPickOptional<U>>
-                                : T extends WeakSet<infer U> ? WeakSet<DeepPickOptional<U>>
-                                    : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPickOptional<T[K]> }
-                                        : T extends (infer U)[] ? DeepPickOptional<U>[]
-                                            : { [P in K]?: DeepPickOptional<Exclude<T[P], undefined>> };
+        : IfTuple<T> extends true ? T
+            : IfClass<T> extends true ? T
+                : T extends Promise<infer U> ? Promise<DeepPickOptional<U>>
+                    : T extends Map<any, any> ? T
+                        : T extends ReadonlyMap<any, any> ? T
+                            : T extends WeakMap<any, any> ? T
+                                : T extends Set<any> ? T
+                                    : T extends ReadonlySet<any> ? T
+                                        : T extends WeakSet<any> ? T
+                                            : T extends any[] ? T
+                                                : { [P in K]?: DeepPickOptional<Exclude<T[P], undefined>> };
 
 /**
- * Pick all required properties in T deeply
+ * Pick all optional properties in T deeply
+ */
+export type StrictDeepPickOptional<T> = _StrictDeepPickOptional<T>;
+type _StrictDeepPickOptional<T, K extends keyof T = OptionalKeys<T>> =
+    T extends Builtin ? T
+        : IfTuple<T> extends true ? T
+            : IfClass<T> extends true ? T
+                : T extends Promise<infer U> ? Promise<StrictDeepPickOptional<U>>
+                    : T extends Map<infer K, infer V> ? Map<K, StrictDeepPickOptional<V>>
+                        : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, StrictDeepPickOptional<V>>
+                            : T extends WeakMap<infer K, infer V> ? WeakMap<K, StrictDeepPickOptional<V>>
+                                : T extends Set<infer U> ? Set<StrictDeepPickOptional<U>>
+                                    : T extends ReadonlySet<infer U> ? ReadonlySet<StrictDeepPickOptional<U>>
+                                        : T extends WeakSet<infer U> ? WeakSet<StrictDeepPickOptional<U>>
+                                            : T extends (infer U)[] ? StrictDeepPickOptional<U>[]
+                                                : { [P in K]?: StrictDeepPickOptional<Exclude<T[P], undefined>> };
+
+/**
+ * Pick all required properties in T deeply even in Maps, Sets etc
  */
 export type DeepPickRequired<T> = _DeepPickRequired<T>;
 type _DeepPickRequired<T, J extends keyof T = RequiredKeys<T>> =
     T extends Builtin ? T
-        : T extends Promise<infer U> ? Promise<DeepPickRequired<U>>
-            : T extends Map<infer K, infer V> ? Map<K, DeepPickRequired<V>>
-                : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepPickRequired<V>>
-                    : T extends WeakMap<infer K, infer V> ? WeakMap<K, DeepPickRequired<V>>
-                        : T extends Set<infer U> ? Set<DeepPickRequired<U>>
-                            : T extends ReadonlySet<infer U> ? ReadonlySet<DeepPickRequired<U>>
-                                : T extends WeakSet<infer U> ? WeakSet<DeepPickRequired<U>>
-                                    : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPickRequired<T[K]> }
-                                        : T extends (infer U)[] ? DeepPickRequired<U>[]
-                                            : { [P in J]: DeepPickRequired<Exclude<T[P], undefined>> };
+        : IfTuple<T> extends true ? T
+            : IfClass<T> extends true ? T
+                : T extends Promise<infer U> ? Promise<DeepPickRequired<U>>
+                    : T extends Map<any, any> ? T
+                        : T extends ReadonlyMap<any, any> ? T
+                            : T extends WeakMap<any, any> ? T
+                                : T extends Set<any> ? T
+                                    : T extends ReadonlySet<any> ? T
+                                        : T extends WeakSet<any> ? T
+                                            : T extends any[] ? T
+                                                : { [P in J]-?: DeepPickRequired<Exclude<T[P], undefined>> };
+
+/**
+ * Pick all required properties in T deeply even in Maps, Sets etc
+ */
+export type StrictDeepPickRequired<T> = _StrictDeepPickRequired<T>;
+type _StrictDeepPickRequired<T, J extends keyof T = RequiredKeys<T>> =
+    T extends Builtin ? T
+        : IfTuple<T> extends true ? T
+            : IfClass<T> extends true ? T
+                : T extends Promise<infer U> ? Promise<StrictDeepPickRequired<U>>
+                    : T extends Map<infer K, infer V> ? Map<K, StrictDeepPickRequired<V>>
+                        : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, StrictDeepPickRequired<V>>
+                            : T extends WeakMap<infer K, infer V> ? WeakMap<K, StrictDeepPickRequired<V>>
+                                : T extends Set<infer U> ? Set<StrictDeepPickRequired<U>>
+                                    : T extends ReadonlySet<infer U> ? ReadonlySet<StrictDeepPickRequired<U>>
+                                        : T extends WeakSet<infer U> ? WeakSet<StrictDeepPickRequired<U>>
+                                            : T extends (infer U)[] ? StrictDeepPickRequired<U>[]
+                                                : { [P in J]-?: StrictDeepPickRequired<Exclude<T[P], undefined>> };
+
 
 /**
  * Pick all readonly properties in T deeply
  */
 export type DeepPickReadonly<T> = _DeepPickReadonly<T>;
-type _DeepPickReadonly<T, J extends keyof T = ReadonlyKeys<T>> =
+type _DeepPickReadonly<T, K extends keyof T = ReadonlyKeys<T>> =
     T extends Builtin ? T
-        : T extends Promise<infer U> ? Promise<DeepPickReadonly<U>>
-            : T extends Map<infer K, infer V> ? Map<K, DeepPickReadonly<V>>
-                : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepPickReadonly<V>>
-                    : T extends WeakMap<infer K, infer V> ? WeakMap<K, DeepPickReadonly<V>>
-                        : T extends Set<infer U> ? Set<DeepPickReadonly<U>>
-                            : T extends ReadonlySet<infer U> ? ReadonlySet<DeepPickReadonly<U>>
-                                : T extends WeakSet<infer U> ? WeakSet<DeepPickReadonly<U>>
-                                    : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPickReadonly<T[K]> }
-                                        : T extends (infer U)[] ? DeepPickReadonly<U>[]
-                                            : { [P in J]: DeepPickReadonly<Exclude<T[P], undefined>> };
+        : IfTuple<T> extends true ? T
+            : IfClass<T> extends true ? T
+                : T extends Promise<infer U> ? Promise<DeepPickReadonly<U>>
+                    : T extends Map<any, any> ? T
+                        : T extends ReadonlyMap<any, any> ? T
+                            : T extends WeakMap<any, any> ? T
+                                : T extends Set<any> ? T
+                                    : T extends ReadonlySet<any> ? T
+                                        : T extends WeakSet<any> ? T
+                                            : T extends any[] ? T
+                                                : { [P in K]: DeepPickReadonly<Exclude<T[P], undefined>> };
+
+/**
+ * Pick all readonly properties in T deeply even in Maps, Sets etc
+ */
+export type StrictDeepPickReadonly<T> = _StrictDeepPickReadonly<T>;
+type _StrictDeepPickReadonly<T, J extends keyof T = ReadonlyKeys<T>> =
+    T extends Builtin ? T
+        // : IfTuple<T> extends true ? T
+        // : IfClass<T> extends true ? T
+        : T extends Promise<infer U> ? Promise<StrictDeepPickReadonly<U>>
+            : T extends Map<infer K, infer V> ? Map<K, StrictDeepPickReadonly<V>>
+                : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, StrictDeepPickReadonly<V>>
+                    : T extends WeakMap<infer K, infer V> ? WeakMap<K, StrictDeepPickReadonly<V>>
+                        : T extends Set<infer U> ? Set<StrictDeepPickReadonly<U>>
+                            : T extends ReadonlySet<infer U> ? ReadonlySet<StrictDeepPickReadonly<U>>
+                                : T extends WeakSet<infer U> ? WeakSet<StrictDeepPickReadonly<U>>
+                                    : T extends (infer U)[] ? StrictDeepPickReadonly<U>[]
+                                        : { [P in J]: StrictDeepPickReadonly<Exclude<T[P], undefined>> };
 
 /**
  * Pick all writable properties in T deeply
  */
-export type DeepPickWritable<T> = _DeepPickWritable<T>
+export type DeepPickWritable<T> = _DeepPickWritable<T>;
 type _DeepPickWritable<T, K extends keyof T = WritableKeys<T>> =
     T extends Builtin ? T
-        : T extends Promise<infer U> ? Promise<DeepPickWritable<U>>
-            : T extends Map<infer K, infer V> ? Map<K, DeepPickWritable<V>>
-                : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepPickWritable<V>>
-                    : T extends WeakMap<infer K, infer V> ? WeakMap<K, DeepPickWritable<V>>
-                        : T extends Set<infer U> ? Set<DeepPickWritable<U>>
-                            : T extends ReadonlySet<infer U> ? ReadonlySet<DeepPickWritable<U>>
-                                : T extends WeakSet<infer U> ? WeakSet<DeepPickWritable<U>>
-                                    : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPickWritable<T[K]> }
-                                        : IfClass<T> extends true ? DeepPickWritable<Type<T>>
-                                            : T extends (infer U)[] ? DeepPickWritable<U>[]
-                                                : { [P in K]: DeepPickWritable<Exclude<T[P], undefined>> }
+        : IfTuple<T> extends true ? T
+            : IfClass<T> extends true ? T
+                : T extends Promise<infer U> ? Promise<DeepPickWritable<U>>
+                    : T extends Map<any, any> ? T
+                        : T extends ReadonlyMap<any, any> ? T
+                            : T extends WeakMap<any, any> ? T
+                                : T extends Set<any> ? T
+                                    : T extends ReadonlySet<any> ? T
+                                        : T extends WeakSet<any> ? T
+                                            : T extends any[] ? T
+                                                : { [P in K]: DeepPickWritable<Exclude<T[P], undefined>> };
+
+/**
+ * Pick all writable properties in T deeply even in Maps, Sets etc
+ */
+export type StrictDeepPickWritable<T> = _StrictDeepPickWritable<T>
+type _StrictDeepPickWritable<T, K extends keyof T = WritableKeys<T>> =
+    T extends Builtin ? T
+        : IfTuple<T> extends true ? T
+            : IfClass<T> extends true ? T
+                : T extends Promise<infer U> ? Promise<StrictDeepPickWritable<U>>
+                    : T extends Map<infer K, infer V> ? Map<K, StrictDeepPickWritable<V>>
+                        : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, StrictDeepPickWritable<V>>
+                            : T extends WeakMap<infer K, infer V> ? WeakMap<K, StrictDeepPickWritable<V>>
+                                : T extends Set<infer U> ? Set<StrictDeepPickWritable<U>>
+                                    : T extends ReadonlySet<infer U> ? ReadonlySet<StrictDeepPickWritable<U>>
+                                        : T extends WeakSet<infer U> ? WeakSet<StrictDeepPickWritable<U>>
+                                            : T extends (infer U)[] ? StrictDeepPickWritable<U>[]
+                                                : { -readonly [P in K]: StrictDeepPickWritable<Exclude<T[P], undefined>> }
 
 /**
  * Pick all JSON friendly properties in T deeply
@@ -77,31 +153,14 @@ type _DeepPickWritable<T, K extends keyof T = WritableKeys<T>> =
 export type DeepPickJson<T> = _DeepPickJson<T>
 type _DeepPickJson<T, Keys extends keyof T = JsonKeys<T>> =
     T extends Builtin ? T
-        : T extends Promise<infer U> ? Promise<DeepPickJson<U>>
-            : T extends Map<infer K, infer V> ? Map<K, DeepPickJson<V>>
-                : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepPickJson<V>>
-                    : T extends WeakMap<infer K, infer V> ? WeakMap<K, DeepPickJson<V>>
-                        : T extends Set<infer U> ? Set<DeepPickJson<U>>
-                            : T extends ReadonlySet<infer U> ? ReadonlySet<DeepPickJson<U>>
-                                : T extends WeakSet<infer U> ? WeakSet<DeepPickJson<U>>
-                                    : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPickJson<T[K]> }
-                                        : T extends (infer U)[] ? DeepPickJson<U>[]
-                                            : { [P in Keys]: DeepPickJson<Exclude<T[P], undefined>> };
-
-
-/**
- * Pick all JSON friendly properties in T deeply
- */
-export type DeepPickWritableJson<T> = _DeepPickWritableJson<T>
-type _DeepPickWritableJson<T, Keys extends keyof T = Exclude<JsonKeys<T>, ReadonlyKeys<T>>> =
-    T extends Builtin ? T
-        : T extends Promise<infer U> ? Promise<DeepPickWritableJson<U>>
-            : T extends Map<infer K, infer V> ? Map<K, DeepPickWritableJson<V>>
-                : T extends ReadonlyMap<infer K, infer V> ? ReadonlyMap<K, DeepPickWritableJson<V>>
-                    : T extends WeakMap<infer K, infer V> ? WeakMap<K, DeepPickWritableJson<V>>
-                        : T extends Set<infer U> ? Set<DeepPickWritableJson<U>>
-                            : T extends ReadonlySet<infer U> ? ReadonlySet<DeepPickWritableJson<U>>
-                                : T extends WeakSet<infer U> ? WeakSet<DeepPickWritableJson<U>>
-                                    : IfTuple<T> extends true ? { [K in OptionalKeys<T>]?: DeepPickWritableJson<T[K]> }
-                                        : T extends (infer U)[] ? DeepPickWritableJson<U>[]
-                                            : { [P in Keys]: DeepPickWritableJson<Exclude<T[P], undefined>> };
+        : IfTuple<T> extends true ? T
+            : IfClass<T> extends true ? T
+                : T extends Promise<infer U> ? Promise<DeepPickJson<U>>
+                    : T extends Map<any, any> ? T
+                        : T extends ReadonlyMap<any, any> ? T
+                            : T extends WeakMap<any, any> ? T
+                                : T extends Set<any> ? T
+                                    : T extends ReadonlySet<any> ? T
+                                        : T extends WeakSet<any> ? T
+                                            : T extends any[] ? T
+                                                : { [P in Keys]: DeepPickJson<Exclude<T[P], undefined>> };

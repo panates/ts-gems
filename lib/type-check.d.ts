@@ -115,7 +115,7 @@ export type IfFunctionOrAny<T, Y = true, N = false> =
     IfAny<T> extends true ? Y : IfFunction<T, Y, N>;
 
 /**
- * Returns Y if typeof T is an empty object, N otherwise
+ * Returns Y if typeof T is a constructor type, N otherwise
  */
 export type IfClass<T, Y = true, N = false> =
     IfNever<T> extends true ? N
@@ -131,8 +131,15 @@ export type IfClassOrAny<T, Y = true, N = false> =
 /**
  * Returns "Y" if "T1" is exactly same with "T2", "N" otherwise
  */
-type IfEquals<T1, T2, Y = true, N = false> =
-    (<G>() => G extends T1 ? 1 : 2) extends (<G>() => G extends T2 ? 1 : 2) ? Y : N;
+type EqualsWrapped<T> = T extends infer R & {}
+    ? {
+      [P in keyof R]: R[P]
+    }
+    : never
+export type IfEquals<T1, T2, Y = true, N = false> =
+        IfObject<T1> | IfObject<T2> extends true
+    ? ((<G>() => G extends EqualsWrapped<T1> ? 1 : 2) extends (<G>() => G extends EqualsWrapped<T2> ? 1 : 2) ? Y : N)
+    : ((<G>() => G extends T1 ? 1 : 2) extends (<G>() => G extends T2 ? 1 : 2) ? Y : N);
 
 /**
  * Returns "Y" if type "T" matches "U", "N" otherwise
