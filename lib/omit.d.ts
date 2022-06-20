@@ -1,5 +1,7 @@
 import {JsonKeys, OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys} from './keys';
 
+export type StrictOmit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
 /**
  * Omit all optional properties in T
  */
