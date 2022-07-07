@@ -68,11 +68,11 @@ export type ElementType<T extends { [P in K & any]: any },
 
 
 /**
- * Class
+ * Type
  * @desc Represents constructor of type T
  */
 export interface Type<T = any> {
-    new(...args: any[]): T;
+  new(...args: any[]): T;
 }
 
 /**
@@ -81,3 +81,18 @@ export interface Type<T = any> {
  */
 export type Class<Args extends any[] = any[], Instance = {}, Static = {}> =
     (new(...args: Args) => Instance) & Static;
+
+/**
+ * NoUnion
+ * @desc Returns "never" if the type is union
+ */
+type NoUnion<T, U = T> = T extends U ? [U] extends [T] ? T : never : never;
+
+
+/**
+ * Opaque
+ * @desc Create unique type that can't be assigned to base type by accident.
+ */
+type Opaque<T, N extends string> = T & {
+  __type: N;
+}
