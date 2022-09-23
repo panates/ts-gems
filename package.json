@@ -12,7 +12,7 @@
     "lodash",
     "underscore"
   ],
-  "version": "2.2.0",
+  "version": "2.2.1",
   "types": "lib/index.d.ts",
   "repository": "git@github.com:panates/ts-gems.git",
   "author": "Eray Hanoglu <e.hanoglu@panates.com>",
@@ -29,8 +29,7 @@
     "README",
     "lib/"
   ],
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@types/jest": "^29.0.3",
     "eslint": "^8.23.1",
