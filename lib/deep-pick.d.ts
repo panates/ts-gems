@@ -1,6 +1,6 @@
-import {Builtin} from './common';
-import {IfClass, IfTuple} from './type-check';
-import {JsonKeys, OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys} from './keys';
+import { Builtin } from './common';
+import { IfClass, IfTuple } from './type-check';
+import { JsonKeys, OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys } from './keys';
 
 /**
  * Pick all optional properties in T deeply

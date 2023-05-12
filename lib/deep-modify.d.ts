@@ -1,6 +1,6 @@
-import {Builtin} from './common';
-import {IfTuple} from './type-check';
-import {OptionalKeys} from './keys';
+import { Builtin } from './common';
+import { IfTuple } from './type-check';
+import { OptionalKeys } from './keys';
 
 /**
  * Partial but deeply
