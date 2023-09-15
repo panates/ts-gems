@@ -29,3 +29,8 @@ export type ReadonlySome<T, K extends keyof T> = Readonly<Pick<T, K>> & Omit<T, 
  * Marks given keys as writable
  */
 export type WritableSome<T, K extends keyof T> = Writable<Pick<T, K>> & Omit<T, K>;
+
+/**
+ * Merges two types without merging types of elements.
+ */
+export type Combine<A, B> = A & Exclude<B, keyof A>;
