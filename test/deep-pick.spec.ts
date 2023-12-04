@@ -1,10 +1,15 @@
-import {exact} from './_support/asserts';
+import { exact } from './_support/asserts';
 import {
-  DeepPickJson, DeepPickOptional, DeepPickReadonly, DeepPickRequired, DeepPickWritable,
-  StrictDeepPickOptional,
-  StrictDeepPickReadonly,
-  StrictDeepPickRequired,
-  StrictDeepPickWritable, Type,
+  DeepPickJson,
+  DeepPickOptional,
+  DeepPickReadonly,
+  DeepPickRequired,
+  DeepPickWritable,
+  HighDeepPickOptional,
+  HighDeepPickReadonly,
+  HighDeepPickRequired,
+  HighDeepPickWritable,
+  Type,
 } from '../lib';
 
 describe('DeepPick', function () {
@@ -25,6 +30,7 @@ describe('DeepPick', function () {
         a9: number
       };
       b: string;
+      c?: { a: string, b?: number }[]
     }
     exact<DeepPickOptional<I1>, {
       a?: {
@@ -37,17 +43,17 @@ describe('DeepPick', function () {
         a7?: WeakSet<Unmodified>,
         a8?: Type<Unmodified>,
       };
+      c?: { a: string, b?: number }[]
     }>(true);
   });
 
-  test('StrictDeepPickOptional', () => {
+  test('HighDeepPickOptional', () => {
     type Unmodified = { a?: number, b: string };
     type Modified = { a?: number };
     type I1 = {
       a?: {
         a1?: boolean,
         a2?: Unmodified,
-        a3?: Unmodified[],
         a4?: Map<string, Unmodified>,
         a5?: WeakMap<any, Unmodified>,
         a6?: Set<Unmodified>,
@@ -56,19 +62,21 @@ describe('DeepPick', function () {
         a9: number
       };
       b: string;
+      c?: { a: string, b?: number }[]
     }
-    exact<StrictDeepPickOptional<I1>, {
+    exact<HighDeepPickOptional<I1>, {
       a?: {
         a1?: boolean,
         a2?: Modified,
-        a3?: Modified[],
-        a4?: Map<string, Modified>,
-        a5?: WeakMap<any, Modified>,
-        a6?: Set<Modified>,
-        a7?: WeakSet<Modified>,
+        a4?: Map<string, Unmodified>,
+        a5?: WeakMap<any, Unmodified>,
+        a6?: Set<Unmodified>,
+        a7?: WeakSet<Unmodified>,
         a8?: Type<Unmodified>,
       };
+      c?: { b?: number }[]
     }>(true);
+
   });
 
   test('DeepPickRequired', () => {
@@ -87,6 +95,7 @@ describe('DeepPick', function () {
         a9?: number
       };
       b?: string;
+      c: { a: string, b?: number }[]
     }
     exact<DeepPickRequired<I1>, {
       a: {
@@ -99,17 +108,17 @@ describe('DeepPick', function () {
         a7: WeakSet<Unmodified>,
         a8: Type<Unmodified>,
       };
+      c: { a: string, b?: number }[]
     }>(true);
   });
 
-  test('StrictDeepPickRequired', () => {
+  test('HighDeepPickRequired', () => {
     type Unmodified = { a: number, b?: string };
     type Modified = { a: number };
     type I1 = {
       a: {
         a1: boolean,
         a2: Unmodified,
-        a3: Unmodified[],
         a4: Map<string, Unmodified>,
         a5: WeakMap<any, Unmodified>,
         a6: Set<Unmodified>,
@@ -118,18 +127,19 @@ describe('DeepPick', function () {
         a9?: number
       };
       b?: string;
+      c: { a: string, b?: number }[]
     }
-    exact<StrictDeepPickRequired<I1>, {
+    exact<HighDeepPickRequired<I1>, {
       a: {
         a1: boolean,
         a2: Modified,
-        a3: Modified[],
-        a4: Map<string, Modified>,
-        a5: WeakMap<any, Modified>,
-        a6: Set<Modified>,
-        a7: WeakSet<Modified>,
+        a4: Map<string, Unmodified>,
+        a5: WeakMap<any, Unmodified>,
+        a6: Set<Unmodified>,
+        a7: WeakSet<Unmodified>,
         a8: Type<Unmodified>,
       };
+      c: { a: string }[]
     }>(true);
   });
 
@@ -149,6 +159,7 @@ describe('DeepPick', function () {
         a9: number
       };
       b: string;
+      readonly c: { readonly a: string, b?: number }[]
     }
     exact<DeepPickReadonly<I1>, {
       readonly a: {
@@ -161,17 +172,17 @@ describe('DeepPick', function () {
         readonly a7: WeakSet<Unmodified>,
         readonly a8: Type<Unmodified>,
       };
+      readonly c: { readonly a: string, b?: number }[]
     }>(true);
   });
 
-  test('StrictDeepPickReadonly', () => {
+  test('HighDeepPickReadonly', () => {
     type Unmodified = { readonly a: number, b: string };
     type Modified = { readonly a: number };
     type I1 = {
       readonly a: {
         readonly a1: boolean,
         readonly a2: Unmodified,
-        readonly a3: Unmodified[],
         readonly a4: Map<string, Unmodified>,
         readonly a5: WeakMap<any, Unmodified>,
         readonly a6: Set<Unmodified>,
@@ -180,20 +191,22 @@ describe('DeepPick', function () {
         a9: number
       };
       b: string;
+      readonly c: { readonly a: string, b?: number }[]
     }
-    exact<StrictDeepPickReadonly<I1>, {
+    exact<HighDeepPickReadonly<I1>, {
       readonly a: {
         readonly a1: boolean,
         readonly a2: Modified,
-        readonly a3: Modified[],
-        readonly a4: Map<string, Modified>,
-        readonly a5: WeakMap<any, Modified>,
-        readonly a6: Set<Modified>,
-        readonly a7: WeakSet<Modified>,
+        readonly a4: Map<string, Unmodified>,
+        readonly a5: WeakMap<any, Unmodified>,
+        readonly a6: Set<Unmodified>,
+        readonly a7: WeakSet<Unmodified>,
         readonly a8: Type<Unmodified>,
       };
+      readonly c: { readonly a: string }[]
     }>(true);
   });
+
 
   test('DeepPickWritable', () => {
     type Unmodified = { a: number, readonly b: string };
@@ -211,6 +224,7 @@ describe('DeepPick', function () {
         readonly a9: number
       };
       readonly b: string;
+      c: { readonly a: string, b?: number }[]
     }
     exact<DeepPickWritable<I1>, {
       a: {
@@ -223,17 +237,17 @@ describe('DeepPick', function () {
         a7: WeakSet<Unmodified>,
         a8: Type<Unmodified>,
       };
+      c: { readonly a: string, b?: number }[]
     }>(true);
   });
 
-  test('StrictDeepPickWritable', () => {
+  test('HighDeepPickWritable', () => {
     type Unmodified = { a: number, readonly b: string };
     type Modified = { a: number };
     type I1 = {
       a: {
         a1: boolean,
         a2: Unmodified,
-        a3: Unmodified[],
         a4: Map<string, Unmodified>,
         a5: WeakMap<any, Unmodified>,
         a6: Set<Unmodified>,
@@ -242,18 +256,19 @@ describe('DeepPick', function () {
         readonly a9: number
       };
       readonly b: string;
+      c: { readonly a: string, b?: number }[]
     }
-    exact<StrictDeepPickWritable<I1>, {
+    exact<HighDeepPickWritable<I1>, {
       a: {
         a1: boolean,
         a2: Modified,
-        a3: Modified[],
-        a4: Map<string, Modified>,
-        a5: WeakMap<any, Modified>,
-        a6: Set<Modified>,
-        a7: WeakSet<Modified>,
+        a4: Map<string, Unmodified>,
+        a5: WeakMap<any, Unmodified>,
+        a6: Set<Unmodified>,
+        a7: WeakSet<Unmodified>,
         a8: Type<Unmodified>,
       };
+      c: { b?: number }[]
     }>(true);
   });
 
