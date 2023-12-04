@@ -3,7 +3,7 @@ import {
   DeepOmitOptional, DeepOmitReadonly,
   DeepOmitRequired, DeepOmitWritable,
   HighDeepOmitOptional, HighDeepOmitReadonly,
-  HighDeepOmitRequired, HighDeepOmitWritable
+  HighDeepOmitRequired, HighDeepOmitWritable,
 } from '../lib';
 
 describe('DeepOmit', function () {

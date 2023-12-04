@@ -23,8 +23,8 @@
     "compile": "tsc -b tsconfig.json",
     "lint": "eslint --no-error-on-unmatched-pattern",
     "test:common": "jest --clearCache && jest --config=./jest.config.js",
-    "test:strict-null": "jest --clearCache && jest --config=./jest.strict-null.config.js",
-    "test": "npm run test:common && npm run test:strict-null"
+    "test:nostrict": "jest --clearCache && jest --config=./jest.nostrict.config.js",
+    "test": "npm run test:common && npm run test:nostrict"
   },
   "files": [
     "LICENSE",

@@ -6,7 +6,7 @@ import { IsDeepExcluded } from './helpers.js';
 export type DeepWritable<T> = _DeepWritable<T>;
 type _DeepWritable<T> =
     IsDeepExcluded<T> extends true ? T
-        : { -readonly [P in keyof T]: _DeepWritable<Exclude<T[P], undefined>> };
+        : { -readonly [P in keyof T]: _DeepWritable<T[P]> };
 
 
 /**
@@ -16,4 +16,4 @@ export type HighDeepWritable<T> = _HighDeepWritable<T>;
 type _HighDeepWritable<T> =
     T extends (infer U)[] ? _HighDeepWritable<U>[]
         : IsDeepExcluded<T> extends true ? T
-            : { -readonly [P in keyof T]: _HighDeepWritable<Exclude<T[P], undefined>> };
+            : { -readonly [P in keyof T]: _HighDeepWritable<T[P]> };

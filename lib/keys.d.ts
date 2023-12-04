@@ -16,7 +16,8 @@ export type ValuesOf<T> = T[keyof T];
  * RequiredKeys
  * @desc Returns required keys of an object
  */
-export type RequiredKeys<T> = {
+export type RequiredKeys<T> = _RequiredKeys<T>
+export type _RequiredKeys<T> = {
   [K in keyof T]-?: IfUndefined<T[K]> extends true
       ? never
       : T extends { [K1 in K]: any } ? K : never
@@ -26,7 +27,8 @@ export type RequiredKeys<T> = {
  * OptionalKeys
  * @desc Returns optional keys of an object
  */
-export type OptionalKeys<T> = {
+export type OptionalKeys<T> = _OptionalKeys<T>
+export type _OptionalKeys<T> = {
   [K in keyof T]-?: IfUndefined<T[K]> extends true
       ? never
       : T extends { [K1 in K]: any } ? never : K
@@ -39,11 +41,6 @@ export type OptionalKeys<T> = {
 export type ReadonlyKeys<T> = {
   [K in keyof T]-?: IfEquals<{ [Q in K]: T[K] }, { -readonly [Q in K]: T[K] }, never, K>
 }[keyof T];
-
-/**
- * @desc Returns non function keys of an object
- */
-export type NonFunctionKeys<T> = Exclude<keyof T, FunctionKeys<T>>;
 
 
 /**
@@ -63,7 +60,9 @@ type _JsonKeys<T, J = Required<T>> = ValuesOf<{
 /**
  * @desc Returns writable keys of an object
  */
-export type WritableKeys<T> = Exclude<keyof T, ReadonlyKeys<T>>;
+export type WritableKeys<T> = {
+  [K in keyof T]-?: IfEquals<{ [Q in K]: T[K] }, { readonly [Q in K]: T[K] }, never, K>
+}[keyof T];
 
 
 /**
@@ -82,6 +81,18 @@ export type FunctionKeys<T> = ValuesOf<{
           T[K] extends Function ? K
               : never : never : never;
 }>;
+
+/**
+ * @desc Returns non function keys of an object
+ */
+export type NonFunctionKeys<T> =  ValuesOf<{
+  [K in keyof T]-?: IfUndefined<T[K]> extends false ?
+      IfAny<T[K]> extends false ?
+          T[K] extends Function ? never
+              : K : K : K;
+}>;
+
+
 
 /**
  * @desc Returns keys that match given type

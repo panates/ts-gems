@@ -14,12 +14,12 @@ describe('DeepNullish', function () {
     }
 
     exact<DeepNullish<I1>, {
-      a: number | null | undefined;
-      b: {
-        a: string | null | undefined;
-        readonly b: number | null | undefined
-      } | null | undefined;
-      readonly c: { readonly a: string }[] | null | undefined
+      a?: number | null;
+      b?: {
+        a?: string | null;
+        readonly b?: number | null
+      } | null;
+      readonly c?: { readonly a: string }[] | null
     }>(true);
 
   });
@@ -35,12 +35,12 @@ describe('DeepNullish', function () {
     }
 
     exact<HighDeepNullish<I1>, {
-      a: number | null | undefined;
-      b: {
-        a: string | null | undefined;
-        readonly b: number | null | undefined
-      } | null | undefined;
-      readonly c: { readonly a: string | null | undefined }[] | null | undefined
+      a?: number | null;
+      b?: {
+        a?: string | null;
+        readonly b?: number | null
+      } | null;
+      readonly c?: { readonly a?: string | null }[] | null
     }>(true);
 
   });

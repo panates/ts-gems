@@ -7,7 +7,7 @@ module.exports = {
   ],
   transform: {
     '^.+.ts?$': ['ts-jest', {
-      tsconfig: '<rootDir>/tsconfig-strict.json'
+      tsconfig: '<rootDir>/tsconfig-nostrict.json'
     }]
   },
   moduleNameMapper: {

@@ -20,6 +20,11 @@ export type IfNever<T, Y = true, N = false> =
 export type IfUndefined<T, Y = true, N = false> =
     IfEquals<T, undefined, Y, N>;
 
+// export type IfUndefined<T, Y = true, N = false> =
+//     IfEquals<T, undefined, Y, N> extends Y ? Y
+//         : undefined extends T ? Y : N;
+
+
 /**
  * Returns Y if typeof T is "unknown", N otherwise
  */
