@@ -50,7 +50,9 @@ export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
 
 export type Thunk<T, Args extends any[] = any[]> = T | ((...args: Args) => T);
-export type AsyncThunk<T, Args extends any[] = any[]> = Thunk<T> | ((...args: Args) => Promise<T>);
+export type ThunkAsync<T, Args extends any[] = any[]> = Thunk<T> | ((...args: Args) => Promise<T>);
+export type TypeThunk<T = any> = Thunk<Type<T>>;
+export type TypeThunkAsync<T = any> = ThunkAsync<Type<T>>;
 
 
 /**
