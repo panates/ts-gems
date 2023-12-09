@@ -12,7 +12,7 @@
     "lodash",
     "underscore"
   ],
-  "version": "2.7.1",
+  "version": "2.7.2",
   "types": "lib/index.d.ts",
   "main": "lib/index.js",
   "module": "lib/index.js",
