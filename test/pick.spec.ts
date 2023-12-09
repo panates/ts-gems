@@ -128,6 +128,7 @@ describe('Pick', function () {
             e?: RegExp;
             f: Date;
             h: () => void
+            i: number | undefined
             [Symbol.species]: number;
         }
         exact<PickJson<I1>, {
@@ -140,6 +141,7 @@ describe('Pick', function () {
             d: string[];
             e?: RegExp;
             f: Date;
+            i: number | undefined
         }>(true);
     });
 

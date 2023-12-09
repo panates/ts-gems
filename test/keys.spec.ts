@@ -44,13 +44,14 @@ describe('Keys', function () {
 
     test('JsonKeys', () => {
         type I1 = {
-            a: number; b?: string; c: boolean, d: null,
+            a: number; b: string; c: boolean, d: null,
             e: symbol; f: undefined, g: never, h: unknown,
             k: () => string,
             l?: string | undefined,
             [Symbol.species]: string
         }
         exact<JsonKeys<I1>, 'a' | 'b' | 'c' | 'd' | 'h' | 'l'>(true);
+        const a: JsonKeys<I1> = 'd';
     });
 
     test('WritableKeys', () => {

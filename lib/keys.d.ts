@@ -1,4 +1,4 @@
-import { IfEquals, IfCompatible, IfUndefined, IfAny, IfJson } from './type-check';
+import { IfEquals, IfCompatible, IfUndefined, IfAny, IfJson, IfNull } from './type-check';
 
 /**
  * KeyOf
@@ -18,9 +18,9 @@ export type ValuesOf<T> = T[keyof T];
  */
 export type RequiredKeys<T> = _RequiredKeys<T>
 export type _RequiredKeys<T> = {
-  [K in keyof T]-?: IfUndefined<T[K]> extends true
-      ? never
-      : T extends { [K1 in K]: any } ? K : never
+  [K in keyof T]-?: IfUndefined<T[K]> extends true ? never
+      : T extends { [K1 in K]: any } ? K
+          : never
 }[keyof T];
 
 /**
@@ -29,9 +29,9 @@ export type _RequiredKeys<T> = {
  */
 export type OptionalKeys<T> = _OptionalKeys<T>
 export type _OptionalKeys<T> = {
-  [K in keyof T]-?: IfUndefined<T[K]> extends true
-      ? never
-      : T extends { [K1 in K]: any } ? never : K
+  [K in keyof T]-?: IfUndefined<T[K]> extends true ? never
+      : T extends { [K1 in K]: any } ? never
+          : K
 }[keyof T];
 
 
@@ -49,10 +49,8 @@ export type ReadonlyKeys<T> = {
 export type JsonKeys<T> = _JsonKeys<T>;
 type _JsonKeys<T, J = Required<T>> = ValuesOf<{
   [K in keyof J]: K extends symbol ? never
-      : IfUndefined<J[K]> extends true
-          ? never
-          : IfJson<J[K]> extends true
-              ? K
+      : IfNull<J[K]> extends true ? K
+          : IfJson<Exclude<J[K], undefined>> extends true ? K
               : never
 
 }>;
@@ -77,21 +75,20 @@ export type WritableJsonKeys<T> = Extract<{
  */
 export type FunctionKeys<T> = ValuesOf<{
   [K in keyof T]-?: IfUndefined<T[K]> extends false ?
-      IfAny<T[K]> extends false ?
-          T[K] extends Function ? K
+      IfAny<T[K]> extends false
+          ? T[K] extends Function ? K
               : never : never : never;
 }>;
 
 /**
  * @desc Returns non function keys of an object
  */
-export type NonFunctionKeys<T> =  ValuesOf<{
+export type NonFunctionKeys<T> = ValuesOf<{
   [K in keyof T]-?: IfUndefined<T[K]> extends false ?
-      IfAny<T[K]> extends false ?
-          T[K] extends Function ? never
+      IfAny<T[K]> extends false
+          ? T[K] extends Function ? never
               : K : K : K;
 }>;
-
 
 
 /**

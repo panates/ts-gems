@@ -1,4 +1,4 @@
-import {Primitive, Type} from './common';
+import { Primitive, Type } from './common';
 
 type NonObj = Primitive | Function;
 
