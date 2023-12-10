@@ -113,8 +113,9 @@ export type IfFunction<T, Y = true, N = false> =
     IfNever<T> extends true ? N
         : IfUndefined<T> extends true ? N
             : IfNull<T> extends true ? N
-                : T extends Function ? Y
-                    : N;
+                : T extends Type ? N
+                    : T extends Function ? Y
+                        : N;
 
 export type IfFunctionOrAny<T, Y = true, N = false> =
     IfAny<T> extends true ? Y : IfFunction<T, Y, N>;
