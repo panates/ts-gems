@@ -56,7 +56,6 @@ type _JsonKeys<T, J = Required<T>> = ValuesOf<{
       : IfNull<J[K]> extends true ? K
           : IfJson<Exclude<J[K], undefined>> extends true ? K
               : never
-
 }>;
 
 /**

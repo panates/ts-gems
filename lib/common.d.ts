@@ -24,8 +24,9 @@ type JsonType = BasicPrimitive | null | object | (BasicPrimitive | object)[]
  * @desc Type representing Builtin types in JavaScript
  */
 export type Builtin = Primitive | Function | String | Number | Date | Error | RegExp |
-    ArrayBuffer | DataView | Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array |
-    Int32Array | Uint32Array | Float32Array | Float64Array;
+    Buffer | ArrayBuffer | Int8Array | Uint8Array | Uint8ClampedArray |
+    Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array |
+    URL | ReadableStream | WritableStream;
 
 /**
  * Maybe

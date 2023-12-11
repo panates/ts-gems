@@ -4,8 +4,8 @@ import { IfClass, IfTuple } from './type-check.js';
 /**
  * Returns true if T is excluded from deep operations
  */
-export type IsDeepExcluded<T> = _IsHighDeepObject<T>;
-type _IsHighDeepObject<T> =
+export type IfNoDeepValue<T> = _IfNoDeepValue<T>
+type _IfNoDeepValue<T> =
     T extends Builtin ? true
         : IfTuple<T> extends true ? true
             : IfClass<T> extends true ? true
