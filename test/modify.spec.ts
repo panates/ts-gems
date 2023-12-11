@@ -1,6 +1,6 @@
-import {exact} from './_support/asserts';
+import { exact } from './_support/asserts';
 import {
-  Buildable, PartialSome, ReadonlySome, RequiredSome,
+  Buildable, PartialSome, ReadonlySome, RemoveNulls, RequiredSome,
   Writable, WritableSome,
 } from '../lib';
 
@@ -99,5 +99,19 @@ describe('Modify', function () {
       readonly c: string;
     }>(true);
   });
+
+  test('RemoveNulls', () => {
+    type I1 = {
+      a?: number | null;
+      b: null;
+      c: string | null;
+    }
+
+    exact<RemoveNulls<I1>, {
+      a?: number;
+      c: string;
+    }>(true);
+  });
+
 
 });

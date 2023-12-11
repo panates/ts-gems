@@ -1,3 +1,5 @@
+import { OmitNever } from './omit.js';
+
 /**
  * Make all properties in T writable
  */
@@ -34,3 +36,10 @@ export type WritableSome<T, K extends keyof T> = Writable<Pick<T, K>> & Omit<T, 
  * Merges two types without merging types of elements.
  */
 export type Combine<A, B> = A & Exclude<B, keyof A>;
+
+/**
+ * Remove null from properties
+ */
+export type RemoveNulls<T> = OmitNever<{
+  [P in keyof T]: Exclude<T[P], null>;
+}>;

@@ -8,6 +8,7 @@ export * from "./deep-omit";
 export * from "./deep-partial";
 export * from "./deep-pick";
 export * from "./deep-readonly";
+export * from "./deep-remove-nulls";
 export * from "./deep-required";
 export * from "./deep-writable";
 export * from "./helpers";
