@@ -10,5 +10,6 @@ export * from "./deep-pick";
 export * from "./deep-readonly";
 export * from "./deep-required";
 export * from "./deep-writable";
+export * from "./helpers";
 export * from "./pick";
 export * from "./omit";
