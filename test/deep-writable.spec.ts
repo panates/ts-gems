@@ -11,6 +11,8 @@ describe('DeepWritable', function () {
         readonly b: number
       };
       readonly c: { readonly a: string }[]
+      n: never;
+      m?: never;
     }
     exact<DeepWritable<I1>, {
       a?: number;
@@ -28,7 +30,9 @@ describe('DeepWritable', function () {
       a?: number;
       b: {
         a?: string;
-        b: number
+        b: number;
+        n: never;
+        m?: never;
       };
       c: { a: string }[]
     }
@@ -36,7 +40,7 @@ describe('DeepWritable', function () {
       a?: number;
       b: {
         a?: string;
-        b: number
+        b: number;
       };
       c: { a: string }[]
     }>(true);

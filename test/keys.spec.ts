@@ -1,20 +1,23 @@
 import { exact } from './_support/asserts';
 import {
-  KeysOf,
-  ValuesOf,
-  OptionalKeys,
-  ReadonlyKeys,
-  RequiredKeys,
-  WritableKeys,
-  NonFunctionKeys,
-  FunctionKeys, KeysCompatible, JsonKeys, WritableJsonKeys, KeysEquals
+  KeysOf, ValuesOf, OptionalKeys, ReadonlyKeys, RequiredKeys,
+  WritableKeys, NonFunctionKeys, FunctionKeys, KeysCompatible,
+  JsonKeys, WritableJsonKeys, KeysEquals,
 } from '../lib';
 
 describe('Keys', function () {
 
   test('KeysOf', () => {
-    type I1 = { a: number; b?: undefined; c?: {}, d: undefined, e: null, f: never };
-    exact<KeysOf<I1>, 'a' | 'b' | 'c' | 'd' | 'e' | 'f'>(true);
+    type I1 = {
+      a: number;
+      b?: number;
+      c?: {},
+      d?: undefined;
+      e: undefined,
+      f: null,
+      n: never
+    };
+    exact<KeysOf<I1>, 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'n'>(true);
   });
 
   test('ValuesOf', () => {

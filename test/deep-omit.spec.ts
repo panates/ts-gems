@@ -21,7 +21,8 @@ describe('DeepOmit', function () {
         b: number;
       },
       e: { a?: string; b: number }[],
-      f?: { a?: string; b: number }[]
+      f?: { a?: string; b: number }[],
+      n: never
     }
     exact<DeepOmitOptional<I1>, {
       b: string,
@@ -43,7 +44,8 @@ describe('DeepOmit', function () {
         b: number;
       },
       e: { a?: string; b: number }[],
-      f?: { a?: string; b: number }[]
+      f?: { a?: string; b: number }[],
+      n: never
     }
     exact<HighDeepOmitOptional<I1>, {
       b: string,
@@ -65,7 +67,8 @@ describe('DeepOmit', function () {
         b: number;
       },
       e: { a?: string; b: number }[],
-      f?: { a?: string; b: number }[]
+      f?: { a?: string; b: number }[],
+      n?: never
     }
 
     exact<DeepOmitRequired<I1>, {
@@ -91,7 +94,8 @@ describe('DeepOmit', function () {
         b: number;
       },
       e: { a?: string; b: number }[],
-      f?: { a?: string; b: number }[]
+      f?: { a?: string; b: number }[],
+      n: never
     }
 
     exact<HighDeepOmitRequired<I1>, {
@@ -119,6 +123,7 @@ describe('DeepOmit', function () {
       readonly f?: { readonly a?: string; b: number }[];
       g: () => void;
       readonly h: () => void;
+      n: never;
     }
     exact<DeepOmitReadonly<I1>, {
       a: number;
@@ -143,6 +148,7 @@ describe('DeepOmit', function () {
       readonly f?: { readonly a?: string; b: number }[];
       g: () => void;
       readonly h: () => void;
+      n: never;
     }
     exact<HighDeepOmitReadonly<I1>, {
       a: number;
@@ -167,6 +173,7 @@ describe('DeepOmit', function () {
       readonly f?: { readonly a?: string; b: number }[];
       g: () => void;
       readonly h: () => void;
+      n: never;
     }
 
     exact<DeepOmitWritable<I1>, {
@@ -195,6 +202,7 @@ describe('DeepOmit', function () {
       readonly f?: { readonly a?: string; b: number }[];
       g: () => void;
       readonly h: () => void;
+      n: never;
     }
 
     exact<HighDeepOmitWritable<I1>, {

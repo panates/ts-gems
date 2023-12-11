@@ -10,7 +10,9 @@ describe('DeepReadonly', function () {
         a?: string;
         b: number
       };
-      c: { a: string }[]
+      c: { a: string }[],
+      n: never;
+      m?: never;
     }
     exact<DeepReadonly<I1>, {
       readonly a?: number;
@@ -30,7 +32,9 @@ describe('DeepReadonly', function () {
         a?: string;
         b: number
       };
-      readonly c: { a: string }[]
+      readonly c: { a: string }[],
+      n: never;
+      m?: never;
     }
     exact<HighDeepReadonly<I1>, {
       readonly a?: number;
@@ -38,7 +42,7 @@ describe('DeepReadonly', function () {
         readonly a?: string;
         readonly b: number
       };
-      readonly c: { readonly a: string }[]
+      readonly c: { readonly a: string }[];
     }>(true);
   });
 

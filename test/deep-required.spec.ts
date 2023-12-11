@@ -10,7 +10,9 @@ describe('DeepRequired', function () {
         a?: string;
         readonly b: number
       };
-      readonly c: { readonly a: string }[]
+      readonly c: { readonly a: string }[];
+      readonly n: never;
+      readonly m?: never;
     }
     exact<DeepRequired<I1>, {
       a: number;
@@ -30,7 +32,11 @@ describe('DeepRequired', function () {
         a?: string;
         readonly b: number
       };
-      readonly c: { readonly a: string }[]
+      readonly c: {
+        readonly a: string;
+        readonly n: never;
+        readonly m?: never;
+      }[]
     }
     exact<HighDeepRequired<I1>, {
       a: number;

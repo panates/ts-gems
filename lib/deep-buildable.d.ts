@@ -1,4 +1,5 @@
 import { IfNoDeepValue } from './helpers.js';
+import { OmitNever } from './omit.js';
 
 /**
  * Combination of Partial and Writable but deeply
@@ -6,7 +7,7 @@ import { IfNoDeepValue } from './helpers.js';
 export type DeepBuildable<T> = _DeepBuildable<T>;
 type _DeepBuildable<T> =
     IfNoDeepValue<T> extends true ? T
-        : { -readonly [P in keyof T]?: _DeepBuildable<Exclude<T[P], undefined>> };
+        : OmitNever<{ -readonly [P in keyof T]?: _DeepBuildable<Exclude<T[P], undefined>> }>;
 
 /**
  * Combination of Partial and Writable but deeply including arrays
@@ -16,4 +17,4 @@ type _HighDeepBuildable<T> =
     T extends (infer U)[] ? _HighDeepBuildable<U>[]
         : IfNoDeepValue<T> extends true ? T
             : T extends (infer U)[] ? _HighDeepBuildable<U>[]
-                : { -readonly [P in keyof T]?: _HighDeepBuildable<Exclude<T[P], undefined>> };
+                : OmitNever<{ -readonly [P in keyof T]?: _HighDeepBuildable<Exclude<T[P], undefined>> }>;

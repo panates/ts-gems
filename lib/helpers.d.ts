@@ -8,12 +8,13 @@ export type IfNoDeepValue<T> = _IfNoDeepValue<T>
 type _IfNoDeepValue<T> =
     T extends Builtin ? true
         : IfTuple<T> extends true ? true
-            : IfClass<T> extends true ? true
-                : T extends Map<any, any> ? true
-                    : T extends ReadonlyMap<any, any> ? true
-                        : T extends WeakMap<any, any> ? true
-                            : T extends Set<any> ? true
-                                : T extends ReadonlySet<any> ? true
-                                    : T extends WeakSet<any> ? true
-                                        : T extends any[] ? true
-                                            : false;
+            : T extends Function ? true
+                : IfClass<T> extends true ? true
+                    : T extends Map<any, any> ? true
+                        : T extends ReadonlyMap<any, any> ? true
+                            : T extends WeakMap<any, any> ? true
+                                : T extends Set<any> ? true
+                                    : T extends ReadonlySet<any> ? true
+                                        : T extends WeakSet<any> ? true
+                                            : T extends any[] ? true
+                                                : false;

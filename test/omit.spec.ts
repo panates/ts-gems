@@ -1,6 +1,6 @@
-import {exact} from './_support/asserts';
+import { exact } from './_support/asserts';
 import {
-  OmitJson, OmitOptional, OmitReadonly, OmitRequired, OmitWritable, StrictOmit,
+  OmitJson, OmitNever, OmitOptional, OmitReadonly, OmitRequired, OmitWritable, StrictOmit,
 } from '../lib';
 
 describe('Omit', function () {
@@ -135,6 +135,19 @@ describe('Omit', function () {
     exact<OmitJson<I1>, {
       h: () => void
       [Symbol.species]: number;
+    }>(true);
+  });
+
+  test('OmitNever', () => {
+    type I1 = {
+      a?: number;
+      b: string;
+      c: never;
+      d?: never;
+    }
+    exact<OmitNever<I1>, {
+      a?: number;
+      b: string;
     }>(true);
   });
 

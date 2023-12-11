@@ -1,4 +1,5 @@
 import { IfNoDeepValue } from './helpers.js';
+import { OmitNever } from './omit.js';
 
 /**
  * Make all properties in T writable deeply
@@ -6,7 +7,7 @@ import { IfNoDeepValue } from './helpers.js';
 export type DeepWritable<T> = _DeepWritable<T>;
 type _DeepWritable<T> =
     IfNoDeepValue<T> extends true ? T
-        : { -readonly [P in keyof T]: _DeepWritable<T[P]> };
+        : OmitNever<{ -readonly [P in keyof T]: _DeepWritable<T[P]> }>;
 
 
 /**
@@ -16,4 +17,4 @@ export type HighDeepWritable<T> = _HighDeepWritable<T>;
 type _HighDeepWritable<T> =
     T extends (infer U)[] ? _HighDeepWritable<U>[]
         : IfNoDeepValue<T> extends true ? T
-            : { -readonly [P in keyof T]: _HighDeepWritable<T[P]> };
+            : OmitNever<{ -readonly [P in keyof T]: _HighDeepWritable<T[P]> }>;

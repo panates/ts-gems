@@ -110,3 +110,9 @@ type _KeysEquals<T, U> = ValuesOf<{
       : IfEquals<T[K], U, K, never>;
 }>;
 
+/**
+ * @desc Returns keys that property value type is not "never"
+ */
+export type NonNeverKeys<T> = ValuesOf<{
+  [K in keyof T]: K
+}>;
