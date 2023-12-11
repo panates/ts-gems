@@ -75,3 +75,21 @@ type _HighDeepOmitWritable<T, K extends keyof T = Exclude<keyof T, WritableKeys<
     T extends (infer U)[] ? HighDeepOmitWritable<U>[]
         : IfNoDeepValue<T> extends true ? T
             : OmitNever<{ readonly [P in K]: HighDeepOmitWritable<T[P]> }>
+
+/**
+ * Omit all "never" and "undefined" properties in T deeply
+ */
+export type DeepOmitNever<T> = _DeepOmitNever<Exclude<T, undefined>>
+type _DeepOmitNever<T> =
+    IfNoDeepValue<T> extends true ? T
+        : { [P in keyof T as (Exclude<T[P], undefined> extends never ? never : P)]: DeepOmitNever<T[P]> }
+
+
+/**
+ * Omit all "never" and "undefined" properties in T deeply including arrays
+ */
+export type HighDeepOmitNever<T> = _HighDeepOmitNever<Exclude<T, undefined>>
+type _HighDeepOmitNever<T> =
+    T extends (infer U)[] ? HighDeepOmitNever<U>[]
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in keyof T as (Exclude<T[P], undefined> extends never ? never : P)]: HighDeepOmitNever<T[P]> }
