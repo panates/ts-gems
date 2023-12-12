@@ -1,13 +1,14 @@
-import { DeepOmitNever, HighDeepOmitNever } from './deep-omit.js';
-import { IfNoDeepValue } from './helpers.js';
+import { DeepOmitNever, HighDeepOmitNever } from './deep-omit';
+import { IfNoDeepValue } from './helpers';
 
 /**
  * Make all properties in T required deeply
  */
 export type DeepRequired<T> = DeepOmitNever<_DeepRequired<T>>;
 type _DeepRequired<T> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in keyof T]-?: _DeepRequired<Exclude<T[P], undefined>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in keyof T]-?: _DeepRequired<Exclude<T[P], undefined>> };
 
 
 /**

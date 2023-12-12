@@ -1,5 +1,5 @@
-import { DeepOmitNever, HighDeepOmitNever } from './deep-omit.js';
-import { IfNoDeepValue } from './helpers.js';
+import { DeepOmitNever, HighDeepOmitNever } from './deep-omit';
+import { IfNoDeepValue } from './helpers';
 import { JsonKeys, OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys } from './keys';
 
 /**
@@ -7,8 +7,9 @@ import { JsonKeys, OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys } from
  */
 export type DeepPickOptional<T> = DeepOmitNever<_DeepPickOptional<T>>;
 type _DeepPickOptional<T, K extends keyof T = OptionalKeys<T>> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in K]?: _DeepPickOptional<Exclude<T[P], undefined>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in K]?: _DeepPickOptional<Exclude<T[P], undefined>> };
 
 /**
  * Pick all optional properties in T deeply including arrays
@@ -25,8 +26,9 @@ type _HighDeepPickOptional<T, K extends keyof T = OptionalKeys<T>> =
  */
 export type DeepPickRequired<T> = DeepOmitNever<_DeepPickRequired<T>>;
 type _DeepPickRequired<T, J extends keyof T = RequiredKeys<T>> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in J]-?: _DeepPickRequired<Exclude<T[P], undefined>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in J]-?: _DeepPickRequired<Exclude<T[P], undefined>> };
 
 
 /**
@@ -44,8 +46,9 @@ type _HighDeepPickRequired<T, J extends keyof T = RequiredKeys<T>> =
  */
 export type DeepPickReadonly<T> = DeepOmitNever<_DeepPickReadonly<T>>;
 type _DeepPickReadonly<T, K extends keyof T = ReadonlyKeys<T>> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in K]: _DeepPickReadonly<Exclude<T[P], undefined>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in K]: _DeepPickReadonly<Exclude<T[P], undefined>> };
 
 /**
  * Pick all readonly properties in T deeply including arrays
@@ -62,8 +65,9 @@ type _HighDeepPickReadonly<T, K extends keyof T = ReadonlyKeys<T>> =
  */
 export type DeepPickWritable<T> = DeepOmitNever<_DeepPickWritable<T>>;
 type _DeepPickWritable<T, K extends keyof T = WritableKeys<T>> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in K]: _DeepPickWritable<Exclude<T[P], undefined>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in K]: _DeepPickWritable<Exclude<T[P], undefined>> };
 
 /**
  * Pick all writable properties in T deeply including arrays

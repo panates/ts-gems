@@ -1,4 +1,4 @@
-import { OmitNever } from './omit.js';
+import { OmitNever } from './omit';
 
 /**
  * Make all properties in T writable

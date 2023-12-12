@@ -1,13 +1,14 @@
-import { DeepRequired, HighDeepRequired } from './deep-required.js';
-import { IfNoDeepValue } from './helpers.js';
+import { DeepRequired, HighDeepRequired } from './deep-required';
+import { IfNoDeepValue } from './helpers';
 
 /**
  * Make all properties in T nullable deeply
  */
 export type DeepNullish<T> = _DeepNullish<DeepRequired<T>>;
 type _DeepNullish<T> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in keyof T]?: _DeepNullish<Exclude<T[P], undefined>> | null };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in keyof T]?: _DeepNullish<Exclude<T[P], undefined>> | null };
 
 
 /**

@@ -1,13 +1,14 @@
-import { DeepOmitNever, HighDeepOmitNever } from './deep-omit.js';
-import { IfNoDeepValue } from './helpers.js';
+import { DeepOmitNever, HighDeepOmitNever } from './deep-omit';
+import { IfNoDeepValue } from './helpers';
 
 /**
  * Remove null from properties deeply
  */
 export type DeepRemoveNulls<T> = DeepOmitNever<_DeepRemoveNulls<T>>;
 type _DeepRemoveNulls<T> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in keyof T]: _DeepRemoveNulls<Exclude<T[P], null>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in keyof T]: _DeepRemoveNulls<Exclude<T[P], null>> };
 
 
 /**

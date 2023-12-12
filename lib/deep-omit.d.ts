@@ -1,4 +1,4 @@
-import { IfNoDeepValue } from './helpers.js';
+import { IfNoDeepValue } from './helpers';
 import { OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys } from './keys';
 
 /**
@@ -6,8 +6,9 @@ import { OptionalKeys, ReadonlyKeys, RequiredKeys, WritableKeys } from './keys';
  */
 export type DeepOmitOptional<T> = DeepOmitNever<_DeepOmitOptional<T>>;
 type _DeepOmitOptional<T, K extends keyof T = Exclude<keyof T, OptionalKeys<T>>> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in K]-?: _DeepOmitOptional<Exclude<T[P], undefined>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in K]-?: _DeepOmitOptional<Exclude<T[P], undefined>> };
 
 /**
  * Omit all optional properties in T deeply including arrays
@@ -24,8 +25,9 @@ type _HighDeepOmitOptional<T, K extends keyof T = Exclude<keyof T, OptionalKeys<
  */
 export type DeepOmitRequired<T> = DeepOmitNever<_DeepOmitRequired<T>>;
 type _DeepOmitRequired<T, J extends keyof T = Exclude<keyof T, RequiredKeys<T>>> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in J]?: _DeepOmitRequired<Exclude<T[P], undefined>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in J]?: _DeepOmitRequired<Exclude<T[P], undefined>> };
 
 
 /**
@@ -43,8 +45,9 @@ type _HighDeepOmitRequired<T, J extends keyof T = Exclude<keyof T, RequiredKeys<
  */
 export type DeepOmitReadonly<T> = DeepOmitNever<_DeepOmitReadonly<Exclude<T, undefined>>>;
 type _DeepOmitReadonly<T, J extends keyof T = Exclude<keyof T, ReadonlyKeys<T>>> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in J]: _DeepOmitReadonly<Exclude<T[P], undefined>> };
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in J]: _DeepOmitReadonly<Exclude<T[P], undefined>> };
 
 
 /**
@@ -62,8 +65,9 @@ type _HighDeepOmitReadonly<T, J extends keyof T = Exclude<keyof T, ReadonlyKeys<
  */
 export type DeepOmitWritable<T> = DeepOmitNever<_DeepOmitWritable<T>>
 type _DeepOmitWritable<T, K extends keyof T = Exclude<keyof T, WritableKeys<T>>> =
-    IfNoDeepValue<T> extends true ? T
-        : { readonly [P in K]: _DeepOmitWritable<Exclude<T[P], undefined>> }
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { readonly [P in K]: _DeepOmitWritable<Exclude<T[P], undefined>> }
 
 
 /**
@@ -80,8 +84,9 @@ type _HighDeepOmitWritable<T, K extends keyof T = Exclude<keyof T, WritableKeys<
  */
 export type DeepOmitNever<T> = _DeepOmitNever<T>
 type _DeepOmitNever<T> =
-    IfNoDeepValue<T> extends true ? T
-        : { [P in keyof T as (Exclude<T[P], undefined> extends never ? never : P)]: _DeepOmitNever<Exclude<T[P], undefined>> }
+    T extends any[] ? T
+        : IfNoDeepValue<T> extends true ? T
+            : { [P in keyof T as (Exclude<T[P], undefined> extends never ? never : P)]: _DeepOmitNever<Exclude<T[P], undefined>> }
 
 
 /**
