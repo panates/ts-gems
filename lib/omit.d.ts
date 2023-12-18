@@ -1,65 +1,54 @@
-import {
-  JsonKeys,
-  OptionalKeys,
-  ReadonlyKeys,
-  RequiredKeys,
-  WritableKeys
-} from './keys';
-
-/**
- * OmitNever<T> is a type that omits all properties with a value of type "never".
- *
- * @template T - The original type
- *
- * @example
- * type MyType = {
- *   a: string;
- *   b: number;
- *   c?: never;
- * };
- *
- * type Result = OmitNever<MyType>;
- * // Result is:
- * // {
- * //   a: string;
- * //   b: number;
- * // }
- */
-export type OmitNever<T> = {
-  [K in keyof T as (Exclude<T[K], undefined> extends never ? never : K)]: T[K]
-};
+import { IfNoDeepValue } from './helpers';
+import { Or } from './logical.js';
+import { IfFunction, IfNever } from './type-check';
 
 /**
  * Construct a type with the properties of T except for those in type K,
  * while preserving strict type checking.
- *
- * @template T - The original type.
- * @template K - The keys of the properties to be removed from the original type.
  */
-export type StrictOmit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type StrictOmit<T, X extends keyof T> = {
+  [K in keyof T as (K extends X ? never : K)]: T[K]
+};
 
 /**
- * Omit all optional properties in T
+ * Omit all function properties in T
  */
-export type OmitOptional<T> = OmitNever<Omit<T, OptionalKeys<T>>>;
+export type OmitFunctions<T> = {
+  [K in keyof T as (
+      Or<
+          // Omit never keys
+          IfNever<Exclude<T[K], undefined>>,
+          // Omit functions
+          IfFunction<Exclude<T[K], undefined>>
+      > extends true ? never : K
+      )]: T[K]
+};
 
 /**
- * Omit all required properties in T
+ * Exclude from properties of T those types that are assignable to X
  */
-export type OmitRequired<T> = OmitNever<Omit<T, RequiredKeys<T>>>;
+export type OmitTypes<T, X> = {
+  [K in keyof T as (IfNever<Exclude<T[K], undefined | X>, never, K>)]: Exclude<T[K], X>
+};
 
 /**
- * Omit all readonly properties in T
+ * Omit all function properties in T
  */
-export type OmitReadonly<T> = OmitNever<Omit<T, ReadonlyKeys<T>>>;
-
+export type DeepOmitTypes<T, X> = {
+  [K in keyof T as (IfNever<Exclude<T[K], undefined | X>, never, K>)]:  // Do not deep process No-Deep values
+  IfNoDeepValue<Exclude<T[K], undefined>> extends true ? Exclude<T[K], X>
+      // Deep process objects
+      : DeepOmitTypes<Exclude<T[K], undefined>, X>
+};
 
 /**
- * Omit all writable properties in T
+ * Omit all function properties in T deeply including arrays
  */
-export type OmitWritable<T> = OmitNever<Omit<T, WritableKeys<T>>>;
-
-/**
- * Omit all JSON friendly properties in T
- */
-export type OmitJson<T> = OmitNever<Omit<T, JsonKeys<T>>>;
+export type DeeperOmitTypes<T, X> = {
+  [K in keyof T as (IfNever<Exclude<T[K], undefined | X>, never, K>)]:  // Do not deep process No-Deep values
+  // Deep process arrays
+  Exclude<T[K], undefined> extends (infer U)[] ? DeeperOmitTypes<U, X>[]
+      : IfNoDeepValue<Exclude<T[K], undefined>> extends true ? Exclude<T[K], X>
+          // Deep process objects
+          : DeeperOmitTypes<Exclude<T[K], undefined>, X>
+};

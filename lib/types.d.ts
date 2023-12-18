@@ -29,22 +29,27 @@ export type Builtin = Primitive | Function | String | Number | Date | Error | Re
     URL | ReadableStream | WritableStream;
 
 /**
+ * Type
+ * @desc Represents constructor of type T
+ */
+export interface Type<T = any> {
+  new(...args: any[]): T;
+}
+
+/**
+ * Class
+ * @desc Represents Class constructor of type T
+ */
+export type Class<Args extends any[] = any[], Instance = {}, Static = {}> =
+    (new(...args: Args) => Instance) & Static;
+
+
+
+/**
  * Maybe
  * @desc Type representing T | undefined
  */
 export type Maybe<T> = T | undefined;
-
-/**
- * Nullish
- * @desc Type representing [nullish values][https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#nullish-coalescing] in TypeScript: `null | undefined`
- */
-export type Nullish<T = null> = T | undefined | null;
-
-/**
- * Falsy
- * @desc Type representing falsy values in TypeScript: `false | "" | 0 | null | undefined`
- */
-export type Falsy = false | '' | 0 | null | undefined;
 
 
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
@@ -68,39 +73,3 @@ export type PropertyType<T, K extends keyof T> = T[K];
  */
 export type ElementType<T extends { [P in K & any]: any },
     K extends keyof T | number> = T[K];
-
-
-/**
- * Type
- * @desc Represents constructor of type T
- */
-export interface Type<T = any> {
-  new(...args: any[]): T;
-}
-
-/**
- * Class
- * @desc Represents Class constructor of type T
- */
-export type Class<Args extends any[] = any[], Instance = {}, Static = {}> =
-    (new(...args: Args) => Instance) & Static;
-
-/**
- * NoUnion
- * @desc Returns "never" if the type is union
- */
-type NoUnion<T, U = T> = T extends U ? [U] extends [T] ? T : never : never;
-
-
-/**
- * Opaque
- * @desc Create unique type that can't be assigned to base type by accident.
- */
-declare namespace Symbols {
-  export const base: unique symbol;
-  export const brand: unique symbol;
-}
-type Opaque<T, N extends string> = T & {
-  readonly [Symbols.base]: N;
-  readonly [Symbols.brand]: N;
-}

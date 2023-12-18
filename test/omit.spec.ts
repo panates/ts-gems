@@ -1,153 +1,100 @@
 import { exact } from './_support/asserts';
-import {
-  OmitJson, OmitNever, OmitOptional, OmitReadonly, OmitRequired, OmitWritable, StrictOmit,
-} from '../lib';
+import { DeeperOmitTypes, DeepOmitTypes, OmitFunctions, OmitTypes, StrictOmit } from '../lib';
 
 describe('Omit', function () {
 
   test('StrictOmit', () => {
     type I1 = {
       a?: number;
-      b: string
+      b: string;
     }
     exact<StrictOmit<I1, 'b'>, {
       a?: number
     }>(true);
   });
 
-  test('OmitOptional', () => {
-    type I1 = {
-      a?: number;
-      b: string,
-      c: {
-        a?: string;
-        b: number
-      },
-      d?: {
-        a?: string;
-        b: number;
-      },
-      e: { a?: string; b: number }[],
-      f?: { a?: string; b: number }[]
+
+  test('OmitFunctions', () => {
+    class TestClass {
     }
-    exact<OmitOptional<I1>, {
-      b: string,
-      c: {
-        a?: string;
-        b: number
-      },
-      e: { a?: string; b: number }[]
+
+    type I1 = {
+      a1?: number;
+      a2: string;
+      a3: () => boolean;
+      a4: () => boolean;
+      a5: TestClass;
+      n: never
+      m?: never
+    }
+    exact<OmitFunctions<I1>, {
+      a1?: number;
+      a2: string;
+      a5: TestClass;
     }>(true);
   });
 
-  test('OmitRequired', () => {
-    type I1 = {
-      a?: number;
-      b: string,
-      c: {
-        a?: string;
-        b: number
-      },
-      d?: {
-        a?: string;
-        b: number;
-      },
-      e: { a?: string; b: number }[],
-      f?: { a?: string; b: number }[]
-    }
-    exact<OmitRequired<I1>, {
-      a?: number;
-      d?: {
-        a?: string;
-        b: number;
-      },
-      f?: { a?: string; b: number }[]
-    }>(true);
-  });
-
-  test('OmitReadonly', () => {
-    type I1 = {
+  test('OmitTypes', () => {
+    interface I1 {
       a: number;
-      readonly b: string;
-      readonly c: {
-        a: string;
-        readonly b: number;
-      };
-      readonly d?: {
-        readonly a?: string;
-        b: number;
-      };
-      e: { a?: string; readonly b: number }[];
-      readonly f?: { readonly a?: string; b: number }[];
-      g: () => void;
-      readonly h: () => void;
+      b: undefined,
+      c: {},
+      d: boolean,
+      f: never,
+      h: any,
+      i: unknown,
+      j: string | number | boolean,
+      k: () => void
     }
-    exact<OmitReadonly<I1>, {
-      a: number;
-      e: { a?: string; readonly b: number }[];
-      g: () => void;
+
+    exact<OmitTypes<I1, number>, {
+      c: {},
+      d: boolean,
+      h: any,
+      i: unknown,
+      j: string | boolean,
+      k: () => void
+    }>(true);
+
+    exact<OmitTypes<I1, number | boolean>, {
+      c: {},
+       h: any,
+      i: unknown,
+      j: string,
+      k: () => void
     }>(true);
   });
 
-  test('OmitWritable', () => {
-    type I1 = {
-      a: number;
-      readonly b: string;
-      c: {
-        a: string;
-        readonly b: number
-      };
-      readonly d?: {
-        readonly a?: string;
-        b: number;
-      };
-      e?: { a?: string; readonly b: number }[];
-      readonly f?: { readonly a?: string; b: number }[];
-      g: () => void;
-      readonly h: () => void;
+  test('DeepOmitTypes', () => {
+    type unmodified = { a?: number, b: string, c: string | number | boolean };
+    type modified = { b: string, c: string | boolean };
+
+    interface I1 {
+      a1: number;
+      a2: unmodified;
+      a3?: unmodified[];
     }
 
-    exact<OmitWritable<I1>, {
-      readonly b: string;
-      readonly d?: {
-        readonly a?: string;
-        b: number;
-      };
-      readonly f?: { readonly a?: string; b: number }[];
-      readonly h: () => void;
+    exact<DeepOmitTypes<I1, number>, {
+      a2: modified;
+      a3?: unmodified[];
     }>(true);
   });
 
-  test('OmitJson', () => {
-    type I1 = {
-      a?: number;
-      b: string;
-      c: {
-        a?: string;
-        b: () => void;
-      };
-      d: string[];
-      e?: RegExp;
-      f: Date;
-      h: () => void
-      [Symbol.species]: number;
-    }
-    exact<OmitJson<I1>, {
-      h: () => void
-      [Symbol.species]: number;
-    }>(true);
-  });
 
-  test('OmitNever', () => {
-    type I1 = {
-      a?: number;
-      b: string;
-      c: never;
-      d?: never;
+  test('DeeperOmitTypes', () => {
+    type unmodified = { a?: number, b: string, c: string | number | boolean };
+    type modified = { b: string, c: string | boolean };
+
+    interface I1 {
+      a1: number;
+      a2: unmodified;
+      a3?: unmodified[];
     }
-    exact<OmitNever<I1>, {
-      a?: number;
-      b: string;
+
+    exact<DeeperOmitTypes<I1, number>, {
+      a2: modified;
+      a3?: modified[];
     }>(true);
   });
 

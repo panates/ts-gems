@@ -1,4 +1,4 @@
-import { Primitive, Type } from './common';
+import { Primitive, Type } from './types';
 
 type NonObj = Primitive | Function;
 
@@ -20,10 +20,11 @@ export type IfNever<T, Y = true, N = false> =
 export type IfUndefined<T, Y = true, N = false> =
     IfEquals<T, undefined, Y, N>;
 
-// export type IfUndefined<T, Y = true, N = false> =
-//     IfEquals<T, undefined, Y, N> extends Y ? Y
-//         : undefined extends T ? Y : N;
-
+/**
+ * Returns "Y" if "T" is "never", "N" otherwise
+ */
+export type IfSymbol<T, Y = true, N = false> =
+    IfEquals<T, symbol, Y, N>;
 
 /**
  * Returns Y if typeof T is "unknown", N otherwise
@@ -62,29 +63,15 @@ export type IfTupleOrAny<T, Y = true, N = false> =
  */
 export type IfPrimitive<T, Y = true, N = false> =
     IfNever<T> extends true ? N :
-        IfClass<T> extends true ? N :
-            IfFunction<T> extends true ? N :
-                T extends Primitive ? Y :
-                    N;
+        IfNull<T> extends true ? Y :
+            IfUndefined<T> extends true ? Y :
+                IfClass<T> extends true ? N :
+                    IfFunction<T> extends true ? N :
+                        T extends Primitive ? Y :
+                            N;
 
 export type IfPrimitiveOrAny<T, Y = true, N = false> =
     IfAny<T> extends true ? Y : IfPrimitive<T, Y, N>;
-
-/**
- * Returns Y if typeof T is JSON like, N otherwise
- */
-export type IfJson<T, Y = true, N = false> =
-    IfAny<T> extends true ? Y :
-        IfNull<T> extends true ? Y :
-            IfNever<T> extends true ? N :
-                T extends Function ? N :
-                    T extends symbol ? N :
-                        IfUndefined<T> extends true ? N :
-                            T extends (infer U)[] ? IfJson<U> extends true ? Y : N
-                                : Y;
-
-export type IfJsonOrAny<T, Y = true, N = false> =
-    IfAny<T> extends true ? Y : IfJson<T, Y, N>;
 
 /**
  * Returns Y if typeof T is an empty object, N otherwise
@@ -111,11 +98,9 @@ export type IfObjectOrAny<T, Y = true, N = false> =
  */
 export type IfFunction<T, Y = true, N = false> =
     IfNever<T> extends true ? N
-        : IfUndefined<T> extends true ? N
-            : IfNull<T> extends true ? N
-                : T extends Type ? N
-                    : T extends Function ? Y
-                        : N;
+        : T extends Type ? N
+            : T extends Function ? Y
+                : N;
 
 export type IfFunctionOrAny<T, Y = true, N = false> =
     IfAny<T> extends true ? Y : IfFunction<T, Y, N>;
@@ -126,9 +111,7 @@ export type IfFunctionOrAny<T, Y = true, N = false> =
 export type IfClass<T, Y = true, N = false> =
     IfNever<T> extends true ? N
         : IfUndefined<T> extends true ? N
-            : IfNull<T> extends true ? N
-                : T extends Type ? Y
-                    : N;
+            : T extends Type ? Y : N;
 
 export type IfClassOrAny<T, Y = true, N = false> =
     IfAny<T> extends true ? Y : IfClass<T, Y, N>;
@@ -137,15 +120,14 @@ export type IfClassOrAny<T, Y = true, N = false> =
 /**
  * Returns "Y" if "T1" is exactly same with "T2", "N" otherwise
  */
-type EqualsWrapped<T> = T extends infer R & {}
-    ? {
-      [P in keyof R]: R[P]
-    }
-    : never
 export type IfEquals<T1, T2, Y = true, N = false> =
         IfObject<T1> | IfObject<T2> extends true
     ? ((<G>() => G extends EqualsWrapped<T1> ? 1 : 2) extends (<G>() => G extends EqualsWrapped<T2> ? 1 : 2) ? Y : N)
     : ((<G>() => G extends T1 ? 1 : 2) extends (<G>() => G extends T2 ? 1 : 2) ? Y : N);
+
+type EqualsWrapped<T> = T extends infer R & {}
+    ? { [P in keyof R]: R[P] }
+    : never;
 
 /**
  * Returns "Y" if type "T" matches "U", "N" otherwise

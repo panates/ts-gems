@@ -14,10 +14,8 @@ import {
     IfNull,
     IfNullish,
     IfPrimitive,
-    IfJson,
     IfTupleOrAny,
     IfPrimitiveOrAny,
-    IfJsonOrAny,
     IfObjectOrAny,
     IfFunctionOrAny,
     IfClassOrAny,
@@ -136,9 +134,6 @@ describe('Type checks', function () {
         assert<IfPrimitive<string>>(true);
         assert<IfPrimitive<boolean>>(true);
         assert<IfPrimitive<null>>(true);
-        assert<IfJson<object>>(true);
-        assert<IfJson<{}>>(true);
-        assert<IfJson<{ a: string }>>(true);
         assert<IfPrimitive<bigint>>(true);
         assert<IfPrimitive<symbol>>(true);
         assert<IfPrimitive<undefined>>(true);
@@ -152,31 +147,6 @@ describe('Type checks', function () {
 
     test('IfPrimitiveOrAny', () => {
         assert<IfPrimitiveOrAny<any>>(true);
-    });
-
-    test('IfJson', () => {
-        assert<IfJson<number>>(true);
-        assert<IfJson<string>>(true);
-        assert<IfJson<boolean>>(true);
-        assert<IfJson<null>>(true);
-        assert<IfJson<object>>(true);
-        assert<IfJson<{}>>(true);
-        assert<IfJson<{ a: string }>>(true);
-        assert<IfJson<bigint>>(true);
-        assert<IfJson<symbol>>(false);
-        assert<IfJson<undefined>>(false);
-        assert<IfJson<[string]>>(true);
-        assert<IfJson<string[]>>(true);
-        assert<IfJson<any[]>>(true);
-        assert<IfJson<symbol[]>>(false);
-        assert<IfJson<any>>(true);
-        assert<IfJson<never>>(false);
-        assert<IfJson<() => void>>(false);
-        assert<IfJson<Function>>(false);
-    });
-
-    test('IfJsonOrAny', () => {
-        assert<IfJsonOrAny<any>>(true);
     });
 
     test('IfObject', () => {
