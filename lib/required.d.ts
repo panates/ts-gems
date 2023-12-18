@@ -1,11 +1,12 @@
 import { IfNoDeepValue } from './helpers';
 import { Or } from './logical.js';
+import { OmitTypes } from './omit.js';
 import { IfEquals, IfNever } from './type-check';
 
 /**
  * Marks given keys as required
  */
-export type RequiredSome<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
+export type RequiredSome<T, K extends keyof T> = OmitTypes<Required<Pick<T, K>>, null> & Omit<T, K>;
 
 /**
  * Make all properties in T required deeply
