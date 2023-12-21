@@ -2,15 +2,15 @@ import { IfNoDeepValue } from './helpers';
 import { IfNever } from './type-check';
 
 /**
- * Make all properties in T nullable
+ * Make all properties in T nullish
  */
-export type Nullish<T = null> = {
-  [P in keyof T]?: T[P] | null;
+export type NullishObject<T = null> ={
+  [K in keyof T as (IfNever<Exclude<T[K], undefined>, never, K>)]?: T[K] | null
 };
 
 
 /**
- * Make all properties in T nullable deeply
+ * Make all properties in T nullish deeply
  */
 export type DeepNullish<T> = {
   [K in keyof T as (IfNever<Exclude<T[K], undefined>, never, K>)]?:
@@ -21,7 +21,7 @@ export type DeepNullish<T> = {
 };
 
 /**
- * Make all properties in T nullable deeply including arrays
+ * Make all properties in T nullish deeply including arrays
  */
 export type DeeperNullish<T> = {
   [K in keyof T as (IfNever<Exclude<T[K], undefined>, never, K>)]?:

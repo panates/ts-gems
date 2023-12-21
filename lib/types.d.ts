@@ -51,6 +51,12 @@ export type Class<Args extends any[] = any[], Instance = {}, Static = {}> =
  */
 export type Maybe<T> = T | undefined;
 
+/**
+ * Nullish
+ * @desc Type representing T | undefined | null
+ */
+export type Nullish<T = null> = T | undefined | null;
+
 
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
