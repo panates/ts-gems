@@ -1,4 +1,18 @@
 /**
+ * Declare ReadableStream and WritableStream in case dom.d.ts is not added to the tsconfig
+ * lib causing ReadableStream or WritableStream interface is not defined. 
+ * For developers with dom.d.ts added, the ReadableStream and WritableStream 
+ * interface will be merged correctly.
+ *
+ * This is also required for any clients with streaming interface where ReadableStream
+ * or WritableStream type is also referred. 
+ */
+declare global {
+    export interface ReadableStream {}
+    export interface WritableStream {}
+}
+
+/**
  * BasicPrimitive
  * @desc Type representing [`BasicPrimitive`](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html#smarter-type-alias-preservation) types in TypeScript
  */
