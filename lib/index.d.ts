@@ -1,4 +1,5 @@
 export * from "./combine";
+export * from "./dto";
 export * from "./helpers";
 export * from "./logical.js";
 export * from "./mutable";
@@ -12,4 +13,3 @@ export * from "./readonly";
 export * from "./required";
 export * from "./type-check";
 export * from "./types";
-
