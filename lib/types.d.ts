@@ -1,15 +1,32 @@
 /**
  * Declare ReadableStream and WritableStream in case dom.d.ts is not added to the tsconfig
- * lib causing ReadableStream or WritableStream interface is not defined. 
- * For developers with dom.d.ts added, the ReadableStream and WritableStream 
+ * lib causing ReadableStream or WritableStream interface is not defined.
+ * For developers with dom.d.ts added, the ReadableStream and WritableStream
  * interface will be merged correctly.
  *
  * This is also required for any clients with streaming interface where ReadableStream
- * or WritableStream type is also referred. 
+ * or WritableStream type is also referred.
  */
 declare global {
-    export interface ReadableStream {}
-    export interface WritableStream {}
+  export interface ReadableStream<R = any> {
+    readonly locked: boolean;
+
+    cancel(reason?: any): Promise<void>;
+
+    getReader(options: { mode: "byob" }): ReadableStreamBYOBReader;
+
+    getReader(): ReadableStreamDefaultReader<R>;
+
+    getReader(options?: ReadableStreamGetReaderOptions): ReadableStreamReader<R>;
+  }
+
+  export interface WritableStream<W = any> {
+    readonly locked: boolean;
+
+    abort(reason?: any): Promise<void>;
+
+    getWriter(): WritableStreamDefaultWriter<W>;
+  }
 }
 
 /**
@@ -56,7 +73,6 @@ export interface Type<T = any> {
  */
 export type Class<Args extends any[] = any[], Instance = {}, Static = {}> =
     (new(...args: Args) => Instance) & Static;
-
 
 
 /**
