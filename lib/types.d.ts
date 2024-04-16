@@ -96,6 +96,8 @@ export type ThunkAsync<T> = Thunk<T> | (() => Promise<T>)
 export type TypeThunk<T = any> = Thunk<Type<T>>;
 export type TypeThunkAsync<T = any> = ThunkAsync<Type<T>>;
 
+export type MaybePromise<T> = T | Promise<T>;
+
 
 /**
  * PropertyType
