@@ -5,41 +5,43 @@ import {
   DeepOmitRequired,
   DeepPickRequired,
   OmitRequired,
-  PickRequired
+  PickRequired,
 } from './required';
 import { IfNever } from './type-check';
-
 
 /**
  * Marks given keys as optional
  */
-export type PartialSome<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
-
+export type PartialSome<T, K extends keyof T> = Partial<Pick<T, K>> &
+  Omit<T, K>;
 
 /**
  * Partial but deeply
  */
 export type DeepPartial<T> = {
-  [K in keyof T as (IfNever<Exclude<T[K], undefined>, never, K>)]?:
-  // Do not deep process No-Deep values
-  IfNoDeepValue<Exclude<T[K], undefined>> extends true ? T[K]
-      // Deep process objects
-      : DeepPartial<Exclude<T[K], undefined>>
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: IfNoDeepValue< // Do not deep process No-Deep values
+    Exclude<T[K], undefined>
+  > extends true
+    ? T[K]
+    : // Deep process objects
+      DeepPartial<Exclude<T[K], undefined>>;
 };
 
 /**
  * Partial but deeply including arrays
  */
 export type DeeperPartial<T> = {
-  [K in keyof T as (IfNever<Exclude<T[K], undefined>, never, K>)]?:
-  // Deep process arrays
-  Exclude<T[K], undefined> extends (infer U)[] ? DeeperPartial<U>[]
-      // Do not deep process No-Deep values
-      : IfNoDeepValue<Exclude<T[K], undefined>> extends true ? T[K]
-          // Deep process objects
-          : DeeperPartial<Exclude<T[K], undefined>>
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: Exclude< // Deep process arrays
+    T[K],
+    undefined
+  > extends (infer U)[]
+    ? DeeperPartial<U>[]
+    : // Do not deep process No-Deep values
+      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      ? T[K]
+      : // Deep process objects
+        DeeperPartial<Exclude<T[K], undefined>>;
 };
-
 
 /**
  * OptionalKeys

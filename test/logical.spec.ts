@@ -2,7 +2,6 @@ import { And, Or } from '../lib/index.js';
 import { exact } from './_support/asserts';
 
 describe('Logical', function () {
-
   test('And', () => {
     exact<And<true, true>, true>(true);
     exact<And<true, true, true, true>, true>(true);
@@ -23,5 +22,4 @@ describe('Logical', function () {
     exact<Or<false, undefined>, false>(true);
     exact<Or<false, null>, false>(true);
   });
-
 });

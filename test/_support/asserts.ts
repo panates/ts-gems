@@ -1,4 +1,4 @@
-import {IfEquals} from '../../lib';
+import { IfEquals } from '../../lib';
 
 // noinspection JSUnusedLocalSymbols
 export function exact<T, Expected>(result: IfEquals<T, Expected>) {

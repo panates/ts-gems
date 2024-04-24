@@ -9,4 +9,4 @@ declare namespace Symbols {
 export type Opaque<T, N extends string> = T & {
   readonly [Symbols.base]: N;
   readonly [Symbols.brand]: N;
-}
+};

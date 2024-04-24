@@ -13,11 +13,13 @@ declare global {
 
     cancel(reason?: any): Promise<void>;
 
-    getReader(options: { mode: "byob" }): ReadableStreamBYOBReader;
+    getReader(options: { mode: 'byob' }): ReadableStreamBYOBReader;
 
     getReader(): ReadableStreamDefaultReader<R>;
 
-    getReader(options?: ReadableStreamGetReaderOptions): ReadableStreamReader<R>;
+    getReader(
+      options?: ReadableStreamGetReaderOptions,
+    ): ReadableStreamReader<R>;
   }
 
   export interface WritableStream<W = any> {
@@ -35,7 +37,6 @@ declare global {
  */
 type BasicPrimitive = number | string | boolean;
 
-
 /**
  * Primitive
  * @desc Type representing [`Primitive`](https://developer.mozilla.org/en-US/docs/Glossary/Primitive) types
@@ -47,33 +48,52 @@ export type Primitive = BasicPrimitive | null | bigint | symbol | undefined;
  * JsonTypes
  * @desc Type representing JSON types in TypeScript
  */
-type JsonType = BasicPrimitive | null | object | (BasicPrimitive | object)[]
-
+type JsonType = BasicPrimitive | null | object | (BasicPrimitive | object)[];
 
 /**
  * Builtin
  * @desc Type representing Builtin types in JavaScript
  */
-export type Builtin = Primitive | Function | String | Number | Date | Error | RegExp |
-    Buffer | ArrayBuffer | Int8Array | Uint8Array | Uint8ClampedArray |
-    Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array |
-    URL | ReadableStream | WritableStream;
+export type Builtin =
+  | Primitive
+  | Function
+  | String
+  | Number
+  | Date
+  | Error
+  | RegExp
+  | Buffer
+  | ArrayBuffer
+  | Int8Array
+  | Uint8Array
+  | Uint8ClampedArray
+  | Int16Array
+  | Uint16Array
+  | Int32Array
+  | Uint32Array
+  | Float32Array
+  | Float64Array
+  | URL
+  | ReadableStream
+  | WritableStream;
 
 /**
  * Type
  * @desc Represents constructor of type T
  */
 export interface Type<T = any> {
-  new(...args: any[]): T;
+  new (...args: any[]): T;
 }
 
 /**
  * Class
  * @desc Represents Class constructor of type T
  */
-export type Class<Args extends any[] = any[], Instance = {}, Static = {}> =
-    (new(...args: Args) => Instance) & Static;
-
+export type Class<
+  Args extends any[] = any[],
+  Instance = {},
+  Static = {},
+> = (new (...args: Args) => Instance) & Static;
 
 /**
  * Maybe
@@ -87,17 +107,14 @@ export type Maybe<T> = T | undefined;
  */
 export type Nullish<T = null> = T | undefined | null;
 
-
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
-
 export type Thunk<T> = T | (() => T);
-export type ThunkAsync<T> = Thunk<T> | (() => Promise<T>)
+export type ThunkAsync<T> = Thunk<T> | (() => Promise<T>);
 export type TypeThunk<T = any> = Thunk<Type<T>>;
 export type TypeThunkAsync<T = any> = ThunkAsync<Type<T>>;
 
 export type MaybePromise<T> = T | Promise<T>;
-
 
 /**
  * PropertyType
@@ -109,5 +126,7 @@ export type PropertyType<T, K extends keyof T> = T[K];
  * $ElementType
  * @desc Returns the type of elements inside of array, tuple or object of type `T`, that matches the given index type `K`
  */
-export type ElementType<T extends { [P in K & any]: any },
-    K extends keyof T | number> = T[K];
+export type ElementType<
+  T extends { [P in K & any]: any },
+  K extends keyof T | number,
+> = T[K];

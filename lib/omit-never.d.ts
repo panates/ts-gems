@@ -21,29 +21,33 @@ import { IfNever } from './type-check';
  * // }
  */
 export type OmitNever<T> = {
-  [K in keyof T as (IfNever<Exclude<T[K], undefined>, never, K>)]: T[K]
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]: T[K];
 };
 
 /**
  * Omit all "never" and "undefined" properties in T deeply
  */
 export type DeepOmitNever<T> = {
-  [K in keyof T as (IfNever<Exclude<T[K], undefined>, never, K>)]:
-  // Do not deep process No-Deep values
-  IfNoDeepValue<Exclude<T[K], undefined>> extends true ? T[K]
-      // Deep process objects
-      : DeepOmitNever<Exclude<T[K], undefined>>
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]: IfNoDeepValue< // Do not deep process No-Deep values
+    Exclude<T[K], undefined>
+  > extends true
+    ? T[K]
+    : // Deep process objects
+      DeepOmitNever<Exclude<T[K], undefined>>;
 };
 
 /**
  * Omit all "never" and "undefined" properties in T deeply including arrays
  */
 export type DeeperOmitNever<T> = {
-  [K in keyof T as (IfNever<Exclude<T[K], undefined>, never, K>)]:
-  // Deep process arrays
-  Exclude<T[K], undefined> extends (infer U)[] ? DeeperOmitNever<U>[]
-      // Do not deep process No-Deep values
-      : IfNoDeepValue<Exclude<T[K], undefined>> extends true ? T[K]
-          // Deep process objects
-          : DeepOmitNever<Exclude<T[K], undefined>>
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]: Exclude< // Deep process arrays
+    T[K],
+    undefined
+  > extends (infer U)[]
+    ? DeeperOmitNever<U>[]
+    : // Do not deep process No-Deep values
+      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      ? T[K]
+      : // Deep process objects
+        DeepOmitNever<Exclude<T[K], undefined>>;
 };
