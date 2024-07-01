@@ -12,7 +12,8 @@ export type NullishObject<T = null> = {
  * Make all properties in T nullish deeply
  */
 export type DeepNullish<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: IfNoDeepValue< // Do not deep process No-Deep values
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: IfNoDeepValue<
+    // Do not deep process No-Deep values
     Exclude<T[K], undefined>
   > extends true
     ? T[K] | null
@@ -24,7 +25,8 @@ export type DeepNullish<T> = {
  * Make all properties in T nullish deeply including arrays
  */
 export type DeeperNullish<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: Exclude< // Deep process arrays
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: Exclude<
+    // Deep process arrays
     T[K],
     undefined
   > extends (infer U)[]

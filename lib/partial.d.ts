@@ -19,7 +19,8 @@ export type PartialSome<T, K extends keyof T> = Partial<Pick<T, K>> &
  * Partial but deeply
  */
 export type DeepPartial<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: IfNoDeepValue< // Do not deep process No-Deep values
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: IfNoDeepValue<
+    // Do not deep process No-Deep values
     Exclude<T[K], undefined>
   > extends true
     ? T[K]
@@ -31,7 +32,8 @@ export type DeepPartial<T> = {
  * Partial but deeply including arrays
  */
 export type DeeperPartial<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: Exclude< // Deep process arrays
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: Exclude<
+    // Deep process arrays
     T[K],
     undefined
   > extends (infer U)[]

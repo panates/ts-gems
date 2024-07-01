@@ -1,8 +1,9 @@
 {
+  "extends": "@panates/tsconfig/node.json",
   "compilerOptions": {
+    "types": ["node", "jest"],
     "module": "CommonJS",
     "target": "ES6",
-    "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "strictNullChecks": true

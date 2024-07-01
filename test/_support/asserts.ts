@@ -1,11 +1,11 @@
 import { IfEquals } from '../../lib';
 
-// noinspection JSUnusedLocalSymbols
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars, */ // noinspection JSUnusedLocalSymbols
 export function exact<T, Expected>(result: IfEquals<T, Expected>) {
   //
 }
 
-// noinspection JSUnusedLocalSymbols
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars, */ // noinspection JSUnusedLocalSymbols
 export function assert<T>(v: T) {
   //
 }

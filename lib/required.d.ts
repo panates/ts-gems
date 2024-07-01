@@ -30,7 +30,8 @@ export type DeepRequired<T> = {
  * Make all properties in T required deeply including arrays
  */
 export type DeeperRequired<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]-?: Exclude< // Deep process arrays
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]-?: Exclude<
+    // Deep process arrays
     T[K],
     undefined
   > extends (infer U)[]

@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "env": {
+    "jest": true
+  },
+  "extends": [
+    "@panates/eslint-config/node",
+    "@panates/eslint-config-ts"
+  ]
+}

@@ -352,26 +352,21 @@ describe('Type checks', function () {
     assert<IfEquals<{ x: null }, { x?: null }>>(false);
 
     assert<
-      IfEquals<
-        { x: { y: Array<{ z: 1 }> } },
-        { x: { y: Array<{ z: 1 }>; a?: number } }
-      >
+      IfEquals<{ x: { y: { z: 1 }[] } }, { x: { y: { z: 1 }[]; a?: number } }>
     >(false);
     assert<
       IfEquals<
-        { x: { y: Array<{ z: 1 }>; a?: string } },
-        { x: { y: Array<{ z: 1 }>; a?: number } }
+        { x: { y: { z: 1 }[]; a?: string } },
+        { x: { y: { z: 1 }[]; a?: number } }
       >
     >(false);
-    assert<
-      IfEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y: Array<{ z: 1 }> } }>
-    >(true);
-    assert<
-      IfEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y: Array<{ z?: 1 }> } }>
-    >(false);
-    assert<
-      IfEquals<{ x: { y: Array<{ z: 1 }> } }, { x: { y?: Array<{ z: 1 }> } }>
-    >(false);
+    assert<IfEquals<{ x: { y: { z: 1 }[] } }, { x: { y: { z: 1 }[] } }>>(true);
+    assert<IfEquals<{ x: { y: { z: 1 }[] } }, { x: { y: { z?: 1 }[] } }>>(
+      false,
+    );
+    assert<IfEquals<{ x: { y: { z: 1 }[] } }, { x: { y?: { z: 1 }[] } }>>(
+      false,
+    );
 
     assert<
       IfEquals<(a: number, b: string) => void, (a: number, b: string) => number>
