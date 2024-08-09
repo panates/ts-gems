@@ -1,18 +1,18 @@
-import { exact } from './_support/asserts';
 import {
-  DeepRequired,
-  DeeperRequired,
-  PickRequired,
-  Type,
-  DeepPickRequired,
-  DeeperPickRequired,
-  OmitRequired,
-  DeepOmitRequired,
   DeeperOmitRequired,
+  DeeperPickRequired,
+  DeeperRequired,
+  DeepOmitRequired,
+  DeepPickRequired,
+  DeepRequired,
+  OmitRequired,
+  PickRequired,
   RequiredSome,
-} from '../lib';
+  Type,
+} from '../lib/index.js';
+import { exact } from './_support/asserts';
 
-describe('DeepRequired', function () {
+describe('DeepRequired', () => {
   test('RequiredSome', () => {
     type I1 = {
       a?: number;

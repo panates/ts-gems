@@ -1,13 +1,13 @@
-import { exact } from './_support/asserts';
 import {
   DeeperOmitTypes,
   DeepOmitTypes,
   OmitFunctions,
   OmitTypes,
   StrictOmit,
-} from '../lib';
+} from '../lib/index.js';
+import { exact } from './_support/asserts';
 
-describe('Omit', function () {
+describe('Omit', () => {
   test('StrictOmit', () => {
     type I1 = {
       a?: number;

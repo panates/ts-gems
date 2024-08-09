@@ -1,7 +1,7 @@
+import { DeeperPartial, DeepPartial, PartialSome, Type } from '../lib/index.js';
 import { exact } from './_support/asserts';
-import { DeepPartial, DeeperPartial, Type, PartialSome } from '../lib';
 
-describe('DeepPartial', function () {
+describe('DeepPartial', () => {
   test('PartialSome', () => {
     type I1 = {
       a: number;

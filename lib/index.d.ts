@@ -46,16 +46,16 @@ declare function asDeepRequired<T>(x: T): DeepRequired<T>;
 declare function asDeeperRequired<T>(x: T): DeeperRequired<T>;
 
 export {
-  asMutable,
-  asDeepMutable,
   asDeeperMutable,
-  asReadonly,
-  asDeepReadonly,
-  asDeeperReadonly,
-  asPartial,
-  asDeepPartial,
   asDeeperPartial,
-  asRequired,
-  asDeepRequired,
+  asDeeperReadonly,
   asDeeperRequired,
+  asDeepMutable,
+  asDeepPartial,
+  asDeepReadonly,
+  asDeepRequired,
+  asMutable,
+  asPartial,
+  asReadonly,
+  asRequired,
 };

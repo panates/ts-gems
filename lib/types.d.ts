@@ -33,7 +33,9 @@ declare global {
 
 /**
  * BasicPrimitive
- * @desc Type representing [`BasicPrimitive`](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html#smarter-type-alias-preservation) types in TypeScript
+ * @desc Type representing
+ * [`BasicPrimitive`](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html#smarter-type-alias-preservation)
+ * types in TypeScript
  */
 type BasicPrimitive = number | string | boolean;
 

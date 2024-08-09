@@ -1,7 +1,7 @@
+import { PickOptional, PickTypes, StrictPickTypes } from '../lib/index.js';
 import { exact } from './_support/asserts';
-import { PickOptional, PickTypes, StrictPickTypes } from '../lib';
 
-describe('Pick', function () {
+describe('Pick', () => {
   test('PickOptional', () => {
     type I1 = {
       a?: number;

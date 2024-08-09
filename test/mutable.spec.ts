@@ -6,7 +6,7 @@ import {
 } from '../lib/mutable.js';
 import { exact } from './_support/asserts';
 
-describe('Mutable', function () {
+describe('Mutable', () => {
   test('MutableSome', () => {
     type I1 = {
       readonly a?: number;

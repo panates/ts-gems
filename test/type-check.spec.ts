@@ -1,25 +1,25 @@
-import { assert } from './_support/asserts';
 import {
   IfAny,
+  IfClass,
+  IfClassOrAny,
+  IfCompatible,
   IfEmptyObject,
   IfEquals,
-  IfNever,
-  IfObject,
-  IfTuple,
-  IfCompatible,
-  IfUndefined,
-  IfUnknown,
   IfFunction,
-  IfClass,
+  IfFunctionOrAny,
+  IfNever,
   IfNull,
   IfNullish,
-  IfPrimitive,
-  IfTupleOrAny,
-  IfPrimitiveOrAny,
+  IfObject,
   IfObjectOrAny,
-  IfFunctionOrAny,
-  IfClassOrAny,
-} from '../lib';
+  IfPrimitive,
+  IfPrimitiveOrAny,
+  IfTuple,
+  IfTupleOrAny,
+  IfUndefined,
+  IfUnknown,
+} from '../lib/index.js';
+import { assert } from './_support/asserts';
 
 interface NotEmptyObj {
   x: 1;
@@ -31,7 +31,7 @@ function FunctionA() {}
 
 type Indexed<T = any> = Record<string, T>;
 
-describe('Type checks', function () {
+describe('Type checks', () => {
   test('IfNever', () => {
     assert<IfNever<never>>(true);
     assert<IfNever<unknown>>(false);

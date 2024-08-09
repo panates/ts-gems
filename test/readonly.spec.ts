@@ -1,19 +1,19 @@
-import { exact } from './_support/asserts';
 import {
-  DeepPickReadonly,
-  DeepReadonly,
+  DeeperOmitReadonly,
   DeeperPickReadonly,
   DeeperReadonly,
+  DeepOmitReadonly,
+  DeepPickReadonly,
+  DeepReadonly,
   OmitReadonly,
   PickReadonly,
   ReadonlyKeys,
-  Type,
-  DeepOmitReadonly,
-  DeeperOmitReadonly,
   ReadonlySome,
-} from '../lib';
+  Type,
+} from '../lib/index.js';
+import { exact } from './_support/asserts';
 
-describe('Readonly', function () {
+describe('Readonly', () => {
   test('ReadonlySome', () => {
     type I1 = {
       a?: number;

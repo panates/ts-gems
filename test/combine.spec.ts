@@ -1,7 +1,7 @@
+import { Combine } from '../lib/index.js';
 import { exact } from './_support/asserts';
-import { Combine } from '../lib';
 
-describe('Combine', function () {
+describe('Combine', () => {
   test('Combine', () => {
     type I1 = {
       a: string;

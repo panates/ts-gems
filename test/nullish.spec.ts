@@ -1,7 +1,12 @@
+import {
+  DeeperNullish,
+  DeepNullish,
+  NullishObject,
+  Type,
+} from '../lib/index.js';
 import { exact } from './_support/asserts';
-import { DeepNullish, DeeperNullish, Type, NullishObject } from '../lib';
 
-describe('DeepNullish', function () {
+describe('DeepNullish', () => {
   test('NullishObject', () => {
     type unmodified = { a?: number; b: string };
     type I1 = {

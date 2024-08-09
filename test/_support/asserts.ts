@@ -1,4 +1,4 @@
-import { IfEquals } from '../../lib';
+import { IfEquals } from '../../lib/index.js';
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars, */ // noinspection JSUnusedLocalSymbols
 export function exact<T, Expected>(result: IfEquals<T, Expected>) {

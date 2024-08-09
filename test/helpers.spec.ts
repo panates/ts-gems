@@ -1,7 +1,7 @@
+import { ValuesOf } from '../lib/index.js';
 import { exact } from './_support/asserts';
-import { ValuesOf } from '../lib';
 
-describe('Keys', function () {
+describe('Keys', () => {
   test('ValuesOf', () => {
     type I1 = {
       a: number;

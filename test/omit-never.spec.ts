@@ -1,7 +1,7 @@
+import { DeeperOmitNever, DeepOmitNever, OmitNever } from '../lib/index.js';
 import { exact } from './_support/asserts';
-import { DeepOmitNever, DeeperOmitNever, OmitNever } from '../lib';
 
-describe('OmitNever', function () {
+describe('OmitNever', () => {
   test('OmitNever', () => {
     type I1 = {
       a?: number;
