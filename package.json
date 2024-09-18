@@ -22,8 +22,7 @@
     "format": "prettier . --write --log-level=warn",
     "test:common": "jest --clearCache && jest --config=./jest.config.mjs",
     "test:nostrict": "jest --clearCache && jest --config=./jest.nostrict.config.mjs",
-    "test": "npm run test:common && npm run test:nostrict",
-    "prepare": "husky"
+    "test": "npm run test:common && npm run test:nostrict"
   },
   "devDependencies": {
     "@panates/eslint-config": "^1.0.13",
