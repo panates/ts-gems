@@ -19,7 +19,7 @@ import {
   IfUndefined,
   IfUnknown,
 } from '../lib/index.js';
-import { assert } from './_support/asserts';
+import { assert } from './_support/asserts.js';
 
 interface NotEmptyObj {
   x: 1;

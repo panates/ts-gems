@@ -1,4 +1,4 @@
-import { IfNoDeepValue } from './helpers';
+import { IfNoDeepValue } from './helpers.js';
 import {
   DeeperOmitReadonly,
   DeeperPickReadonly,
@@ -6,8 +6,8 @@ import {
   DeepPickReadonly,
   OmitReadonly,
   PickReadonly,
-} from './readonly';
-import { IfNever } from './type-check';
+} from './readonly.js';
+import { IfNever } from './type-check.js';
 
 /**
  * Make all properties in T mutable

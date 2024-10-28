@@ -1,4 +1,4 @@
-import { Primitive, Type } from './types';
+import { Primitive, Type } from './types.js';
 
 type NonObj = Primitive | Function;
 

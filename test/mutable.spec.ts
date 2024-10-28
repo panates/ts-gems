@@ -1,10 +1,10 @@
-import {
+import type {
   DeeperMutable,
   DeepMutable,
   Mutable,
   MutableSome,
-} from '../lib/mutable.js';
-import { exact } from './_support/asserts';
+} from '../lib/index.js';
+import { exact } from './_support/asserts.js';
 
 describe('Mutable', () => {
   test('MutableSome', () => {

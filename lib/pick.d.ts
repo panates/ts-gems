@@ -1,12 +1,12 @@
 import { Or } from './logical.js';
-import { OmitFunctions } from './omit';
+import { OmitFunctions } from './omit.js';
 import {
   IfAny,
   IfEmptyObject,
   IfFunction,
   IfNever,
   IfUnknown,
-} from './type-check';
+} from './type-check.js';
 
 /**
  * From T, pick a set of properties whose keys are in the union K,

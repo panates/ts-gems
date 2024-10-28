@@ -1,7 +1,7 @@
-import { IfNoDeepValue } from './helpers';
+import { IfNoDeepValue } from './helpers.js';
 import { Or } from './logical.js';
 import { OmitTypes } from './omit.js';
-import { IfEquals, IfNever } from './type-check';
+import { IfEquals, IfNever } from './type-check.js';
 
 /**
  * Marks given keys as required

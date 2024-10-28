@@ -1,4 +1,4 @@
-import { IfNoDeepValue } from './helpers';
+import { IfNoDeepValue } from './helpers.js';
 import {
   DeeperOmitRequired,
   DeeperPickRequired,
@@ -6,8 +6,8 @@ import {
   DeepPickRequired,
   OmitRequired,
   PickRequired,
-} from './required';
-import { IfNever } from './type-check';
+} from './required.js';
+import { IfNever } from './type-check.js';
 
 /**
  * Marks given keys as optional

@@ -1,4 +1,4 @@
-import { IfNever } from './type-check';
+import { IfNever } from './type-check.js';
 
 export type And<T1, T2, T3 = true, T4 = true, T5 = true, T6 = true> =
   IfNever<Exclude<T1, undefined | null | false>> extends true

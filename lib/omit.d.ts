@@ -1,6 +1,6 @@
-import { IfNoDeepValue } from './helpers';
+import { IfNoDeepValue } from './helpers.js';
 import { Or } from './logical.js';
-import { IfFunction, IfNever } from './type-check';
+import { IfFunction, IfNever } from './type-check.js';
 
 /**
  * Construct a type with the properties of T except for those in type K,

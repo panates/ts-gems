@@ -1,5 +1,5 @@
-import { IfNoDeepValue } from './helpers';
-import { IfNever } from './type-check';
+import { IfNoDeepValue } from './helpers.js';
+import { IfNever } from './type-check.js';
 
 /**
  * OmitNever<T> is a type that omits all properties with a value of type "never".

@@ -1,25 +1,25 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { DeeperMutable, DeepMutable, Mutable } from './mutable';
-import { DeeperPartial, DeepPartial } from './partial';
-import { DeeperReadonly, DeepReadonly } from './readonly';
-import { DeeperRequired, DeepRequired } from './required';
+import type { DeeperMutable, DeepMutable, Mutable } from './mutable';
+import type { DeeperPartial, DeepPartial } from './partial';
+import type { DeeperReadonly, DeepReadonly } from './readonly';
+import type { DeeperRequired, DeepRequired } from './required';
 
-export * from './combine';
-export * from './dto';
-export * from './helpers';
-export * from './logical';
-export * from './mutable';
-export * from './nullish';
-export * from './omit';
-export * from './omit-never';
-export * from './opaque';
-export * from './partial';
-export * from './pick';
-export * from './readonly';
-export * from './required';
-export * from './type-check';
-export * from './types';
+export type * from './combine';
+export type * from './dto';
+export type * from './helpers';
+export type * from './logical';
+export type * from './mutable';
+export type * from './nullish';
+export type * from './omit';
+export type * from './omit-never';
+export type * from './opaque';
+export type * from './partial';
+export type * from './pick';
+export type * from './readonly';
+export type * from './required';
+export type * from './type-check';
+export type * from './types';
 
 declare function asMutable<T>(x: T): Mutable<T>;
 

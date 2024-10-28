@@ -10,7 +10,7 @@ import {
   RequiredSome,
   Type,
 } from '../lib/index.js';
-import { exact } from './_support/asserts';
+import { exact } from './_support/asserts.js';
 
 describe('DeepRequired', () => {
   test('RequiredSome', () => {

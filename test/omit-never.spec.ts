@@ -1,5 +1,5 @@
 import { DeeperOmitNever, DeepOmitNever, OmitNever } from '../lib/index.js';
-import { exact } from './_support/asserts';
+import { exact } from './_support/asserts.js';
 
 describe('OmitNever', () => {
   test('OmitNever', () => {

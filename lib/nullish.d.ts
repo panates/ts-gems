@@ -1,5 +1,5 @@
-import { IfNoDeepValue } from './helpers';
-import { IfNever } from './type-check';
+import { IfNoDeepValue } from './helpers.js';
+import { IfNever } from './type-check.js';
 
 /**
  * Make all properties in T nullish

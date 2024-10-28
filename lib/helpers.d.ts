@@ -1,5 +1,5 @@
-import { IfAny, IfClass, IfTuple } from './type-check';
-import { Builtin } from './types';
+import { IfAny, IfClass, IfTuple } from './type-check.js';
+import { Builtin } from './types.js';
 
 /**
  * Returns true if T is excluded from deep operations

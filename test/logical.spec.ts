@@ -1,5 +1,5 @@
 import { And, Or } from '../lib/index.js';
-import { exact } from './_support/asserts';
+import { exact } from './_support/asserts.js';
 
 describe('Logical', () => {
   test('And', () => {
