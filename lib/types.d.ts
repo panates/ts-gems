@@ -8,13 +8,15 @@
  * or WritableStream type is also referred.
  */
 declare global {
-  type ReadableStreamReaderMode = "byob";
+  type ReadableStreamReaderMode = 'byob';
 
   interface ReadableStreamGetReaderOptions {
     mode?: ReadableStreamReaderMode;
   }
 
-  type ReadableStreamReader<T> = ReadableStreamDefaultReader<T> | ReadableStreamBYOBReader;
+  type ReadableStreamReader<T> =
+    | ReadableStreamDefaultReader<T>
+    | ReadableStreamBYOBReader;
 
   export interface ReadableStream<R = any> {
     readonly locked: boolean;
