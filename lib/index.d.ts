@@ -10,6 +10,7 @@ export type * from './dto';
 export type * from './helpers';
 export type * from './logical';
 export type * from './mutable';
+export type * from './non-nullable';
 export type * from './nullish';
 export type * from './omit';
 export type * from './omit-never';
