@@ -54,7 +54,6 @@ describe('Omit', () => {
       i: unknown;
       j: string | number | boolean;
       k: () => void;
-      l: null;
     }
 
     exact<
@@ -66,7 +65,29 @@ describe('Omit', () => {
         i: unknown;
         j: string | boolean;
         k: () => void;
-        l: null;
+      }
+    >(true);
+
+    exact<
+      OmitTypes<I1, number | boolean>,
+      {
+        c: {};
+        h: any;
+        i: unknown;
+        j: string;
+        k: () => void;
+      }
+    >(true);
+    exact<
+      OmitTypes<I1, null>,
+      {
+        a: number;
+        c: {};
+        d: boolean;
+        h: any;
+        i: unknown;
+        j: string | number | boolean;
+        k: () => void;
       }
     >(true);
   });
