@@ -4,7 +4,18 @@ import { IfNever, IfNull } from './type-check.js';
 /**
  * Exclude null and undefined from T deeply
  */
-export type DeepNonNullable<T> = {
+export type UnNullish<T> = {
+  [K in keyof T as IfNever<
+    Exclude<T[K], undefined>,
+    never,
+    IfNull<Exclude<T[K], undefined>, never, K>
+  >]: NonNullable<T[K]>;
+};
+
+/**
+ * Exclude null and undefined from T deeply
+ */
+export type DeepUnNullish<T> = {
   [K in keyof T as IfNever<
     Exclude<T[K], undefined>,
     never,
@@ -15,22 +26,22 @@ export type DeepNonNullable<T> = {
   > extends true
     ? NonNullable<T[K]>
     : // Deep process objects
-      DeepNonNullable<NonNullable<T[K]>>;
+      DeepUnNullish<NonNullable<T[K]>>;
 };
 
 /**
  * Exclude null and undefined from T deeply including arrays
  */
-export type DeeperNonNullable<T> = {
+export type DeeperUnNullish<T> = {
   [K in keyof T as IfNever<
     Exclude<T[K], undefined>,
     never,
     IfNull<Exclude<T[K], undefined>, never, K>
   >]: NonNullable<Exclude<T[K], undefined>> extends (infer U)[]
-    ? DeeperNonNullable<U>[]
+    ? DeeperUnNullish<U>[]
     : // Do not deep process No-Deep values
       IfNoDeepValue<Exclude<T[K], undefined>> extends true
       ? NonNullable<T[K]>
       : // Deep process objects
-        DeeperNonNullable<NonNullable<T[K]>>;
+        DeeperUnNullish<NonNullable<T[K]>>;
 };
