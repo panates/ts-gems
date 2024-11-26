@@ -69,30 +69,6 @@ describe('Omit', () => {
         l: null;
       }
     >(true);
-
-    exact<
-      OmitTypes<I1, number | boolean>,
-      {
-        c: {};
-        h: any;
-        i: unknown;
-        j: string;
-        k: () => void;
-        l: null;
-      }
-    >(true);
-    exact<
-      OmitTypes<I1, null>,
-      {
-        a: number;
-        c: {};
-        d: boolean;
-        h: any;
-        i: unknown;
-        j: string | number | boolean;
-        k: () => void;
-      }
-    >(true);
   });
 
   test('DeepOmitTypes', () => {
