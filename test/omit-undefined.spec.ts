@@ -1,16 +1,20 @@
-import { DeeperOmitNever, DeepOmitNever, OmitNever } from '../lib/index.js';
+import {
+  DeeperOmitUndefined,
+  DeepOmitUndefined,
+  OmitUndefined,
+} from '../lib/index.js';
 import { exact } from './_support/asserts.js';
 
-describe('OmitNever', () => {
-  test('OmitNever', () => {
+describe('OmitUndefined', () => {
+  test('OmitUndefined', () => {
     type I1 = {
       a?: number;
       b: string;
-      c: never;
+      c: undefined;
       d?: never;
     };
     exact<
-      OmitNever<I1>,
+      OmitUndefined<I1>,
       {
         a?: number;
         b: string;
@@ -18,37 +22,38 @@ describe('OmitNever', () => {
     >(true);
   });
 
-  test('DeepOmitNever', () => {
+  test('DeepOmitUndefined', () => {
     type I1 = {
       a?: number;
       b: string;
-      b1: never;
+      b1: undefined;
       b2: never;
       c: {
         a?: string;
         b: number;
-        b1: never;
+        b1: undefined;
         b2: never;
       };
       d?: {
         a?: string;
         b: number;
+        c: undefined;
       };
       e: {
         a?: string;
         b: number;
-        b1: never;
+        b1: undefined;
         b2: never;
       }[];
       f?: {
         a?: string;
         b: number;
-        b1: never;
+        b1: undefined;
         b2: never;
       }[];
     };
     exact<
-      DeepOmitNever<I1>,
+      DeepOmitUndefined<I1>,
       {
         a?: number;
         b: string;
@@ -63,50 +68,51 @@ describe('OmitNever', () => {
         e: {
           a?: string;
           b: number;
-          b1: never;
+          b1: undefined;
           b2: never;
         }[];
         f?: {
           a?: string;
           b: number;
-          b1: never;
+          b1: undefined;
           b2: never;
         }[];
       }
     >(true);
   });
 
-  test('DeeperOmitNever', () => {
+  test('DeeperOmitUndefined', () => {
     type I1 = {
       a?: number;
       b: string;
-      b1: never;
+      b1: undefined;
       b2: never;
       c: {
         a?: string;
         b: number;
-        b1: never;
+        b1: undefined;
         b2: never;
       };
       d?: {
         a?: string;
         b: number;
+        c: undefined;
       };
       e: {
         a?: string;
         b: number;
-        b1: never;
+        b1: undefined;
         b2: never;
       }[];
       f?: {
         a?: string;
         b: number;
-        b1: never;
+        b1: undefined;
         b2: never;
       }[];
     };
     exact<
-      DeeperOmitNever<I1>,
+      DeeperOmitUndefined<I1>,
       {
         a?: number;
         b: string;

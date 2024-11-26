@@ -14,6 +14,7 @@ export type * from './non-nullable';
 export type * from './nullish';
 export type * from './omit';
 export type * from './omit-never';
+export type * from './omit-undefined';
 export type * from './opaque';
 export type * from './partial';
 export type * from './pick';
