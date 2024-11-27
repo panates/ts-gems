@@ -1,6 +1,6 @@
 import { IfNoDeepValue } from './helpers.js';
-import { DeepNullish } from './nullish.js';
-import { DeepPartial } from './partial.js';
+import { DeeperNullish } from './nullish.js';
+import { DeeperPartial } from './partial.js';
 import { IfNever } from './type-check.js';
 
 /**
@@ -21,5 +21,5 @@ export type DTO<T> = {
         DTO<Exclude<T[K], undefined | null>>;
 };
 
-export type PartialDTO<T> = DeepPartial<DTO<T>>;
-export type PatchDTO<T> = DeepNullish<DTO<T>>;
+export type PartialDTO<T> = DeeperPartial<DTO<T>>;
+export type PatchDTO<T> = DeeperNullish<DTO<T>>;
