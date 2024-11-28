@@ -23,7 +23,7 @@ export type DeepRequired<T> = {
   >]-?: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? Exclude<T[K], undefined>
     : // Deep process objects
-      DeepRequired<Exclude<T[K], undefined>>;
+      DeepRequired<NonNullable<T[K]>>;
 };
 
 /**
@@ -38,7 +38,7 @@ export type DeeperRequired<T> = {
       IfNoDeepValue<NonNullable<T[K]>> extends true
       ? Exclude<T[K], undefined>
       : // Deep process objects
-        DeepRequired<Exclude<T[K], undefined>>;
+        DeepRequired<NonNullable<T[K]>>;
 };
 
 /**
@@ -89,7 +89,7 @@ export type DeepPickRequired<T> = {
     : K]: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
     ? T[K]
     : // Deep process objects
-      DeepPickRequired<Exclude<T[K], undefined>>;
+      DeepPickRequired<NonNullable<T[K]>>;
 };
 
 /**
@@ -106,7 +106,7 @@ export type DeepOmitRequired<T> = {
     : K]?: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
     ? T[K]
     : // Deep process objects
-      DeepOmitRequired<Exclude<T[K], undefined>>;
+      DeepOmitRequired<NonNullable<T[K]>>;
 };
 
 /**
@@ -126,7 +126,7 @@ export type DeeperPickRequired<T> = {
       IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
-        DeeperPickRequired<Exclude<T[K], undefined>>;
+        DeeperPickRequired<NonNullable<T[K]>>;
 };
 
 /**
@@ -146,5 +146,5 @@ export type DeeperOmitRequired<T> = {
       IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
-        DeeperOmitRequired<Exclude<T[K], undefined>>;
+        DeeperOmitRequired<NonNullable<T[K]>>;
 };
