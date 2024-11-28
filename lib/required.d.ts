@@ -30,14 +30,12 @@ export type DeepRequired<T> = {
  * Make all properties in T required deeply including arrays
  */
 export type DeeperRequired<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]-?: Exclude<
-    // Deep process arrays
-    T[K],
-    undefined
-  > extends (infer U)[]
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]-?: NonNullable<
+    T[K]
+  > extends (infer U)[] // Deep process arrays
     ? DeeperRequired<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? Exclude<T[K], undefined>
       : // Deep process objects
         DeepRequired<Exclude<T[K], undefined>>;
@@ -88,7 +86,7 @@ export type DeepPickRequired<T> = {
     IfEquals<{ [Q in K]: T[K] }, { [Q in K]?: T[K] }>
   > extends true
     ? never
-    : K]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
+    : K]: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
     ? T[K]
     : // Deep process objects
       DeepPickRequired<Exclude<T[K], undefined>>;
@@ -105,7 +103,7 @@ export type DeepOmitRequired<T> = {
     IfEquals<{ [Q in K]: T[K] }, { [Q in K]-?: T[K] }>
   > extends true
     ? never
-    : K]?: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
+    : K]?: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
     ? T[K]
     : // Deep process objects
       DeepOmitRequired<Exclude<T[K], undefined>>;
@@ -122,10 +120,10 @@ export type DeeperPickRequired<T> = {
     IfEquals<{ [Q in K]: T[K] }, { [Q in K]?: T[K] }>
   > extends true
     ? never
-    : K]: Exclude<T[K], undefined> extends (infer U)[] // Deep process arrays
+    : K]: NonNullable<T[K]> extends (infer U)[] // Deep process arrays
     ? DeeperPickRequired<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
         DeeperPickRequired<Exclude<T[K], undefined>>;
@@ -142,10 +140,10 @@ export type DeeperOmitRequired<T> = {
     IfEquals<{ [Q in K]: T[K] }, { [Q in K]-?: T[K] }>
   > extends true
     ? never
-    : K]: Exclude<T[K], undefined> extends (infer U)[] // Deep process arrays
+    : K]: NonNullable<T[K]> extends (infer U)[] // Deep process arrays
     ? DeeperOmitRequired<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
         DeeperOmitRequired<Exclude<T[K], undefined>>;

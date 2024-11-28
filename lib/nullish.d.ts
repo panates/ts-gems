@@ -18,7 +18,7 @@ export type DeepNullish<T> = {
   > extends true
     ? T[K] | null
     : // Deep process objects
-      DeepNullish<Exclude<T[K], undefined>> | null;
+      DeepNullish<NonNullable<T[K]>> | null;
 };
 
 /**
@@ -32,8 +32,8 @@ export type DeeperNullish<T> = {
   > extends (infer U)[]
     ? DeeperNullish<U>[] | null
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K] | null
       : // Deep process objects
-        DeeperNullish<Exclude<T[K], undefined>> | null;
+        DeeperNullish<NonNullable<T[K]>> | null;
 };

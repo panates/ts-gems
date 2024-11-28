@@ -25,15 +25,13 @@ export type DeepOmitUndefined<T> = {
  * Omit all "never" and "undefined" properties in T deeply including arrays
  */
 export type DeeperOmitUndefined<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]: Exclude<
-    // Deep process arrays
-    T[K],
-    undefined
-  > extends (infer U)[]
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]: NonNullable<
+    T[K]
+  > extends (infer U)[] // Deep process arrays
     ? DeeperOmitUndefined<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
-        DeeperOmitUndefined<Exclude<T[K], undefined>>;
+        DeeperOmitUndefined<NonNullable<T[K]>>;
 };

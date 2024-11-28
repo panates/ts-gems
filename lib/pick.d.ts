@@ -31,7 +31,7 @@ export type PickFunctions<T> = {
     // Omit never keys
     IfNever<Exclude<T[K], undefined>>,
     // Omit non functions
-    IfFunction<Exclude<T[K], undefined>, false, true>
+    IfFunction<NonNullable<T[K]>, false, true>
   > extends true
     ? never
     : K]: T[K];

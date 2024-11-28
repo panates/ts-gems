@@ -9,16 +9,16 @@ import { IfNever } from './type-check.js';
  */
 export type DTO<T> = {
   [K in keyof T as IfNever<
-    Exclude<T[K], undefined | Function>,
+    Exclude<NonNullable<T[K]> | Function>,
     never,
     K
-  >]: Exclude<T[K], undefined | null> extends (infer U)[] // Deep process arrays
+  >]: NonNullable<T[K]> extends (infer U)[] // Deep process arrays
     ? DTO<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined | null>> extends true
-      ? Exclude<T[K], undefined | null>
+      IfNoDeepValue<NonNullable<T[K]>> extends true
+      ? NonNullable<T[K]>
       : // Deep process objects
-        DTO<Exclude<T[K], undefined | null>>;
+        DTO<NonNullable<T[K]>>;
 };
 
 export type PartialDTO<T> = DeeperPartial<DTO<T>>;

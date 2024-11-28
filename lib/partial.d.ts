@@ -25,7 +25,7 @@ export type DeepPartial<T> = {
   > extends true
     ? T[K]
     : // Deep process objects
-      DeepPartial<Exclude<T[K], undefined>>;
+      DeepPartial<NonNullable<T[K]>>;
 };
 
 /**
@@ -39,10 +39,10 @@ export type DeeperPartial<T> = {
   > extends (infer U)[]
     ? DeeperPartial<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
-        DeeperPartial<Exclude<T[K], undefined>>;
+        DeeperPartial<NonNullable<T[K]>>;
 };
 
 /**

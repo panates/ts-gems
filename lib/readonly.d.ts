@@ -83,10 +83,10 @@ export type DeepPickReadonly<T> = {
     IfEquals<{ [Q in K]: T[K] }, { readonly [Q in K]: T[K] }, false, true>
   > extends true
     ? never
-    : K]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
+    : K]: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
     ? T[K]
     : // Deep process objects
-      DeepPickReadonly<Exclude<T[K], undefined>>;
+      DeepPickReadonly<NonNullable<T[K]>>;
 };
 
 /**
@@ -95,15 +95,15 @@ export type DeepPickReadonly<T> = {
 export type DeepOmitReadonly<T> = {
   [K in keyof T as Or<
     // Omit never keys
-    IfNever<Exclude<T[K], undefined>>,
+    IfNever<NonNullable<T[K]>>,
     // Omit required
     IfEquals<{ [Q in K]: T[K] }, { readonly [Q in K]: T[K] }>
   > extends true
     ? never
-    : K]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
+    : K]: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
     ? T[K]
     : // Deep process objects
-      DeepOmitReadonly<Exclude<T[K], undefined>>;
+      DeepOmitReadonly<NonNullable<T[K]>>;
 };
 
 /**
@@ -117,13 +117,13 @@ export type DeeperPickReadonly<T> = {
     IfEquals<{ [Q in K]: T[K] }, { readonly [Q in K]: T[K] }, false, true>
   > extends true
     ? never
-    : K]: Exclude<T[K], undefined> extends (infer U)[] // Deep process arrays
+    : K]: NonNullable<T[K]> extends (infer U)[] // Deep process arrays
     ? DeeperPickReadonly<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
-        DeeperPickReadonly<Exclude<T[K], undefined>>;
+        DeeperPickReadonly<NonNullable<T[K]>>;
 };
 
 /**
@@ -137,11 +137,11 @@ export type DeeperOmitReadonly<T> = {
     IfEquals<{ [Q in K]: T[K] }, { readonly [Q in K]: T[K] }>
   > extends true
     ? never
-    : K]: Exclude<T[K], undefined> extends (infer U)[] // Deep process arrays
+    : K]: NonNullable<T[K]> extends (infer U)[] // Deep process arrays
     ? DeeperOmitReadonly<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
-        DeeperOmitReadonly<Exclude<T[K], undefined>>;
+        DeeperOmitReadonly<NonNullable<T[K]>>;
 };

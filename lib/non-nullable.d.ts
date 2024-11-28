@@ -37,10 +37,10 @@ export type DeeperUnNullish<T> = {
     Exclude<T[K], undefined>,
     never,
     IfNull<Exclude<T[K], undefined>, never, K>
-  >]: NonNullable<Exclude<T[K], undefined>> extends (infer U)[]
+  >]: NonNullable<NonNullable<T[K]>> extends (infer U)[]
     ? DeeperUnNullish<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? NonNullable<T[K]>
       : // Deep process objects
         DeeperUnNullish<NonNullable<T[K]>>;

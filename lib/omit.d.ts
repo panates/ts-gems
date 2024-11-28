@@ -18,7 +18,7 @@ export type OmitFunctions<T> = {
     // Omit never keys
     IfNever<Exclude<T[K], undefined>>,
     // Omit functions
-    IfFunction<Exclude<T[K], undefined>>
+    IfFunction<NonNullable<T[K]>>
   > extends true
     ? never
     : K]: T[K];
@@ -45,7 +45,7 @@ export type DeepOmitTypes<T, X> = {
   >]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? Exclude<T[K], X>
     : // Deep process objects
-      DeepOmitTypes<Exclude<T[K], undefined>, X>;
+      DeepOmitTypes<NonNullable<T[K]>, X>;
 };
 
 /**
@@ -58,8 +58,8 @@ export type DeeperOmitTypes<T, X> = {
     undefined
   > extends (infer U)[]
     ? DeeperOmitTypes<U, X>[]
-    : IfNoDeepValue<Exclude<T[K], undefined>> extends true
+    : IfNoDeepValue<NonNullable<T[K]>> extends true
       ? Exclude<T[K], X>
       : // Deep process objects
-        DeeperOmitTypes<Exclude<T[K], undefined>, X>;
+        DeeperOmitTypes<NonNullable<T[K]>, X>;
 };

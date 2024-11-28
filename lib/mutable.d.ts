@@ -33,7 +33,7 @@ export type DeepMutable<T> = {
   >]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? T[K]
     : // Deep process objects
-      DeepMutable<Exclude<T[K], undefined>>;
+      DeepMutable<NonNullable<T[K]>>;
 };
 
 /**
@@ -47,10 +47,10 @@ export type DeeperMutable<T> = {
   >]: Exclude<T[K], undefined> extends (infer U)[] // Deep process arrays
     ? DeeperMutable<U>[]
     : // Do not deep process No-Deep values
-      IfNoDeepValue<Exclude<T[K], undefined>> extends true
+      IfNoDeepValue<NonNullable<T[K]>> extends true
       ? T[K]
       : // Deep process objects
-        DeeperMutable<Exclude<T[K], undefined>>;
+        DeeperMutable<NonNullable<T[K]>>;
 };
 
 /**
