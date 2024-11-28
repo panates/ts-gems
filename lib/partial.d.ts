@@ -32,10 +32,9 @@ export type DeepPartial<T> = {
  * Partial but deeply including arrays
  */
 export type DeeperPartial<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: Exclude<
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: NonNullable<
     // Deep process arrays
-    T[K],
-    undefined
+    T[K]
   > extends (infer U)[]
     ? DeeperPartial<U>[]
     : // Do not deep process No-Deep values

@@ -52,10 +52,13 @@ export type DeepOmitTypes<T, X> = {
  * Omit all function properties in T deeply including arrays
  */
 export type DeeperOmitTypes<T, X> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined | X>, never, K>]: Exclude<
+  [K in keyof T as IfNever<
+    Exclude<T[K], undefined | X>,
+    never,
+    K
+  >]: NonNullable<
     // Deep process arrays // Do not deep process No-Deep values
-    T[K],
-    undefined
+    T[K]
   > extends (infer U)[]
     ? DeeperOmitTypes<U, X>[]
     : IfNoDeepValue<NonNullable<T[K]>> extends true
