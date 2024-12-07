@@ -25,9 +25,9 @@
     "test": "npm run test:common && npm run test:nostrict"
   },
   "devDependencies": {
-    "@panates/eslint-config": "^2.0.1",
-    "@panates/eslint-config-ts": "^2.0.1",
-    "@panates/tsconfig": "^2.0.1",
+    "@panates/eslint-config": "^2.0.2",
+    "@panates/eslint-config-ts": "^2.0.2",
+    "@panates/tsconfig": "^2.0.2",
     "@types/jest": "^29.5.14",
     "globals": "^15.13.0",
     "husky": "^9.1.7",
