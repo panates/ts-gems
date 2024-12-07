@@ -77,6 +77,7 @@ describe('Readonly', () => {
   });
 
   test('PickReadonly', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const sym = Symbol('x');
     type I1 = {
       a: number;

@@ -25,13 +25,14 @@
     "test": "npm run test:common && npm run test:nostrict"
   },
   "devDependencies": {
-    "@panates/eslint-config": "^1.0.21",
-    "@panates/eslint-config-ts": "^1.0.21",
-    "@panates/tsconfig": "^1.0.21",
+    "@panates/eslint-config": "^2.0.1",
+    "@panates/eslint-config-ts": "^2.0.1",
+    "@panates/tsconfig": "^2.0.1",
     "@types/jest": "^29.5.14",
+    "globals": "^15.13.0",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
-    "prettier": "^3.4.0",
+    "prettier": "^3.4.2",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.2"
   },

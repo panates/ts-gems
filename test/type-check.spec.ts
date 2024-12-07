@@ -27,6 +27,7 @@ interface NotEmptyObj {
 
 class ClassA {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function FunctionA() {}
 
 type Indexed<T = any> = Record<string, T>;
