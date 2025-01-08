@@ -9,7 +9,7 @@ import { IfNever } from './type-check.js';
  */
 export type DTO<T> = {
   [K in keyof T as IfNever<
-    Exclude<NonNullable<T[K]> | Function>,
+    Exclude<NonNullable<T[K]>, Function>,
     never,
     K
   >]: NonNullable<T[K]> extends (infer U)[] // Deep process arrays
