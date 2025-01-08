@@ -6,7 +6,8 @@
     "target": "ES6",
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "skipLibCheck": false,
   },
   "include": ["src", "test"],
   "exclude": ["node_modules"]
