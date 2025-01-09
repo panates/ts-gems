@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "skipLibCheck": false,
+    "skipLibCheck": false
   },
   "include": ["src", "test"],
   "exclude": ["node_modules"]
