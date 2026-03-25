@@ -1,11 +1,15 @@
 {
   "name": "ts-gems",
   "description": "Valuable typing extensions for TypeScript",
-  "version": "3.11.4",
+  "version": "3.11.5",
   "license": "MIT",
   "type": "module",
   "module": "./lib/index.js",
+  "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "exports": {
+    ".": "./lib/index.js"
+  },
   "repository": "git@github.com:panates/ts-gems.git",
   "author": "Eray Hanoglu <e.hanoglu@panates.com>",
   "scripts": {
