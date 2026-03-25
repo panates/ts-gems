@@ -1,27 +1,27 @@
 // noinspection JSUnusedGlobalSymbols
 
-import type { DeeperMutable, DeepMutable, Mutable } from './mutable';
-import type { DeeperPartial, DeepPartial } from './partial';
-import type { DeeperReadonly, DeepReadonly } from './readonly';
-import type { DeeperRequired, DeepRequired } from './required';
+import type { DeeperMutable, DeepMutable, Mutable } from './mutable.js';
+import type { DeeperPartial, DeepPartial } from './partial.js';
+import type { DeeperReadonly, DeepReadonly } from './readonly.js';
+import type { DeeperRequired, DeepRequired } from './required.js';
 
-export type * from './combine';
-export type * from './dto';
-export type * from './helpers';
-export type * from './logical';
-export type * from './mutable';
-export type * from './non-nullable';
-export type * from './nullish';
-export type * from './omit';
-export type * from './omit-never';
-export type * from './omit-undefined';
-export type * from './opaque';
-export type * from './partial';
-export type * from './pick';
-export type * from './readonly';
-export type * from './required';
-export type * from './type-check';
-export type * from './types';
+export type * from './combine.js';
+export type * from './dto.js';
+export type * from './helpers.js';
+export type * from './logical.js';
+export type * from './mutable.js';
+export type * from './non-nullable.js';
+export type * from './nullish.js';
+export type * from './omit.js';
+export type * from './omit-never.js';
+export type * from './omit-undefined.js';
+export type * from './opaque.js';
+export type * from './partial.js';
+export type * from './pick.js';
+export type * from './readonly.js';
+export type * from './required.js';
+export type * from './type-check.js';
+export type * from './types.js';
 
 declare function asMutable<T>(x: T): Mutable<T>;
 
