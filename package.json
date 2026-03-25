@@ -44,5 +44,8 @@
     "toolbelt",
     "lodash",
     "underscore"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
