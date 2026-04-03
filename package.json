@@ -1,7 +1,7 @@
 {
   "name": "ts-gems",
   "description": "Valuable typing extensions for TypeScript",
-  "version": "3.11.5",
+  "version": "3.11.6",
   "license": "MIT",
   "type": "module",
   "module": "./lib/index.js",
@@ -30,8 +30,8 @@
     "husky": "^9.1.7",
     "jest": "^30.3.0",
     "prettier": "^3.8.1",
-    "ts-jest": "^29.4.6",
-    "typescript": "^5.9.3"
+    "ts-jest": "^29.4.9",
+    "typescript": "^6.0.2"
   },
   "files": [
     "LICENSE",
