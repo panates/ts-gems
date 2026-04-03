@@ -15,7 +15,7 @@ export type * from './nullish.js';
 export type * from './omit.js';
 export type * from './omit-never.js';
 export type * from './omit-undefined.js';
-export type * from './opaque';
+export type * from './opaque.js';
 export type * from './partial.js';
 export type * from './pick.js';
 export type * from './readonly.js';
