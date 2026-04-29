@@ -1,4 +1,4 @@
-import {
+import type {
   DeeperOmitTypes,
   DeepOmitTypes,
   OmitFunctions,
