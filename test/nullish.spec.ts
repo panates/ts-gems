@@ -1,4 +1,4 @@
-import {
+import type {
   DeeperNullish,
   DeepNullish,
   NullishObject,

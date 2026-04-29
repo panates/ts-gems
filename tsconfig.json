@@ -1,7 +1,7 @@
 {
   "extends": "@panates/tsconfig/node.json",
   "compilerOptions": {
-    "types": ["node", "jest"],
+    "types": ["node", "mocha"],
     "esModuleInterop": true,
     "noImplicitAny": true,
     "strictNullChecks": true,

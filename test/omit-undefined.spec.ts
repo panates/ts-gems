@@ -1,4 +1,4 @@
-import {
+import type {
   DeeperOmitUndefined,
   DeepOmitUndefined,
   OmitUndefined,
