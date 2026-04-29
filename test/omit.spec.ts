@@ -8,7 +8,7 @@ import {
 import { exact } from './_support/asserts.js';
 
 describe('Omit', () => {
-  test('StrictOmit', () => {
+  it('StrictOmit', () => {
     type I1 = {
       a?: number;
       b: string;
@@ -21,7 +21,7 @@ describe('Omit', () => {
     >(true);
   });
 
-  test('OmitFunctions', () => {
+  it('OmitFunctions', () => {
     class TestClass {}
 
     type I1 = {
@@ -43,7 +43,7 @@ describe('Omit', () => {
     >(true);
   });
 
-  test('OmitTypes', () => {
+  it('OmitTypes', () => {
     interface I1 {
       a: number;
       b: undefined;
@@ -92,7 +92,7 @@ describe('Omit', () => {
     >(true);
   });
 
-  test('DeepOmitTypes', () => {
+  it('DeepOmitTypes', () => {
     type unmodified = { a?: number; b: string; c: string | number | boolean };
     type modified = { b: string; c: string | boolean };
 
@@ -111,7 +111,7 @@ describe('Omit', () => {
     >(true);
   });
 
-  test('DeeperOmitTypes', () => {
+  it('DeeperOmitTypes', () => {
     type unmodified = { a?: number; b: string; c: string | number | boolean };
     type modified = { b: string; c: string | boolean };
 

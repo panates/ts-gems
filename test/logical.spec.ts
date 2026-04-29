@@ -1,8 +1,8 @@
-import { And, Or } from '../lib/index.js';
+import type { And, Or } from '../lib/index.js';
 import { exact } from './_support/asserts.js';
 
 describe('Logical', () => {
-  test('And', () => {
+  it('And', () => {
     exact<And<true, true>, true>(true);
     exact<And<true, true, true, true>, true>(true);
     exact<And<true, false, true, true>, false>(true);
@@ -12,7 +12,7 @@ describe('Logical', () => {
     exact<And<true, null>, false>(true);
   });
 
-  test('Or', () => {
+  it('Or', () => {
     exact<Or<false, false>, false>(true);
     exact<Or<false, true>, true>(true);
     exact<Or<true, true, true, true>, true>(true);

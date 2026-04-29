@@ -13,7 +13,7 @@ import {
 import { exact } from './_support/asserts.js';
 
 describe('DeepRequired', () => {
-  test('RequiredSome', () => {
+  it('RequiredSome', () => {
     type I1 = {
       a?: number;
       readonly b?: string;
@@ -30,7 +30,7 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  test('DeepRequired', () => {
+  it('DeepRequired', () => {
     type I1 = {
       a?: number;
       b: {
@@ -54,7 +54,7 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  test('DeeperRequired', () => {
+  it('DeeperRequired', () => {
     type I1 = {
       a?: number;
       b: {
@@ -80,7 +80,7 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  test('PickRequired', () => {
+  it('PickRequired', () => {
     type unmodified = { a: number; b?: string };
     type I1 = {
       a?: number;
@@ -103,7 +103,7 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  test('OmitRequired', () => {
+  it('OmitRequired', () => {
     type unmodified = { a: number; b?: string };
     type I1 = {
       a?: number;
@@ -126,7 +126,7 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  test('DeepPickRequired', () => {
+  it('DeepPickRequired', () => {
     type unmodified = { a: number; b?: string };
     type modified = { a: number };
     type I1 = {
@@ -166,7 +166,7 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  test('DeepOmitRequired', () => {
+  it('DeepOmitRequired', () => {
     type unmodified = { a: number; b?: string };
     type modified = { b?: string };
     type I1 = {
@@ -206,7 +206,7 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  test('DeeperPickRequired', () => {
+  it('DeeperPickRequired', () => {
     type unmodified = { a: number; b?: string };
     type modified = { a: number };
     type I1 = {
@@ -241,7 +241,7 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  test('DeeperOmitRequired', () => {
+  it('DeeperOmitRequired', () => {
     type unmodified = { a: number; b?: string };
     type modified = { b?: string };
     type I1 = {

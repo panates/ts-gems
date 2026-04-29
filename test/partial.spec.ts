@@ -1,8 +1,13 @@
-import { DeeperPartial, DeepPartial, PartialSome, Type } from '../lib/index.js';
+import type {
+  DeeperPartial,
+  DeepPartial,
+  PartialSome,
+  Type,
+} from '../lib/index.js';
 import { exact } from './_support/asserts.js';
 
 describe('DeepPartial', () => {
-  test('PartialSome', () => {
+  it('PartialSome', () => {
     type I1 = {
       a: number;
       readonly b: string;
@@ -19,7 +24,7 @@ describe('DeepPartial', () => {
     >(true);
   });
 
-  test('DeepPartial', () => {
+  it('DeepPartial', () => {
     type unmodified = { a?: number; b: string };
     type modified = { a?: number; b?: string };
     type I1 = {
@@ -57,7 +62,7 @@ describe('DeepPartial', () => {
     >(true);
   });
 
-  test('DeeperPartial', () => {
+  it('DeeperPartial', () => {
     type unmodified = { a?: number; b: string };
     type modified = { a?: number; b?: string };
     type I1 = {

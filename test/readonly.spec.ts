@@ -14,7 +14,7 @@ import {
 import { exact } from './_support/asserts.js';
 
 describe('Readonly', () => {
-  test('ReadonlySome', () => {
+  it('ReadonlySome', () => {
     type I1 = {
       a?: number;
       b: string;
@@ -31,7 +31,7 @@ describe('Readonly', () => {
     >(true);
   });
 
-  test('DeepReadonly', () => {
+  it('DeepReadonly', () => {
     type unmodified = { a?: number; b: number };
     type modified = { readonly a?: number; readonly b: number };
     type I1 = {
@@ -51,7 +51,7 @@ describe('Readonly', () => {
     >(true);
   });
 
-  test('DeeperReadonly', () => {
+  it('DeeperReadonly', () => {
     type unmodified = { a?: number; b: number };
     type modified = { readonly a?: number; readonly b: number };
     type I1 = {
@@ -71,12 +71,12 @@ describe('Readonly', () => {
     >(true);
   });
 
-  test('ReadonlyKeys', () => {
+  it('ReadonlyKeys', () => {
     type I1 = { readonly a: number; b?: undefined };
     exact<ReadonlyKeys<I1>, 'a'>(true);
   });
 
-  test('PickReadonly', () => {
+  it('PickReadonly', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const sym = Symbol('x');
     type I1 = {
@@ -117,7 +117,7 @@ describe('Readonly', () => {
     >(true);
   });
 
-  test('OmitReadonly', () => {
+  it('OmitReadonly', () => {
     type I1 = {
       a: number;
       readonly b: string;
@@ -147,7 +147,7 @@ describe('Readonly', () => {
     >(true);
   });
 
-  test('DeepPickReadonly', () => {
+  it('DeepPickReadonly', () => {
     type unmodified = { readonly a: number; b: string };
     type modified = { readonly a: number };
     type I1 = {
@@ -185,7 +185,7 @@ describe('Readonly', () => {
     >(true);
   });
 
-  test('DeeperPickReadonly', () => {
+  it('DeeperPickReadonly', () => {
     type unmodified = { readonly a: number; b: string };
     type modified = { readonly a: number };
     type I1 = {
@@ -218,7 +218,7 @@ describe('Readonly', () => {
     >(true);
   });
 
-  test('DeepOmitReadonly', () => {
+  it('DeepOmitReadonly', () => {
     type I1 = {
       a: number;
       readonly b: string;
@@ -246,7 +246,7 @@ describe('Readonly', () => {
     >(true);
   });
 
-  test('DeeperOmitReadonly', () => {
+  it('DeeperOmitReadonly', () => {
     type I1 = {
       a: number;
       readonly b: string;

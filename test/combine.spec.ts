@@ -1,8 +1,8 @@
-import { Combine } from '../lib/index.js';
+import type { Combine } from '../lib/index.js';
 import { exact } from './_support/asserts.js';
 
 describe('Combine', () => {
-  test('Combine', () => {
+  it('Combine', () => {
     type I1 = {
       a: string;
       b: boolean;

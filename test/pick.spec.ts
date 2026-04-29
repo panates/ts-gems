@@ -1,8 +1,8 @@
-import { PickOptional, PickTypes, StrictPickTypes } from '../lib/index.js';
+import type { PickOptional, PickTypes, StrictPickTypes } from '../lib/index.js';
 import { exact } from './_support/asserts.js';
 
 describe('Pick', () => {
-  test('PickOptional', () => {
+  it('PickOptional', () => {
     type I1 = {
       a?: number;
       b: string;
@@ -33,7 +33,7 @@ describe('Pick', () => {
     >(true);
   });
 
-  test('PickTypes', () => {
+  it('PickTypes', () => {
     interface I1 {
       a: number;
       b: undefined;
@@ -70,7 +70,7 @@ describe('Pick', () => {
     >(true);
   });
 
-  test('StrictPickTypes', () => {
+  it('StrictPickTypes', () => {
     interface I1 {
       a: number;
       b: undefined;

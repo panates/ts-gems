@@ -1,8 +1,12 @@
-import { DeeperOmitNever, DeepOmitNever, OmitNever } from '../lib/index.js';
+import type {
+  DeeperOmitNever,
+  DeepOmitNever,
+  OmitNever,
+} from '../lib/index.js';
 import { exact } from './_support/asserts.js';
 
 describe('OmitNever', () => {
-  test('OmitNever', () => {
+  it('OmitNever', () => {
     type I1 = {
       a?: number;
       b: string;
@@ -18,7 +22,7 @@ describe('OmitNever', () => {
     >(true);
   });
 
-  test('DeepOmitNever', () => {
+  it('DeepOmitNever', () => {
     type I1 = {
       a?: number;
       b: string;
@@ -76,7 +80,7 @@ describe('OmitNever', () => {
     >(true);
   });
 
-  test('DeeperOmitNever', () => {
+  it('DeeperOmitNever', () => {
     type I1 = {
       a?: number;
       b: string;
