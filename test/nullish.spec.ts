@@ -7,7 +7,7 @@ import {
 import { exact } from './_support/asserts.js';
 
 describe('DeepNullish', () => {
-  test('NullishObject', () => {
+  it('NullishObject', () => {
     type unmodified = { a?: number; b: string };
     type I1 = {
       a1: boolean;
@@ -37,7 +37,7 @@ describe('DeepNullish', () => {
     >(true);
   });
 
-  test('DeepNullish', () => {
+  it('DeepNullish', () => {
     type unmodified = { a?: number; b: string };
     type modified = { a?: number | null; b?: string | null };
     type I1 = {
@@ -75,7 +75,7 @@ describe('DeepNullish', () => {
     >(true);
   });
 
-  test('DeeperNullish', () => {
+  it('DeeperNullish', () => {
     type unmodified = { a?: number; b: string };
     type modified = { a?: number | null; b?: string | null };
     type I1 = {

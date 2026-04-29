@@ -7,7 +7,7 @@ import type {
 import { exact } from './_support/asserts.js';
 
 describe('Mutable', () => {
-  test('MutableSome', () => {
+  it('MutableSome', () => {
     type I1 = {
       readonly a?: number;
       readonly b: string;
@@ -24,7 +24,7 @@ describe('Mutable', () => {
     >(true);
   });
 
-  test('Mutable', () => {
+  it('Mutable', () => {
     type unmodified = { readonly a?: number; readonly b: number };
     type I1 = {
       readonly a?: number;
@@ -43,7 +43,7 @@ describe('Mutable', () => {
     >(true);
   });
 
-  test('DeepMutable', () => {
+  it('DeepMutable', () => {
     type unmodified = { readonly a?: number; readonly b: number };
     type modified = { a?: number; b: number };
     type I1 = {
@@ -63,7 +63,7 @@ describe('Mutable', () => {
     >(true);
   });
 
-  test('DeeperMutable', () => {
+  it('DeeperMutable', () => {
     type unmodified = { readonly a?: number; readonly b: number };
     type modified = { a?: number; b: number };
     type I1 = {

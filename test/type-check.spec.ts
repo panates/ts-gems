@@ -33,7 +33,7 @@ function FunctionA() {}
 type Indexed<T = any> = Record<string, T>;
 
 describe('Type checks', () => {
-  test('IfNever', () => {
+  it('IfNever', () => {
     assert<IfNever<never>>(true);
     assert<IfNever<unknown>>(false);
     assert<IfNever<null>>(false);
@@ -45,7 +45,7 @@ describe('Type checks', () => {
     assert<IfNever<NotEmptyObj>>(false);
   });
 
-  test('IfUndefined', () => {
+  it('IfUndefined', () => {
     assert<IfUndefined<undefined>>(true);
     assert<IfUndefined<never>>(false);
     assert<IfUndefined<any>>(false);
@@ -57,7 +57,7 @@ describe('Type checks', () => {
     assert<IfUndefined<NotEmptyObj>>(false);
   });
 
-  test('IfUnknown', () => {
+  it('IfUnknown', () => {
     assert<IfUnknown<any>>(false);
     assert<IfUnknown<never>>(false);
     assert<IfUnknown<unknown>>(true);
@@ -69,7 +69,7 @@ describe('Type checks', () => {
     assert<IfUnknown<NotEmptyObj>>(false);
   });
 
-  test('IfNull', () => {
+  it('IfNull', () => {
     assert<IfNull<never>>(false);
     assert<IfNull<unknown>>(false);
     assert<IfNull<null>>(true);
@@ -81,7 +81,7 @@ describe('Type checks', () => {
     assert<IfNull<NotEmptyObj>>(false);
   });
 
-  test('IfNullish', () => {
+  it('IfNullish', () => {
     assert<IfNullish<never>>(false);
     assert<IfNullish<unknown>>(false);
     assert<IfNullish<null>>(true);
@@ -93,7 +93,7 @@ describe('Type checks', () => {
     assert<IfNullish<NotEmptyObj>>(false);
   });
 
-  test('IfAny', () => {
+  it('IfAny', () => {
     assert<IfAny<never>>(false);
     assert<IfAny<unknown>>(false);
     assert<IfAny<null>>(false);
@@ -111,7 +111,7 @@ describe('Type checks', () => {
     assert<IfAny<Function>>(false);
   });
 
-  test('IfTuple', () => {
+  it('IfTuple', () => {
     assert<IfTuple<[any]>>(true);
     assert<IfTuple<any[]>>(false);
     assert<IfTuple<any>>(false);
@@ -120,11 +120,11 @@ describe('Type checks', () => {
     assert<IfTuple<null>>(false);
   });
 
-  test('IfTupleOrAny', () => {
+  it('IfTupleOrAny', () => {
     assert<IfTupleOrAny<any>>(true);
   });
 
-  test('IfPrimitive', () => {
+  it('IfPrimitive', () => {
     assert<IfPrimitive<any>>(true);
     assert<IfPrimitive<number>>(true);
     assert<IfPrimitive<string>>(true);
@@ -141,11 +141,11 @@ describe('Type checks', () => {
     assert<IfPrimitive<Function>>(false);
   });
 
-  test('IfPrimitiveOrAny', () => {
+  it('IfPrimitiveOrAny', () => {
     assert<IfPrimitiveOrAny<any>>(true);
   });
 
-  test('IfObject', () => {
+  it('IfObject', () => {
     assert<IfObject<object>>(true);
     assert<IfObject<{}>>(true);
     assert<IfObject<Indexed>>(true);
@@ -171,11 +171,11 @@ describe('Type checks', () => {
     assert<IfObject<Indexed & any[]>>(false);
   });
 
-  test('IfObjectOrAny', () => {
+  it('IfObjectOrAny', () => {
     assert<IfObjectOrAny<any>>(true);
   });
 
-  test('IfEmptyObject', () => {
+  it('IfEmptyObject', () => {
     assert<IfEmptyObject<{}>>(true);
     assert<IfEmptyObject<NotEmptyObj>>(false);
     assert<IfEmptyObject<unknown>>(false);
@@ -187,7 +187,7 @@ describe('Type checks', () => {
     assert<IfEmptyObject<() => void>>(false);
   });
 
-  test('IfFunction', () => {
+  it('IfFunction', () => {
     assert<IfFunction<() => void>>(true);
     assert<IfFunction<(a: string) => boolean>>(true);
     assert<IfFunction<ClassA>>(false);
@@ -201,11 +201,11 @@ describe('Type checks', () => {
     assert<IfFunction<undefined>>(false);
   });
 
-  test('IfFunctionOrAny', () => {
+  it('IfFunctionOrAny', () => {
     assert<IfFunctionOrAny<any>>(true);
   });
 
-  test('IfClass', () => {
+  it('IfClass', () => {
     assert<IfClass<typeof ClassA>>(true);
     assert<IfClass<typeof FunctionA>>(false);
     assert<IfClass<() => void>>(false);
@@ -219,11 +219,11 @@ describe('Type checks', () => {
     assert<IfClass<undefined>>(false);
   });
 
-  test('IfClassOrAny', () => {
+  it('IfClassOrAny', () => {
     assert<IfClassOrAny<any>>(true);
   });
 
-  test('IfCompatible', () => {
+  it('IfCompatible', () => {
     assert<IfCompatible<number, number>>(true);
     assert<IfCompatible<number, string>>(false);
     assert<IfCompatible<undefined, number>>(false);
@@ -271,7 +271,7 @@ describe('Type checks', () => {
     );
   });
 
-  test('IfEquals', () => {
+  it('IfEquals', () => {
     assert<IfEquals<number, number>>(true);
     assert<IfEquals<number, any>>(false);
     assert<IfEquals<number, unknown>>(false);

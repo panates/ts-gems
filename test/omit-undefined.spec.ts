@@ -6,7 +6,7 @@ import {
 import { exact } from './_support/asserts.js';
 
 describe('OmitUndefined', () => {
-  test('OmitUndefined', () => {
+  it('OmitUndefined', () => {
     type I1 = {
       a?: number;
       b: string;
@@ -22,7 +22,7 @@ describe('OmitUndefined', () => {
     >(true);
   });
 
-  test('DeepOmitUndefined', () => {
+  it('DeepOmitUndefined', () => {
     type I1 = {
       a?: number;
       b: string;
@@ -81,7 +81,7 @@ describe('OmitUndefined', () => {
     >(true);
   });
 
-  test('DeeperOmitUndefined', () => {
+  it('DeeperOmitUndefined', () => {
     type I1 = {
       a?: number;
       b: string;
