@@ -54,6 +54,14 @@ describe('DeepRequired', () => {
     >(true);
   });
 
+  it('DeepRequired leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    type I1 = { tags?: readonly string[] };
+    exact<DeepRequired<I1>, { tags: readonly string[] }>(true);
+  });
+
   it('DeeperRequired', () => {
     type I1 = {
       a?: number;
@@ -76,6 +84,42 @@ describe('DeepRequired', () => {
           readonly b: number;
         };
         readonly c: { readonly a: string }[];
+      }
+    >(true);
+  });
+
+  it('DeeperRequired makes a readonly array property fully mutable', () => {
+    type I1 = { tags?: readonly string[] };
+    exact<DeeperRequired<I1>, { tags: string[] }>(true);
+  });
+
+  it('DeeperRequired keeps array-awareness through nested objects', () => {
+    // Regression test: the object branch must recurse via DeeperRequired
+    // (not fall back to the non-array-aware DeepRequired), otherwise an
+    // array nested one level deeper silently stops being deep-processed.
+    type I1 = {
+      a?: {
+        b?: { c?: number }[];
+      };
+    };
+    exact<
+      DeeperRequired<I1>,
+      {
+        a: {
+          b: { c: number }[];
+        };
+      }
+    >(true);
+  });
+
+  it('DeeperRequired preserves tuples', () => {
+    type I1 = {
+      a: [{ c?: number }, string];
+    };
+    exact<
+      DeeperRequired<I1>,
+      {
+        a: [{ c?: number }, string];
       }
     >(true);
   });
@@ -241,6 +285,19 @@ describe('DeepRequired', () => {
     >(true);
   });
 
+  it('DeeperPickRequired preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+      b?: string;
+    };
+    exact<
+      DeeperPickRequired<I1>,
+      {
+        a: [string, number];
+      }
+    >(true);
+  });
+
   it('DeeperOmitRequired', () => {
     type unmodified = { a: number; b?: string };
     type modified = { b?: string };
@@ -277,6 +334,19 @@ describe('DeepRequired', () => {
           a8?: Type<unmodified>;
         };
         c?: modified[];
+      }
+    >(true);
+  });
+
+  it('DeeperOmitRequired preserves tuples', () => {
+    type I1 = {
+      a?: [string, number];
+      b: string;
+    };
+    exact<
+      DeeperOmitRequired<I1>,
+      {
+        a?: [string, number];
       }
     >(true);
   });

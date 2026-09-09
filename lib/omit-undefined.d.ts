@@ -1,5 +1,5 @@
 import { IfNoDeepValue } from './helpers.js';
-import { IfNever } from './type-check.js';
+import { IfNever, IfTuple } from './type-check.js';
 
 /**
  * OmitUndefined<T> is a type that omits all properties with a value of type "undefined".
@@ -25,13 +25,15 @@ export type DeepOmitUndefined<T> = {
  * Omit all "never" and "undefined" properties in T deeply including arrays
  */
 export type DeeperOmitUndefined<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]: NonNullable<
-    T[K]
-  > extends (infer U)[] // Deep process arrays
-    ? DeeperOmitUndefined<U>[]
-    : // Do not deep process No-Deep values
-      IfNoDeepValue<NonNullable<T[K]>> extends true
-      ? T[K]
-      : // Deep process objects
-        DeeperOmitUndefined<NonNullable<T[K]>>;
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]: IfTuple<
+    NonNullable<T[K]>
+  > extends true // Leave fixed-length tuples untouched
+    ? T[K]
+    : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
+      ? DeeperOmitUndefined<U>[]
+      : // Do not deep process No-Deep values
+        IfNoDeepValue<NonNullable<T[K]>> extends true
+        ? T[K]
+        : // Deep process objects
+          DeeperOmitUndefined<NonNullable<T[K]>>;
 };

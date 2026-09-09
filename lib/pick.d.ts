@@ -13,62 +13,70 @@ import {
  * while preserving strict type checking.
  */
 export type StrictPick<T, X extends keyof T> = {
-  [K in keyof T as Or<
-    // Omit never keys
-    IfNever<Exclude<T[K], undefined>>,
-    // Omit X
-    K extends X ? false : true
-  > extends true
-    ? never
-    : K]: T[K];
+  [
+    K in keyof T as Or<
+      // Omit never keys
+      IfNever<Exclude<T[K], undefined>>,
+      // Omit X
+      K extends X ? false : true
+    > extends true
+      ? never
+      : K
+  ]: T[K];
 };
 
 /**
  * Pick all function properties in T
  */
 export type PickFunctions<T> = {
-  [K in keyof T as Or<
-    // Omit never keys
-    IfNever<Exclude<T[K], undefined>>,
-    // Omit non functions
-    IfFunction<NonNullable<T[K]>, false, true>
-  > extends true
-    ? never
-    : K]: T[K];
+  [
+    K in keyof T as Or<
+      // Omit never keys
+      IfNever<Exclude<T[K], undefined>>,
+      // Omit non functions
+      IfFunction<NonNullable<T[K]>, false, true>
+    > extends true
+      ? never
+      : K
+  ]: T[K];
 };
 
 /**
  * Pick all function properties in T
  */
 export type PickTypes<T, X> = {
-  [K in keyof T as Or<
-    // Omit never keys
-    IfNever<Exclude<T[K], undefined>>,
-    // Omit types which not exists in X
-    T[K] extends X ? false : X extends T[K] ? false : true
-  > extends true
-    ? never
-    : K]: T[K];
+  [
+    K in keyof T as Or<
+      // Omit never keys
+      IfNever<Exclude<T[K], undefined>>,
+      // Omit types which not exists in X
+      T[K] extends X ? false : X extends T[K] ? false : true
+    > extends true
+      ? never
+      : K
+  ]: T[K];
 };
 
 /**
  * Pick all function properties in T
  */
 export type StrictPickTypes<T, X> = {
-  [K in keyof T as Or<
-    // Omit never keys
-    IfNever<Exclude<T[K], undefined>>,
-    // Omit unknown
-    IfUnknown<T[K]>,
-    // Omit any
-    IfAny<T[K]>,
-    // Omit {}
-    IfEmptyObject<T[K]>,
-    // Omit types which not exists in X
-    T[K] extends X ? false : X extends T[K] ? false : true
-  > extends true
-    ? never
-    : K]: T[K];
+  [
+    K in keyof T as Or<
+      // Omit never keys
+      IfNever<Exclude<T[K], undefined>>,
+      // Omit unknown
+      IfUnknown<T[K]>,
+      // Omit any
+      IfAny<T[K]>,
+      // Omit {}
+      IfEmptyObject<T[K]>,
+      // Omit types which not exists in X
+      T[K] extends X ? false : X extends T[K] ? false : true
+    > extends true
+      ? never
+      : K
+  ]: T[K];
 };
 
 /**

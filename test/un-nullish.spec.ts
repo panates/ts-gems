@@ -7,6 +7,22 @@ import type {
 import { exact } from './_support/asserts.js';
 
 describe('UnNullish', () => {
+  it('UnNullish is shallow (does not recurse into nested objects)', () => {
+    // Regression test for the doc/behavior mismatch: UnNullish's JSDoc used
+    // to (wrongly) claim it strips nullish values "deeply". It doesn't -
+    // that's what DeepUnNullish is for. A nested null/undefined must survive
+    // untouched through the plain (shallow) UnNullish.
+    type I1 = {
+      a: { b: string | null } | null;
+    };
+    exact<
+      UnNullish<I1>,
+      {
+        a: { b: string | null };
+      }
+    >(true);
+  });
+
   it('UnNullish', () => {
     type unmodified = { a?: number | null; b: string | null; c: null };
     type I1 = {
@@ -72,6 +88,14 @@ describe('UnNullish', () => {
     >(true);
   });
 
+  it('DeepUnNullish leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    type I1 = { tags: readonly string[] | null };
+    exact<DeepUnNullish<I1>, { tags: readonly string[] }>(true);
+  });
+
   it('DeeperUnNullish', () => {
     type unmodified = { a?: number | null; b: string | null; c: null };
     type modified = { a?: number; b: string };
@@ -101,6 +125,23 @@ describe('UnNullish', () => {
         a7: number;
         readonly a8: number;
         readonly c?: modified[];
+      }
+    >(true);
+  });
+
+  it('DeeperUnNullish makes a readonly array property fully mutable', () => {
+    type I1 = { tags: readonly string[] | null };
+    exact<DeeperUnNullish<I1>, { tags: string[] }>(true);
+  });
+
+  it('DeeperUnNullish preserves tuples', () => {
+    type I1 = {
+      a: [string, number] | null;
+    };
+    exact<
+      DeeperUnNullish<I1>,
+      {
+        a: [string, number];
       }
     >(true);
   });

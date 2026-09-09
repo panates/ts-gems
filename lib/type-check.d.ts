@@ -48,13 +48,15 @@ export type IfNullish<T, Y = true, N = false> =
  * Returns Y if typeof T is a tuple, N otherwise
  */
 export type IfTuple<T, Y = true, N = false> =
-  IfEquals<T, [any]> extends true
-    ? T extends [any]
-      ? number extends T['length']
-        ? N
-        : Y
-      : N
-    : N;
+  IfAny<T> extends true
+    ? N
+    : IfNever<T> extends true
+      ? N
+      : T extends readonly unknown[]
+        ? number extends T['length']
+          ? N
+          : Y
+        : N;
 export type IfTupleOrAny<T, Y = true, N = false> =
   IfAny<T> extends true ? Y : IfTuple<T, Y, N>;
 
@@ -127,8 +129,7 @@ export type IfClassOrAny<T, Y = true, N = false> =
  * Returns "Y" if "T1" is exactly same with "T2", "N" otherwise
  */
 export type IfEquals<T1, T2, Y = true, N = false> =
-  | IfObject<T1>
-  | IfObject<T2> extends true
+  IfObject<T1> | IfObject<T2> extends true
   ? (<G>() => G extends EqualsWrapped<T1> ? 1 : 2) extends <
       G,
     >() => G extends EqualsWrapped<T2> ? 1 : 2

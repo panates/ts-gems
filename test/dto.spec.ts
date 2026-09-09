@@ -31,4 +31,61 @@ describe('DTO', () => {
       }
     >(true);
   });
+
+  it('DTO removes symbol keys', () => {
+    const sym = Symbol('x');
+    type I1 = {
+      a: string;
+      [sym]: string;
+    };
+    exact<
+      DTO<I1>,
+      {
+        a: string;
+      }
+    >(true);
+  });
+
+  it('DTO preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+    };
+    exact<
+      DTO<I1>,
+      {
+        a: [string, number];
+      }
+    >(true);
+  });
+
+  it('DTO deep-processes nested objects and arrays', () => {
+    type unmodified = { a: string; b: Function };
+    type modified = { a: string };
+    type I1 = {
+      a: unmodified;
+      b: unmodified[];
+    };
+    exact<
+      DTO<I1>,
+      {
+        a: modified;
+        b: modified[];
+      }
+    >(true);
+  });
+
+  it('DTO makes a readonly array property fully mutable', () => {
+    // Regression test: a `readonly T[]` value must be recognized as an
+    // array to process, the same as a plain `T[]`, instead of being torn
+    // apart into an Array.prototype-shaped object.
+    type I1 = {
+      tags: readonly string[];
+    };
+    exact<
+      DTO<I1>,
+      {
+        tags: string[];
+      }
+    >(true);
+  });
 });

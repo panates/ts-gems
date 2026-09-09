@@ -39,5 +39,28 @@ describe('Combine', () => {
         e?: boolean;
       }
     >(true);
+
+    type I4 = {
+      e: number;
+      f: string;
+    };
+
+    exact<
+      Combine<I1, I2, I3, I4>,
+      {
+        a: string;
+        b: boolean;
+        c?: number;
+        d?: Function;
+        e?: boolean;
+        f: string;
+      }
+    >(true);
+  });
+
+  it('Combine gives earlier arguments precedence on overlapping keys', () => {
+    type I1 = { a: string };
+    type I2 = { a: number };
+    exact<Combine<I1, I2>, { a: string }>(true);
   });
 });

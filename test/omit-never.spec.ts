@@ -80,6 +80,14 @@ describe('OmitNever', () => {
     >(true);
   });
 
+  it('DeepOmitNever leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    type I1 = { tags: readonly string[]; n: never };
+    exact<DeepOmitNever<I1>, { tags: readonly string[] }>(true);
+  });
+
   it('DeeperOmitNever', () => {
     type I1 = {
       a?: number;
@@ -130,6 +138,24 @@ describe('OmitNever', () => {
           a?: string;
           b: number;
         }[];
+      }
+    >(true);
+  });
+
+  it('DeeperOmitNever makes a readonly array property fully mutable', () => {
+    type I1 = { tags: readonly string[]; n: never };
+    exact<DeeperOmitNever<I1>, { tags: string[] }>(true);
+  });
+
+  it('DeeperOmitNever preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+      b: never;
+    };
+    exact<
+      DeeperOmitNever<I1>,
+      {
+        a: [string, number];
       }
     >(true);
   });

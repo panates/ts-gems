@@ -21,6 +21,20 @@ describe('Omit', () => {
     >(true);
   });
 
+  it('StrictOmit drops never-typed keys, consistent with StrictPick', () => {
+    type I1 = {
+      a?: number;
+      b: string;
+      c: never;
+    };
+    exact<
+      StrictOmit<I1, 'b'>,
+      {
+        a?: number;
+      }
+    >(true);
+  });
+
   it('OmitFunctions', () => {
     class TestClass {}
 
@@ -111,6 +125,16 @@ describe('Omit', () => {
     >(true);
   });
 
+  it('DeepOmitTypes leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    interface I1 {
+      tags: readonly string[];
+    }
+    exact<DeepOmitTypes<I1, boolean>, { tags: readonly string[] }>(true);
+  });
+
   it('DeeperOmitTypes', () => {
     type unmodified = { a?: number; b: string; c: string | number | boolean };
     type modified = { b: string; c: string | boolean };
@@ -126,6 +150,25 @@ describe('Omit', () => {
       {
         a2: modified;
         a3?: modified[];
+      }
+    >(true);
+  });
+
+  it('DeeperOmitTypes makes a readonly array property fully mutable', () => {
+    interface I1 {
+      tags: readonly string[];
+    }
+    exact<DeeperOmitTypes<I1, boolean>, { tags: string[] }>(true);
+  });
+
+  it('DeeperOmitTypes preserves tuples', () => {
+    interface I1 {
+      a: [string, number];
+    }
+    exact<
+      DeeperOmitTypes<I1, boolean>,
+      {
+        a: [string, number];
       }
     >(true);
   });
