@@ -27,16 +27,27 @@ export type DeepNullish<T> = {
 export type DeeperNullish<T> = {
   [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: IfTuple<
     NonNullable<T[K]>
-  > extends true // Leave fixed-length tuples untouched
-    ? T[K] | null
+  > extends true // Deep process tuples positionally
+    ? DeeperNullishTuple<NonNullable<T[K]>> | null
     : NonNullable<
           // Deep process arrays
           T[K]
         > extends readonly (infer U)[]
-      ? DeeperNullish<U>[] | null
+      ? NonNullable<T[K]> extends any[]
+        ? DeeperNullish<U>[] | null // was mutable - DeeperNullish doesn't touch mutability
+        : readonly DeeperNullish<U>[] | null // was readonly - preserve that
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true
         ? T[K] | null
         : // Deep process objects
           DeeperNullish<NonNullable<T[K]>> | null;
 };
+
+type DeeperNullishTuple<T> = T extends readonly [infer Head, ...infer Rest]
+  ? [
+      IfNoDeepValue<NonNullable<Head>> extends true
+        ? Head
+        : DeeperNullish<NonNullable<Head>>,
+      ...DeeperNullishTuple<Rest>,
+    ]
+  : [];

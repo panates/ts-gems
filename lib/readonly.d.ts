@@ -26,18 +26,27 @@ export type DeepReadonly<T> = {
 export type DeeperReadonly<T> = {
   readonly [
     K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>
-  ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
-    ? T[K]
+  ]: IfTuple<NonNullable<T[K]>> extends true // Deep process tuples positionally
+    ? readonly [...DeeperReadonlyTuple<NonNullable<T[K]>>]
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
       ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
-        ? DeeperReadonly<U>[] | null
-        : DeeperReadonly<U>[]
+        ? readonly DeeperReadonly<U>[] | null // Always readonly - that is DeeperReadonly's whole purpose
+        : readonly DeeperReadonly<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
         : // Deep process objects
           DeeperReadonly<Exclude<T[K], undefined>>;
 };
+
+type DeeperReadonlyTuple<T> = T extends readonly [infer Head, ...infer Rest]
+  ? [
+      IfNoDeepValue<NonNullable<Head>> extends true
+        ? Head
+        : DeeperReadonly<NonNullable<Head>>,
+      ...DeeperReadonlyTuple<Rest>,
+    ]
+  : [];
 
 /**
  * Returns readonly keys of an object
@@ -127,18 +136,32 @@ export type DeeperPickReadonly<T> = {
     > extends true
       ? never
       : K
-  ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
-    ? T[K]
+  ]: IfTuple<NonNullable<T[K]>> extends true // Deep process tuples positionally
+    ? DeeperPickReadonlyTuple<NonNullable<T[K]>>
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
-        ? DeeperPickReadonly<U>[] | null
-        : DeeperPickReadonly<U>[]
+      ? NonNullable<T[K]> extends any[]
+        ? // was mutable - DeeperPickReadonly doesn't touch mutability, unlike DeeperReadonly
+          null extends T[K]
+          ? DeeperPickReadonly<U>[] | null
+          : DeeperPickReadonly<U>[]
+        : null extends T[K] // was readonly - preserve that
+          ? readonly DeeperPickReadonly<U>[] | null
+          : readonly DeeperPickReadonly<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
         : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
           DeeperPickReadonly<Exclude<T[K], undefined>>;
 };
+
+type DeeperPickReadonlyTuple<T> = T extends readonly [infer Head, ...infer Rest]
+  ? [
+      IfNoDeepValue<NonNullable<Head>> extends true
+        ? Head
+        : DeeperPickReadonly<NonNullable<Head>>,
+      ...DeeperPickReadonlyTuple<Rest>,
+    ]
+  : [];
 
 /**
  * Pick all readonly properties in T deeply including arrays
@@ -153,15 +176,29 @@ export type DeeperOmitReadonly<T> = {
     > extends true
       ? never
       : K
-  ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
-    ? T[K]
+  ]: IfTuple<NonNullable<T[K]>> extends true // Deep process tuples positionally
+    ? DeeperOmitReadonlyTuple<NonNullable<T[K]>>
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
-        ? DeeperOmitReadonly<U>[] | null
-        : DeeperOmitReadonly<U>[]
+      ? NonNullable<T[K]> extends any[]
+        ? // was mutable - DeeperOmitReadonly doesn't touch mutability, unlike DeeperReadonly
+          null extends T[K]
+          ? DeeperOmitReadonly<U>[] | null
+          : DeeperOmitReadonly<U>[]
+        : null extends T[K] // was readonly - preserve that
+          ? readonly DeeperOmitReadonly<U>[] | null
+          : readonly DeeperOmitReadonly<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
         : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
           DeeperOmitReadonly<Exclude<T[K], undefined>>;
 };
+
+type DeeperOmitReadonlyTuple<T> = T extends readonly [infer Head, ...infer Rest]
+  ? [
+      IfNoDeepValue<NonNullable<Head>> extends true
+        ? Head
+        : DeeperOmitReadonly<NonNullable<Head>>,
+      ...DeeperOmitReadonlyTuple<Rest>,
+    ]
+  : [];

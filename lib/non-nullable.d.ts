@@ -2,7 +2,7 @@ import { IfNoDeepValue } from './helpers.js';
 import { IfNever, IfNull, IfTuple } from './type-check.js';
 
 /**
- * Exclude null and undefined from T
+ * Exclude null and undefined from T deeply
  */
 export type UnNullish<T> = {
   [
@@ -43,13 +43,24 @@ export type DeeperUnNullish<T> = {
       never,
       IfNull<Exclude<T[K], undefined>, never, K>
     >
-  ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
-    ? NonNullable<T[K]>
+  ]: IfTuple<NonNullable<T[K]>> extends true // Deep process tuples positionally
+    ? DeeperUnNullishTuple<NonNullable<T[K]>>
     : NonNullable<NonNullable<T[K]>> extends readonly (infer U)[]
-      ? DeeperUnNullish<U>[]
+      ? NonNullable<T[K]> extends any[]
+        ? DeeperUnNullish<U>[] // was mutable - UnNullish doesn't touch mutability
+        : readonly DeeperUnNullish<U>[] // was readonly - preserve that
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true
         ? NonNullable<T[K]>
         : // Deep process objects
           DeeperUnNullish<NonNullable<T[K]>>;
 };
+
+type DeeperUnNullishTuple<T> = T extends readonly [infer Head, ...infer Rest]
+  ? [
+      IfNoDeepValue<NonNullable<Head>> extends true
+        ? NonNullable<Head>
+        : DeeperUnNullish<NonNullable<Head>>,
+      ...DeeperUnNullishTuple<Rest>,
+    ]
+  : [];

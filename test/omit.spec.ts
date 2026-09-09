@@ -206,11 +206,11 @@ describe('Omit', () => {
     >(true);
   });
 
-  it('DeeperOmitTypes makes a readonly array property fully mutable', () => {
+  it('DeeperOmitTypes recognizes a readonly array and preserves its mutability', () => {
     interface I1 {
       tags: readonly string[];
     }
-    exact<DeeperOmitTypes<I1, boolean>, { tags: string[] }>(true);
+    exact<DeeperOmitTypes<I1, boolean>, { tags: readonly string[] }>(true);
   });
 
   it('DeeperOmitTypes preserves a `| null` member on nested objects and arrays', () => {

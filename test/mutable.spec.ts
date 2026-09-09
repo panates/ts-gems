@@ -87,7 +87,7 @@ describe('Mutable', () => {
         a?: number;
         b: modified;
         c: modified[];
-        d: readonly [unmodified, number];
+        d: [modified, number];
       }
     >(true);
   });

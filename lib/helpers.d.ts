@@ -4,32 +4,31 @@ import { Builtin } from './types.js';
 /**
  * Returns true if T is excluded from deep operations
  */
-export type IfNoDeepValue<T> =
-  IfAny<T> extends true
-    ? true
-    : T extends Builtin
+export type IfNoDeepValue<T> = T extends Builtin
+  ? true
+  : IfAny<T> extends true
+    ? T
+    : IfTuple<T> extends true
       ? true
-      : IfTuple<T> extends true
+      : T extends Function
         ? true
-        : T extends Function
+        : IfClass<T> extends true
           ? true
-          : IfClass<T> extends true
+          : T extends Map<any, any>
             ? true
-            : T extends Map<any, any>
+            : T extends ReadonlyMap<any, any>
               ? true
-              : T extends ReadonlyMap<any, any>
+              : T extends WeakMap<any, any>
                 ? true
-                : T extends WeakMap<any, any>
+                : T extends Set<any>
                   ? true
-                  : T extends Set<any>
+                  : T extends ReadonlySet<any>
                     ? true
-                    : T extends ReadonlySet<any>
+                    : T extends WeakSet<any>
                       ? true
-                      : T extends WeakSet<any>
+                      : T extends readonly any[]
                         ? true
-                        : T extends readonly any[]
-                          ? true
-                          : false;
+                        : false;
 
 /**
  * ValuesOf

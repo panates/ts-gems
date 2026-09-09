@@ -121,9 +121,12 @@ describe('DeepNullish', () => {
     >(true);
   });
 
-  it('DeeperNullish makes a readonly array property fully mutable', () => {
+  it('DeeperNullish recognizes a readonly array and preserves its mutability', () => {
+    // DeeperNullish only adds optionality/nullability - it has nothing to do
+    // with mutability, so a readonly array stays readonly (unlike
+    // DeeperMutable, which always forces mutable on purpose).
     type I1 = { tags: readonly string[] };
-    exact<DeeperNullish<I1>, { tags?: string[] | null }>(true);
+    exact<DeeperNullish<I1>, { tags?: readonly string[] | null }>(true);
   });
 
   it('DeeperNullish preserves tuples', () => {

@@ -104,9 +104,9 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  it('DeeperRequired makes a readonly array property fully mutable', () => {
+  it('DeeperRequired recognizes a readonly array and preserves its mutability', () => {
     type I1 = { tags?: readonly string[] };
-    exact<DeeperRequired<I1>, { tags: string[] }>(true);
+    exact<DeeperRequired<I1>, { tags: readonly string[] }>(true);
   });
 
   it('DeeperRequired keeps array-awareness through nested objects', () => {
@@ -128,14 +128,14 @@ describe('DeepRequired', () => {
     >(true);
   });
 
-  it('DeeperRequired preserves tuples', () => {
+  it('DeeperRequired preserves tuple shape while deep-processing positions', () => {
     type I1 = {
       a: [{ c?: number }, string];
     };
     exact<
       DeeperRequired<I1>,
       {
-        a: [{ c?: number }, string];
+        a: [{ c: number }, string];
       }
     >(true);
   });
