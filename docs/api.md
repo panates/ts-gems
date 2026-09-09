@@ -98,6 +98,19 @@ type ReadonlyConfig = DeeperReadonly<Config>;
 // }
 ```
 
+A **nullable** object or array property (`SomeObject | null`) still gets
+recursed into — `null` is a leaf on its own, but it is preserved as a
+separate union member alongside the transformed object/array, not lost:
+
+```ts
+type Config = {
+  server: { host: string } | null;
+};
+
+type ReadonlyConfig = DeeperReadonly<Config>;
+// { readonly server: { readonly host: string } | null }
+```
+
 ## Naming patterns used across pages
 
 - **`Pick*` / `Omit*`** — select or remove properties matching some criterion

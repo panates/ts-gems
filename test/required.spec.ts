@@ -30,6 +30,14 @@ describe('DeepRequired', () => {
     >(true);
   });
 
+  it('RequiredSome preserves a `| null` member on the selected keys', () => {
+    // Regression test: RequiredSome used to route through
+    // OmitTypes<Required<Pick<T, K>>, null>, which silently narrowed a
+    // `| null` value away instead of just toggling optionality.
+    type I1 = { a?: string | null; b: number };
+    exact<RequiredSome<I1, 'a'>, { a: string | null; b: number }>(true);
+  });
+
   it('DeepRequired', () => {
     type I1 = {
       a?: number;
@@ -60,6 +68,14 @@ describe('DeepRequired', () => {
     // Array.prototype-shaped object.
     type I1 = { tags?: readonly string[] };
     exact<DeepRequired<I1>, { tags: readonly string[] }>(true);
+  });
+
+  it('DeepRequired preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    type Inner = { b?: string };
+    type I1 = { a?: Inner | null };
+    exact<DeepRequired<I1>, { a: { b: string } | null }>(true);
   });
 
   it('DeeperRequired', () => {
@@ -121,6 +137,15 @@ describe('DeepRequired', () => {
       {
         a: [{ c?: number }, string];
       }
+    >(true);
+  });
+
+  it('DeeperRequired preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { b?: string };
+    type I1 = { a?: Inner | null; c?: Inner[] | null };
+    exact<
+      DeeperRequired<I1>,
+      { a: { b: string } | null; c: { b: string }[] | null }
     >(true);
   });
 
@@ -210,6 +235,14 @@ describe('DeepRequired', () => {
     >(true);
   });
 
+  it('DeepPickRequired preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    type Inner = { b: number; c?: string };
+    type I1 = { a: Inner | null };
+    exact<DeepPickRequired<I1>, { a: { b: number } | null }>(true);
+  });
+
   it('DeepOmitRequired', () => {
     type unmodified = { a: number; b?: string };
     type modified = { b?: string };
@@ -248,6 +281,12 @@ describe('DeepRequired', () => {
         c?: unmodified[];
       }
     >(true);
+  });
+
+  it('DeepOmitRequired preserves a `| null` member on nested objects', () => {
+    type Inner = { b: number; c?: string };
+    type I1 = { a?: Inner | null };
+    exact<DeepOmitRequired<I1>, { a?: { c?: string } | null }>(true);
   });
 
   it('DeeperPickRequired', () => {
@@ -295,6 +334,15 @@ describe('DeepRequired', () => {
       {
         a: [string, number];
       }
+    >(true);
+  });
+
+  it('DeeperPickRequired preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { b: number; c?: string };
+    type I1 = { a: Inner | null; d: Inner[] | null };
+    exact<
+      DeeperPickRequired<I1>,
+      { a: { b: number } | null; d: { b: number }[] | null }
     >(true);
   });
 
@@ -348,6 +396,15 @@ describe('DeepRequired', () => {
       {
         a?: [string, number];
       }
+    >(true);
+  });
+
+  it('DeeperOmitRequired preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { b: number; c?: string };
+    type I1 = { a?: Inner | null; d?: Inner[] | null };
+    exact<
+      DeeperOmitRequired<I1>,
+      { a?: { c?: string } | null; d?: { c?: string }[] | null }
     >(true);
   });
 });

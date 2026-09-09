@@ -105,6 +105,23 @@ describe('Mutable', () => {
     exact<DeeperMutable<I1>, { tags: string[] }>(true);
   });
 
+  it('DeepMutable preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    type Inner = { readonly b: number };
+    type I1 = { readonly a: Inner | null };
+    exact<DeepMutable<I1>, { a: { b: number } | null }>(true);
+  });
+
+  it('DeeperMutable preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { readonly b: number };
+    type I1 = { readonly a: Inner | null; readonly c: Inner[] | null };
+    exact<
+      DeeperMutable<I1>,
+      { a: { b: number } | null; c: { b: number }[] | null }
+    >(true);
+  });
+
   it('MutableKeys', () => {
     type I1 = { readonly a: number; b: string };
     exact<MutableKeys<I1>, 'b'>(true);

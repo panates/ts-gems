@@ -30,10 +30,12 @@ export type DeeperOmitUndefined<T> = {
   > extends true // Leave fixed-length tuples untouched
     ? T[K]
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? DeeperOmitUndefined<U>[]
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperOmitUndefined<U>[] | null
+        : DeeperOmitUndefined<U>[]
       : // Do not deep process No-Deep values
-        IfNoDeepValue<NonNullable<T[K]>> extends true
+        IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
-        : // Deep process objects
-          DeeperOmitUndefined<NonNullable<T[K]>>;
+        : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+          DeeperOmitUndefined<Exclude<T[K], undefined>>;
 };

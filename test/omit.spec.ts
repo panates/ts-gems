@@ -135,6 +135,19 @@ describe('Omit', () => {
     exact<DeepOmitTypes<I1, boolean>, { tags: readonly string[] }>(true);
   });
 
+  it('DeepOmitTypes preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    interface Inner {
+      a: number;
+      b: boolean;
+    }
+    interface I1 {
+      x: Inner | null;
+    }
+    exact<DeepOmitTypes<I1, boolean>, { x: { a: number } | null }>(true);
+  });
+
   it('DeeperOmitTypes', () => {
     type unmodified = { a?: number; b: string; c: string | number | boolean };
     type modified = { b: string; c: string | boolean };
@@ -159,6 +172,21 @@ describe('Omit', () => {
       tags: readonly string[];
     }
     exact<DeeperOmitTypes<I1, boolean>, { tags: string[] }>(true);
+  });
+
+  it('DeeperOmitTypes preserves a `| null` member on nested objects and arrays', () => {
+    interface Inner {
+      a: number;
+      b: boolean;
+    }
+    interface I1 {
+      x: Inner | null;
+      y: Inner[] | null;
+    }
+    exact<
+      DeeperOmitTypes<I1, boolean>,
+      { x: { a: number } | null; y: { a: number }[] | null }
+    >(true);
   });
 
   it('DeeperOmitTypes preserves tuples', () => {

@@ -127,6 +127,14 @@ export type IfClassOrAny<T, Y = true, N = false> =
 
 /**
  * Returns "Y" if "T1" is exactly same with "T2", "N" otherwise
+ *
+ * The `IfObject<T1> | IfObject<T2>` check below looks like it should be
+ * `Or<IfObject<T1>, IfObject<T2>>` (this file's usual pattern), but it is
+ * not a bug: it deliberately only takes the EqualsWrapped/object-safe path
+ * when BOTH sides are objects. Wrapping a non-object side (e.g. `string`)
+ * in `EqualsWrapped` maps over its own keys instead of comparing it as
+ * itself, which gives wrong answers - switching this to `Or` breaks
+ * multiple cases in test/type-check.spec.ts's `IfEquals` suite.
  */
 export type IfEquals<T1, T2, Y = true, N = false> =
   IfObject<T1> | IfObject<T2> extends true

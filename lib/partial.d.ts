@@ -24,8 +24,8 @@ export type DeepPartial<T> = {
     Exclude<T[K], undefined>
   > extends true
     ? T[K]
-    : // Deep process objects
-      DeepPartial<NonNullable<T[K]>>;
+    : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+      DeepPartial<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -37,12 +37,14 @@ export type DeeperPartial<T> = {
   > extends true // Leave fixed-length tuples untouched
     ? T[K]
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? DeeperPartial<U>[]
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperPartial<U>[] | null
+        : DeeperPartial<U>[]
       : // Do not deep process No-Deep values
-        IfNoDeepValue<NonNullable<T[K]>> extends true
+        IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
-        : // Deep process objects
-          DeeperPartial<NonNullable<T[K]>>;
+        : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+          DeeperPartial<Exclude<T[K], undefined>>;
 };
 
 /**

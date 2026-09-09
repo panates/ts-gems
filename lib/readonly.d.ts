@@ -29,7 +29,9 @@ export type DeeperReadonly<T> = {
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? T[K]
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? DeeperReadonly<U>[]
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperReadonly<U>[] | null
+        : DeeperReadonly<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
@@ -87,10 +89,10 @@ export type DeepPickReadonly<T> = {
     > extends true
       ? never
       : K
-  ]: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
+  ]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? T[K]
-    : // Deep process objects
-      DeepPickReadonly<NonNullable<T[K]>>;
+    : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+      DeepPickReadonly<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -106,10 +108,10 @@ export type DeepOmitReadonly<T> = {
     > extends true
       ? never
       : K
-  ]: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
+  ]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? T[K]
-    : // Deep process objects
-      DeepOmitReadonly<NonNullable<T[K]>>;
+    : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+      DeepOmitReadonly<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -128,12 +130,14 @@ export type DeeperPickReadonly<T> = {
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? T[K]
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? DeeperPickReadonly<U>[]
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperPickReadonly<U>[] | null
+        : DeeperPickReadonly<U>[]
       : // Do not deep process No-Deep values
-        IfNoDeepValue<NonNullable<T[K]>> extends true
+        IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
-        : // Deep process objects
-          DeeperPickReadonly<NonNullable<T[K]>>;
+        : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+          DeeperPickReadonly<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -152,10 +156,12 @@ export type DeeperOmitReadonly<T> = {
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? T[K]
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? DeeperOmitReadonly<U>[]
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperOmitReadonly<U>[] | null
+        : DeeperOmitReadonly<U>[]
       : // Do not deep process No-Deep values
-        IfNoDeepValue<NonNullable<T[K]>> extends true
+        IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
-        : // Deep process objects
-          DeeperOmitReadonly<NonNullable<T[K]>>;
+        : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+          DeeperOmitReadonly<Exclude<T[K], undefined>>;
 };

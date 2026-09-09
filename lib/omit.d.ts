@@ -53,8 +53,8 @@ export type DeepOmitTypes<T, X> = {
     K in keyof T as IfNever<Exclude<T[K], undefined | X>, never, K>
   ]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? Exclude<T[K], X>
-    : // Deep process objects
-      DeepOmitTypes<NonNullable<T[K]>, X>;
+    : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+      DeepOmitTypes<Exclude<T[K], undefined>, X>;
 };
 
 /**
@@ -69,9 +69,11 @@ export type DeeperOmitTypes<T, X> = {
           // Deep process arrays // Do not deep process No-Deep values
           T[K]
         > extends readonly (infer U)[]
-      ? DeeperOmitTypes<U, X>[]
-      : IfNoDeepValue<NonNullable<T[K]>> extends true
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperOmitTypes<U, X>[] | null
+        : DeeperOmitTypes<U, X>[]
+      : IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? Exclude<T[K], X>
-        : // Deep process objects
-          DeeperOmitTypes<NonNullable<T[K]>, X>;
+        : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+          DeeperOmitTypes<Exclude<T[K], undefined>, X>;
 };
