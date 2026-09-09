@@ -14,7 +14,7 @@ export type DTO<T, X = never> = {
       : IfNever<Exclude<NonNullable<T[K]>, Function | symbol>, never, K>
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? NonNullable<T[K] | X>
-    : NonNullable<T[K]> extends (infer U)[] // Deep process arrays
+    : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
       ? DTO<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true

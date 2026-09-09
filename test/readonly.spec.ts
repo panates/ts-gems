@@ -51,6 +51,14 @@ describe('Readonly', () => {
     >(true);
   });
 
+  it('DeepReadonly leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    type I1 = { tags: readonly string[] };
+    exact<DeepReadonly<I1>, { readonly tags: readonly string[] }>(true);
+  });
+
   it('DeeperReadonly', () => {
     type unmodified = { a?: number; b: number };
     type modified = { readonly a?: number; readonly b: number };
@@ -71,6 +79,11 @@ describe('Readonly', () => {
         readonly d: [unmodified, number];
       }
     >(true);
+  });
+
+  it('DeeperReadonly makes a readonly array property fully mutable', () => {
+    type I1 = { tags: readonly string[] };
+    exact<DeeperReadonly<I1>, { readonly tags: string[] }>(true);
   });
 
   it('ReadonlyKeys', () => {

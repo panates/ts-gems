@@ -81,6 +81,14 @@ describe('OmitUndefined', () => {
     >(true);
   });
 
+  it('DeepOmitUndefined leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    type I1 = { tags: readonly string[]; b: undefined };
+    exact<DeepOmitUndefined<I1>, { tags: readonly string[] }>(true);
+  });
+
   it('DeeperOmitUndefined', () => {
     type I1 = {
       a?: number;
@@ -134,6 +142,11 @@ describe('OmitUndefined', () => {
         }[];
       }
     >(true);
+  });
+
+  it('DeeperOmitUndefined makes a readonly array property fully mutable', () => {
+    type I1 = { tags: readonly string[]; b: undefined };
+    exact<DeeperOmitUndefined<I1>, { tags: string[] }>(true);
   });
 
   it('DeeperOmitUndefined preserves tuples', () => {

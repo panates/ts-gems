@@ -42,6 +42,13 @@ describe('Helpers', () => {
     // true only means "not a plain object to recurse into as-is")
     assert<IfNoDeepValue<string[]>>(true);
 
+    // Regression test: a *readonly* array must be excluded too. A
+    // ReadonlyArray does not extend `any[]` (it lacks mutating methods like
+    // `push`), so a plain `T extends any[]` check misses it and the Deep*
+    // family would otherwise try to recurse into it as if it were a plain
+    // object, producing a corrupted Array.prototype-shaped type.
+    assert<IfNoDeepValue<readonly string[]>>(true);
+
     // Functions and constructor (class) references are leaves
     assert<IfNoDeepValue<() => void>>(true);
     assert<IfNoDeepValue<typeof TestClass>>(true);

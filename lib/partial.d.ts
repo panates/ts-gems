@@ -36,7 +36,7 @@ export type DeeperPartial<T> = {
     NonNullable<T[K]>
   > extends true // Leave fixed-length tuples untouched
     ? T[K]
-    : NonNullable<T[K]> extends (infer U)[] // Deep process arrays
+    : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
       ? DeeperPartial<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true

@@ -68,7 +68,7 @@ export type DeeperOmitTypes<T, X> = {
     : NonNullable<
           // Deep process arrays // Do not deep process No-Deep values
           T[K]
-        > extends (infer U)[]
+        > extends readonly (infer U)[]
       ? DeeperOmitTypes<U, X>[]
       : IfNoDeepValue<NonNullable<T[K]>> extends true
         ? Exclude<T[K], X>

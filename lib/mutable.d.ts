@@ -42,7 +42,7 @@ export type DeeperMutable<T> = {
     K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? T[K]
-    : NonNullable<T[K]> extends (infer U)[] // Deep process arrays
+    : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
       ? DeeperMutable<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true

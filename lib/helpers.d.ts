@@ -27,7 +27,7 @@ export type IfNoDeepValue<T> =
                       ? true
                       : T extends WeakSet<any>
                         ? true
-                        : T extends any[]
+                        : T extends readonly any[]
                           ? true
                           : false;
 

@@ -68,6 +68,14 @@ describe('DeepPartial', () => {
     >(true);
   });
 
+  it('DeepPartial leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    type I1 = { tags: readonly string[] };
+    exact<DeepPartial<I1>, { tags?: readonly string[] }>(true);
+  });
+
   it('DeeperPartial', () => {
     type unmodified = { a?: number; b: string };
     type modified = { a?: number; b?: string };
@@ -104,6 +112,11 @@ describe('DeepPartial', () => {
         readonly c?: modified[];
       }
     >(true);
+  });
+
+  it('DeeperPartial makes a readonly array property fully mutable', () => {
+    type I1 = { tags: readonly string[] };
+    exact<DeeperPartial<I1>, { tags?: string[] }>(true);
   });
 
   it('DeeperPartial preserves tuples', () => {

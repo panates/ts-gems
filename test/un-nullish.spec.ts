@@ -88,6 +88,14 @@ describe('UnNullish', () => {
     >(true);
   });
 
+  it('DeepUnNullish leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    type I1 = { tags: readonly string[] | null };
+    exact<DeepUnNullish<I1>, { tags: readonly string[] }>(true);
+  });
+
   it('DeeperUnNullish', () => {
     type unmodified = { a?: number | null; b: string | null; c: null };
     type modified = { a?: number; b: string };
@@ -119,6 +127,11 @@ describe('UnNullish', () => {
         readonly c?: modified[];
       }
     >(true);
+  });
+
+  it('DeeperUnNullish makes a readonly array property fully mutable', () => {
+    type I1 = { tags: readonly string[] | null };
+    exact<DeeperUnNullish<I1>, { tags: string[] }>(true);
   });
 
   it('DeeperUnNullish preserves tuples', () => {

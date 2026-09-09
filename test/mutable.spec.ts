@@ -92,6 +92,19 @@ describe('Mutable', () => {
     >(true);
   });
 
+  it('DeepMutable leaves a readonly array property untouched', () => {
+    // Regression test: a `readonly T[]` value must be recognized as a leaf,
+    // the same as a plain `T[]`, instead of being torn apart into an
+    // Array.prototype-shaped object.
+    type I1 = { readonly tags: readonly string[] };
+    exact<DeepMutable<I1>, { tags: readonly string[] }>(true);
+  });
+
+  it('DeeperMutable makes a readonly array property fully mutable', () => {
+    type I1 = { readonly tags: readonly string[] };
+    exact<DeeperMutable<I1>, { tags: string[] }>(true);
+  });
+
   it('MutableKeys', () => {
     type I1 = { readonly a: number; b: string };
     exact<MutableKeys<I1>, 'b'>(true);

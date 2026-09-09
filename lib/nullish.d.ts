@@ -32,7 +32,7 @@ export type DeeperNullish<T> = {
     : NonNullable<
           // Deep process arrays
           T[K]
-        > extends (infer U)[]
+        > extends readonly (infer U)[]
       ? DeeperNullish<U>[] | null
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true

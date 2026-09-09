@@ -45,7 +45,7 @@ export type DeeperUnNullish<T> = {
     >
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? NonNullable<T[K]>
-    : NonNullable<NonNullable<T[K]>> extends (infer U)[]
+    : NonNullable<NonNullable<T[K]>> extends readonly (infer U)[]
       ? DeeperUnNullish<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true

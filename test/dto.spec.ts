@@ -73,4 +73,19 @@ describe('DTO', () => {
       }
     >(true);
   });
+
+  it('DTO makes a readonly array property fully mutable', () => {
+    // Regression test: a `readonly T[]` value must be recognized as an
+    // array to process, the same as a plain `T[]`, instead of being torn
+    // apart into an Array.prototype-shaped object.
+    type I1 = {
+      tags: readonly string[];
+    };
+    exact<
+      DTO<I1>,
+      {
+        tags: string[];
+      }
+    >(true);
+  });
 });

@@ -32,7 +32,7 @@ export type DeeperRequired<T> = {
     NonNullable<T[K]>
   > extends true // Leave fixed-length tuples untouched
     ? Exclude<T[K], undefined>
-    : NonNullable<T[K]> extends (infer U)[] // Deep process arrays
+    : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
       ? DeeperRequired<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true
@@ -132,7 +132,7 @@ export type DeeperPickRequired<T> = {
       : K
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? T[K]
-    : NonNullable<T[K]> extends (infer U)[] // Deep process arrays
+    : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
       ? DeeperPickRequired<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true
@@ -156,7 +156,7 @@ export type DeeperOmitRequired<T> = {
       : K
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? T[K]
-    : NonNullable<T[K]> extends (infer U)[] // Deep process arrays
+    : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
       ? DeeperOmitRequired<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<NonNullable<T[K]>> extends true
