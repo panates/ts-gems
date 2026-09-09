@@ -114,9 +114,9 @@ describe('DeepPartial', () => {
     >(true);
   });
 
-  it('DeeperPartial makes a readonly array property fully mutable', () => {
+  it('DeeperPartial recognizes a readonly array and preserves its mutability', () => {
     type I1 = { tags: readonly string[] };
-    exact<DeeperPartial<I1>, { tags?: string[] }>(true);
+    exact<DeeperPartial<I1>, { tags?: readonly string[] }>(true);
   });
 
   it('DeepPartial preserves a `| null` member on nested objects', () => {

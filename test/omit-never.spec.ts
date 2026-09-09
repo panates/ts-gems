@@ -150,9 +150,9 @@ describe('OmitNever', () => {
     >(true);
   });
 
-  it('DeeperOmitNever makes a readonly array property fully mutable', () => {
+  it('DeeperOmitNever recognizes a readonly array and preserves its mutability', () => {
     type I1 = { tags: readonly string[]; n: never };
-    exact<DeeperOmitNever<I1>, { tags: string[] }>(true);
+    exact<DeeperOmitNever<I1>, { tags: readonly string[] }>(true);
   });
 
   it('DeeperOmitNever preserves a `| null` member on nested objects and arrays', () => {

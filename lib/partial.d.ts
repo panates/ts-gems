@@ -34,18 +34,35 @@ export type DeepPartial<T> = {
 export type DeeperPartial<T> = {
   [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: IfTuple<
     NonNullable<T[K]>
-  > extends true // Leave fixed-length tuples untouched
-    ? T[K]
-    : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
-        ? DeeperPartial<U>[] | null
-        : DeeperPartial<U>[]
+  > extends true // Deep process tuples positionally
+    ? DeeperPartialTuple<NonNullable<T[K]>>
+    : NonNullable<
+          // Deep process arrays
+          T[K]
+        > extends readonly (infer U)[]
+      ? NonNullable<T[K]> extends any[]
+        ? // was mutable - DeeperPartial doesn't touch mutability
+          null extends T[K]
+          ? DeeperPartial<U>[] | null
+          : DeeperPartial<U>[]
+        : null extends T[K] // was readonly - preserve that
+          ? readonly DeeperPartial<U>[] | null
+          : readonly DeeperPartial<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
         : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
           DeeperPartial<Exclude<T[K], undefined>>;
 };
+
+type DeeperPartialTuple<T> = T extends readonly [infer Head, ...infer Rest]
+  ? [
+      IfNoDeepValue<NonNullable<Head>> extends true
+        ? Head
+        : DeeperPartial<NonNullable<Head>>,
+      ...DeeperPartialTuple<Rest>,
+    ]
+  : [];
 
 /**
  * OptionalKeys

@@ -150,9 +150,9 @@ describe('OmitUndefined', () => {
     >(true);
   });
 
-  it('DeeperOmitUndefined makes a readonly array property fully mutable', () => {
+  it('DeeperOmitUndefined recognizes a readonly array and preserves its mutability', () => {
     type I1 = { tags: readonly string[]; b: undefined };
-    exact<DeeperOmitUndefined<I1>, { tags: string[] }>(true);
+    exact<DeeperOmitUndefined<I1>, { tags: readonly string[] }>(true);
   });
 
   it('DeeperOmitUndefined preserves a `| null` member on nested objects and arrays', () => {

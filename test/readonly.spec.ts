@@ -85,15 +85,24 @@ describe('Readonly', () => {
       {
         readonly a?: number;
         readonly b: modified;
-        readonly c: modified[];
-        readonly d: [unmodified, number];
+        readonly c: readonly modified[];
+        readonly d: readonly [modified, number];
       }
     >(true);
   });
 
-  it('DeeperReadonly makes a readonly array property fully mutable', () => {
-    type I1 = { tags: readonly string[] };
-    exact<DeeperReadonly<I1>, { readonly tags: string[] }>(true);
+  it('DeeperReadonly makes an array/tuple readonly, whether or not the input already was', () => {
+    // DeeperReadonly's whole purpose is to make everything readonly, so the
+    // array/tuple wrapper itself becomes readonly too - regardless of
+    // whether the source property was already `readonly T[]` or a plain
+    // mutable `T[]`. This differs from families like Required/Partial/DTO,
+    // which have nothing to do with mutability and so preserve whatever
+    // wrapper mutability the input had instead of forcing one.
+    type I1 = { tags: readonly string[]; list: string[] };
+    exact<
+      DeeperReadonly<I1>,
+      { readonly tags: readonly string[]; readonly list: readonly string[] }
+    >(true);
   });
 
   it('DeeperReadonly preserves a `| null` member on nested objects and arrays', () => {
@@ -103,7 +112,7 @@ describe('Readonly', () => {
       DeeperReadonly<I1>,
       {
         readonly a: { readonly b: number } | null;
-        readonly c: { readonly b: number }[] | null;
+        readonly c: readonly { readonly b: number }[] | null;
       }
     >(true);
   });

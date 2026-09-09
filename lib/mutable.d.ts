@@ -40,10 +40,11 @@ export type DeepMutable<T> = {
 export type DeeperMutable<T> = {
   -readonly [
     K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>
-  ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
-    ? T[K]
+  ]: IfTuple<NonNullable<T[K]>> extends true // Deep process tuples positionally
+    ? DeeperMutableTuple<NonNullable<T[K]>>
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+      ? // Always mutable - that is DeeperMutable's whole purpose
+        null extends T[K]
         ? DeeperMutable<U>[] | null
         : DeeperMutable<U>[]
       : // Do not deep process No-Deep values
@@ -52,6 +53,15 @@ export type DeeperMutable<T> = {
         : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
           DeeperMutable<Exclude<T[K], undefined>>;
 };
+
+type DeeperMutableTuple<T> = T extends readonly [infer Head, ...infer Rest]
+  ? [
+      IfNoDeepValue<NonNullable<Head>> extends true
+        ? Head
+        : DeeperMutable<NonNullable<Head>>,
+      ...DeeperMutableTuple<Rest>,
+    ]
+  : [];
 
 /**
  * Returns mutable keys of an object

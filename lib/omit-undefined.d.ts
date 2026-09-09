@@ -27,15 +27,32 @@ export type DeepOmitUndefined<T> = {
 export type DeeperOmitUndefined<T> = {
   [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]: IfTuple<
     NonNullable<T[K]>
-  > extends true // Leave fixed-length tuples untouched
-    ? T[K]
+  > extends true // Deep process tuples positionally
+    ? DeeperOmitUndefinedTuple<NonNullable<T[K]>>
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
-        ? DeeperOmitUndefined<U>[] | null
-        : DeeperOmitUndefined<U>[]
+      ? NonNullable<T[K]> extends any[]
+        ? // was mutable - DeeperOmitUndefined doesn't touch mutability
+          null extends T[K]
+          ? DeeperOmitUndefined<U>[] | null
+          : DeeperOmitUndefined<U>[]
+        : null extends T[K] // was readonly - preserve that
+          ? readonly DeeperOmitUndefined<U>[] | null
+          : readonly DeeperOmitUndefined<U>[]
       : // Do not deep process No-Deep values
         IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
         : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
           DeeperOmitUndefined<Exclude<T[K], undefined>>;
 };
+
+type DeeperOmitUndefinedTuple<T> = T extends readonly [
+  infer Head,
+  ...infer Rest,
+]
+  ? [
+      IfNoDeepValue<NonNullable<Head>> extends true
+        ? Head
+        : DeeperOmitUndefined<NonNullable<Head>>,
+      ...DeeperOmitUndefinedTuple<Rest>,
+    ]
+  : [];
