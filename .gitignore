@@ -3,6 +3,8 @@
 /node_modules
 *.cache.json
 *.tsbuildinfo
+graphify-out
+.claude
 
 # environment variables
 .env
