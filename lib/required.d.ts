@@ -1,15 +1,11 @@
 import { IfNoDeepValue } from './helpers.js';
 import { Or } from './logical.js';
-import { OmitTypes } from './omit.js';
 import { IfEquals, IfNever, IfTuple } from './type-check.js';
 
 /**
  * Marks given keys as required
  */
-export type RequiredSome<T, K extends keyof T> = OmitTypes<
-  Required<Pick<T, K>>,
-  null
-> &
+export type RequiredSome<T, K extends keyof T> = Required<Pick<T, K>> &
   Omit<T, K>;
 
 /**
@@ -20,8 +16,8 @@ export type DeepRequired<T> = {
     K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>
   ]-?: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? Exclude<T[K], undefined>
-    : // Deep process objects
-      DeepRequired<NonNullable<T[K]>>;
+    : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+      DeepRequired<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -33,12 +29,14 @@ export type DeeperRequired<T> = {
   > extends true // Leave fixed-length tuples untouched
     ? Exclude<T[K], undefined>
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? DeeperRequired<U>[]
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperRequired<U>[] | null
+        : DeeperRequired<U>[]
       : // Do not deep process No-Deep values
-        IfNoDeepValue<NonNullable<T[K]>> extends true
+        IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? Exclude<T[K], undefined>
-        : // Deep process objects
-          DeeperRequired<NonNullable<T[K]>>;
+        : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+          DeeperRequired<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -92,10 +90,10 @@ export type DeepPickRequired<T> = {
     > extends true
       ? never
       : K
-  ]: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
+  ]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? T[K]
-    : // Deep process objects
-      DeepPickRequired<NonNullable<T[K]>>;
+    : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+      DeepPickRequired<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -111,10 +109,10 @@ export type DeepOmitRequired<T> = {
     > extends true
       ? never
       : K
-  ]?: IfNoDeepValue<NonNullable<T[K]>> extends true // Do not deep process No-Deep values
+  ]?: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? T[K]
-    : // Deep process objects
-      DeepOmitRequired<NonNullable<T[K]>>;
+    : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+      DeepOmitRequired<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -133,12 +131,14 @@ export type DeeperPickRequired<T> = {
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? T[K]
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? DeeperPickRequired<U>[]
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperPickRequired<U>[] | null
+        : DeeperPickRequired<U>[]
       : // Do not deep process No-Deep values
-        IfNoDeepValue<NonNullable<T[K]>> extends true
+        IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
-        : // Deep process objects
-          DeeperPickRequired<NonNullable<T[K]>>;
+        : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+          DeeperPickRequired<Exclude<T[K], undefined>>;
 };
 
 /**
@@ -157,10 +157,12 @@ export type DeeperOmitRequired<T> = {
   ]: IfTuple<NonNullable<T[K]>> extends true // Leave fixed-length tuples untouched
     ? T[K]
     : NonNullable<T[K]> extends readonly (infer U)[] // Deep process arrays
-      ? DeeperOmitRequired<U>[]
+      ? null extends T[K] // Preserve a `| null` member lost by NonNullable above
+        ? DeeperOmitRequired<U>[] | null
+        : DeeperOmitRequired<U>[]
       : // Do not deep process No-Deep values
-        IfNoDeepValue<NonNullable<T[K]>> extends true
+        IfNoDeepValue<Exclude<T[K], undefined>> extends true
         ? T[K]
-        : // Deep process objects
-          DeeperOmitRequired<NonNullable<T[K]>>;
+        : // Deep process objects (Exclude, not NonNullable - preserves a `| null` member)
+          DeeperOmitRequired<Exclude<T[K], undefined>>;
 };

@@ -119,6 +119,23 @@ describe('DeepPartial', () => {
     exact<DeeperPartial<I1>, { tags?: string[] }>(true);
   });
 
+  it('DeepPartial preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    type Inner = { b: number };
+    type I1 = { a: Inner | null };
+    exact<DeepPartial<I1>, { a?: { b?: number } | null }>(true);
+  });
+
+  it('DeeperPartial preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { b: number };
+    type I1 = { a: Inner | null; c: Inner[] | null };
+    exact<
+      DeeperPartial<I1>,
+      { a?: { b?: number } | null; c?: { b?: number }[] | null }
+    >(true);
+  });
+
   it('DeeperPartial preserves tuples', () => {
     type I1 = {
       a: [string, number];

@@ -89,6 +89,12 @@ describe('OmitUndefined', () => {
     exact<DeepOmitUndefined<I1>, { tags: readonly string[] }>(true);
   });
 
+  it('DeepOmitUndefined preserves a `| null` member on nested objects', () => {
+    type Inner = { a: string; b: undefined };
+    type I1 = { x: Inner | null };
+    exact<DeepOmitUndefined<I1>, { x: { a: string } | null }>(true);
+  });
+
   it('DeeperOmitUndefined', () => {
     type I1 = {
       a?: number;
@@ -147,6 +153,15 @@ describe('OmitUndefined', () => {
   it('DeeperOmitUndefined makes a readonly array property fully mutable', () => {
     type I1 = { tags: readonly string[]; b: undefined };
     exact<DeeperOmitUndefined<I1>, { tags: string[] }>(true);
+  });
+
+  it('DeeperOmitUndefined preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { a: string; b: undefined };
+    type I1 = { x: Inner | null; y: Inner[] | null };
+    exact<
+      DeeperOmitUndefined<I1>,
+      { x: { a: string } | null; y: { a: string }[] | null }
+    >(true);
   });
 
   it('DeeperOmitUndefined preserves tuples', () => {

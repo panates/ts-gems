@@ -88,6 +88,14 @@ describe('OmitNever', () => {
     exact<DeepOmitNever<I1>, { tags: readonly string[] }>(true);
   });
 
+  it('DeepOmitNever preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    type Inner = { a: string; b: never };
+    type I1 = { x: Inner | null };
+    exact<DeepOmitNever<I1>, { x: { a: string } | null }>(true);
+  });
+
   it('DeeperOmitNever', () => {
     type I1 = {
       a?: number;
@@ -145,6 +153,15 @@ describe('OmitNever', () => {
   it('DeeperOmitNever makes a readonly array property fully mutable', () => {
     type I1 = { tags: readonly string[]; n: never };
     exact<DeeperOmitNever<I1>, { tags: string[] }>(true);
+  });
+
+  it('DeeperOmitNever preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { a: string; b: never };
+    type I1 = { x: Inner | null; y: Inner[] | null };
+    exact<
+      DeeperOmitNever<I1>,
+      { x: { a: string } | null; y: { a: string }[] | null }
+    >(true);
   });
 
   it('DeeperOmitNever preserves tuples', () => {

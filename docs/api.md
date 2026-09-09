@@ -1,10 +1,10 @@
 <!--
 docs-baseline
-git-commit: bfe8777ee92aea1e8cacecfa8f68e297d4235c19
+git-commit: 66d9af96d83e33978dd84297e490d158350dd865
 package-version: 4.0.0
 date: 2026-09-09
 verified-against: lib/
-diff-command: git diff bfe8777ee92aea1e8cacecfa8f68e297d4235c19..HEAD -- lib/
+diff-command: git diff 66d9af96d83e33978dd84297e490d158350dd865..HEAD -- lib/
 -->
 
 <p align="center">
@@ -96,6 +96,19 @@ type ReadonlyConfig = DeeperReadonly<Config>;
 //   readonly address: { readonly city: string }[]; // element type made readonly
 //   readonly range: [number, number]; // unchanged shape
 // }
+```
+
+A **nullable** object or array property (`SomeObject | null`) still gets
+recursed into — `null` is a leaf on its own, but it is preserved as a
+separate union member alongside the transformed object/array, not lost:
+
+```ts
+type Config = {
+  server: { host: string } | null;
+};
+
+type ReadonlyConfig = DeeperReadonly<Config>;
+// { readonly server: { readonly host: string } | null }
 ```
 
 ## Naming patterns used across pages

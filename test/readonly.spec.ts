@@ -59,6 +59,16 @@ describe('Readonly', () => {
     exact<DeepReadonly<I1>, { readonly tags: readonly string[] }>(true);
   });
 
+  it('DeepReadonly preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    type Inner = { b: number };
+    type I1 = { a: Inner | null };
+    exact<DeepReadonly<I1>, { readonly a: { readonly b: number } | null }>(
+      true,
+    );
+  });
+
   it('DeeperReadonly', () => {
     type unmodified = { a?: number; b: number };
     type modified = { readonly a?: number; readonly b: number };
@@ -84,6 +94,18 @@ describe('Readonly', () => {
   it('DeeperReadonly makes a readonly array property fully mutable', () => {
     type I1 = { tags: readonly string[] };
     exact<DeeperReadonly<I1>, { readonly tags: string[] }>(true);
+  });
+
+  it('DeeperReadonly preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { b: number };
+    type I1 = { a: Inner | null; c: Inner[] | null };
+    exact<
+      DeeperReadonly<I1>,
+      {
+        readonly a: { readonly b: number } | null;
+        readonly c: { readonly b: number }[] | null;
+      }
+    >(true);
   });
 
   it('ReadonlyKeys', () => {
@@ -200,6 +222,16 @@ describe('Readonly', () => {
     >(true);
   });
 
+  it('DeepPickReadonly preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    type Inner = { readonly b: number; c: string };
+    type I1 = { readonly a: Inner | null };
+    exact<DeepPickReadonly<I1>, { readonly a: { readonly b: number } | null }>(
+      true,
+    );
+  });
+
   it('DeeperPickReadonly', () => {
     type unmodified = { readonly a: number; b: string };
     type modified = { readonly a: number };
@@ -242,6 +274,18 @@ describe('Readonly', () => {
       DeeperPickReadonly<I1>,
       {
         readonly a: [string, number];
+      }
+    >(true);
+  });
+
+  it('DeeperPickReadonly preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { readonly b: number; c: string };
+    type I1 = { readonly a: Inner | null; readonly d: Inner[] | null };
+    exact<
+      DeeperPickReadonly<I1>,
+      {
+        readonly a: { readonly b: number } | null;
+        readonly d: { readonly b: number }[] | null;
       }
     >(true);
   });
@@ -289,6 +333,14 @@ describe('Readonly', () => {
     >(true);
   });
 
+  it('DeepOmitReadonly preserves a `| null` member on nested objects', () => {
+    // Regression test: recursing with NonNullable<T[K]> instead of
+    // Exclude<T[K], undefined> silently drops `null` from the result.
+    type Inner = { readonly b: number; c: string };
+    type I1 = { a: Inner | null };
+    exact<DeepOmitReadonly<I1>, { a: { c: string } | null }>(true);
+  });
+
   it('DeeperOmitReadonly', () => {
     type I1 = {
       a: number;
@@ -327,6 +379,15 @@ describe('Readonly', () => {
       {
         a: [string, number];
       }
+    >(true);
+  });
+
+  it('DeeperOmitReadonly preserves a `| null` member on nested objects and arrays', () => {
+    type Inner = { readonly b: number; c: string };
+    type I1 = { a: Inner | null; d: Inner[] | null };
+    exact<
+      DeeperOmitReadonly<I1>,
+      { a: { c: string } | null; d: { c: string }[] | null }
     >(true);
   });
 });
