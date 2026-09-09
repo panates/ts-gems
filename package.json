@@ -19,7 +19,8 @@
     "format": "prettier . --write --log-level=warn",
     "test": "tsc -b tsconfig.json && npm run test:common && npm run test:nostrict",
     "test:common": "mocha",
-    "test:nostrict": "TS_NODE_PROJECT=\"tsconfig.json\" && mocha"
+    "test:nostrict": "TS_NODE_PROJECT=\"tsconfig.json\" && mocha",
+    "graph": "graphify upate ."
   },
   "devDependencies": {
     "@panates/eslint-config": "^2.1.6",
