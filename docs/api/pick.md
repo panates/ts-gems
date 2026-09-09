@@ -7,9 +7,11 @@ See [Omit](omit.md) for the inverse operations.
 
 ## `StrictPick<T, X>`
 
-Like the built-in `Pick<T, K>`, but also drops any selected key whose value
-type is `never` (after stripping `undefined`) — consistent with how the rest
-of the library treats `never`-typed properties as "absent".
+Like the built-in `Pick<T, K>`, but `X` is constrained to `keyof T`, so a
+typo in the key you're picking is a compile error instead of silently
+producing `never`. It only selects by key identity — it does **not** also
+drop `never`-typed keys, so it stays correct when `T` is still an open
+generic type parameter (e.g. used inside another generic function).
 
 ```ts
 import type { StrictPick } from 'ts-gems';
@@ -21,7 +23,7 @@ interface Row {
 }
 
 type Result = StrictPick<Row, 'a' | 'c'>;
-// { a?: number } - `c` is dropped, it's `never`
+// { a?: number; c: never } - both named keys are kept
 ```
 
 ## `PickFunctions<T>`

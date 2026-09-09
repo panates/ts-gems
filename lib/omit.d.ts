@@ -7,16 +7,7 @@ import { IfFunction, IfNever, IfTuple } from './type-check.js';
  * while preserving strict type checking.
  */
 export type StrictOmit<T, X extends keyof T> = {
-  [
-    K in keyof T as Or<
-      // Omit never keys
-      IfNever<Exclude<T[K], undefined>>,
-      // Omit X
-      K extends X ? true : false
-    > extends true
-      ? never
-      : K
-  ]: T[K];
+  [K in keyof T as K extends X ? never : K]: T[K];
 };
 
 /**

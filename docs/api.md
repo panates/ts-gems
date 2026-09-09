@@ -1,10 +1,10 @@
 <!--
 docs-baseline
-git-commit: 66d9af96d83e33978dd84297e490d158350dd865
-package-version: 4.0.0
+git-commit: 27bbe999f45fa24fe4e1d7d32d5639defa285bdc
+package-version: 4.0.1
 date: 2026-09-09
 verified-against: lib/
-diff-command: git diff 66d9af96d83e33978dd84297e490d158350dd865..HEAD -- lib/
+diff-command: git diff 27bbe999f45fa24fe4e1d7d32d5639defa285bdc..HEAD -- lib/
 -->
 
 <p align="center">

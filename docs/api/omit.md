@@ -9,10 +9,11 @@ convention](../api.md#the-deep--deeper-convention) for `DeepOmitTypes`/
 
 ## `StrictOmit<T, X>`
 
-Like the built-in `Omit<T, K>`, but also drops any remaining key whose value
-type is `never` (after stripping `undefined`) — symmetric with
-[`StrictPick`](pick.md#strictpickt-x), so picking and omitting the same key
-set never disagree about `never`-typed properties.
+Like the built-in `Omit<T, K>`, but `X` is constrained to `keyof T`, so a
+typo in the key you're omitting is a compile error instead of a silent
+no-op. Unlike [`StrictPick`](pick.md#strictpickt-x), it does **not** also
+drop `never`-typed keys — only the key(s) named in `X` are removed, by
+identity, regardless of their value type.
 
 ```ts
 import type { StrictOmit } from 'ts-gems';
@@ -24,7 +25,7 @@ interface Row {
 }
 
 type Result = StrictOmit<Row, 'b'>;
-// { a?: number } - `c` is dropped too, it's `never`
+// { a?: number; c: never } - only `b` is removed
 ```
 
 ## `OmitFunctions<T>`

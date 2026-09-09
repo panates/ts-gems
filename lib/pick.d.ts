@@ -13,16 +13,7 @@ import {
  * while preserving strict type checking.
  */
 export type StrictPick<T, X extends keyof T> = {
-  [
-    K in keyof T as Or<
-      // Omit never keys
-      IfNever<Exclude<T[K], undefined>>,
-      // Omit X
-      K extends X ? false : true
-    > extends true
-      ? never
-      : K
-  ]: T[K];
+  [K in keyof T as K extends X ? K : never]: T[K];
 };
 
 /**

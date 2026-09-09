@@ -16,14 +16,68 @@ describe('Pick', () => {
     type I1 = {
       a?: number;
       b: string;
+    };
+    exact<
+      StrictPick<I1, 'a'>,
+      {
+        a?: number;
+      }
+    >(true);
+  });
+
+  it('StrictPick keeps never-typed keys untouched (only the named keys are picked)', () => {
+    // Regression test: StrictPick must only select properties named in `X`,
+    // by K's identity, not by inspecting T[K]'s value type. An earlier
+    // revision filtered out never-typed keys too (an `IfNever<...>` check
+    // on `T[K]` in the key-remapping clause), but that check depends on
+    // T[K], which TypeScript cannot resolve while `T` is still an open
+    // generic type parameter - e.g. inside another generic method. In that
+    // case TS drops the key from the mapped type's apparent shape entirely,
+    // and an object literal argument then fails with "object literal may
+    // only specify known properties", even though the property clearly
+    // exists. Picking by name should never depend on the value's type.
+    type I1 = {
+      a?: number;
+      b: string;
       c: never;
     };
     exact<
       StrictPick<I1, 'a' | 'c'>,
       {
         a?: number;
+        c: never;
       }
     >(true);
+  });
+
+  it('StrictPick stays usable inside a generic method with an open T', () => {
+    // Regression test: this is a compile-time check - it has nothing to
+    // assert at runtime. If StrictPick's key-remapping ever again depends
+    // on T[K] (the value type) instead of only K (the key), this file
+    // fails to compile with "Object literal may only specify known
+    // properties, and 'filter' does not exist", because `T` is still an
+    // open, uninstantiated generic parameter at the `useService` call site
+    // below - the exact shape of a real regression found in a downstream
+    // consumer (a generic MongoDB collection service passing a `filter`
+    // object literal through a type built with StrictPick).
+    interface FindOneOptionsBase<T> {
+      filter?: Partial<T>;
+      projection?: string[];
+    }
+
+    type FindOneOptions<T> = StrictPick<FindOneOptionsBase<T>, 'filter'>;
+
+    class Service<T> {
+      findOne(options: FindOneOptions<T>) {
+        return options;
+      }
+    }
+
+    function useService<T>(svc: Service<T>) {
+      return svc.findOne({ filter: {} });
+    }
+
+    void useService;
   });
 
   it('PickFunctions', () => {

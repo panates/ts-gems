@@ -21,7 +21,15 @@ describe('Omit', () => {
     >(true);
   });
 
-  it('StrictOmit drops never-typed keys, consistent with StrictPick', () => {
+  it('StrictOmit keeps never-typed keys untouched (only the named key is removed)', () => {
+    // Regression test: StrictOmit must only remove properties named in `X`,
+    // by K's identity, not by inspecting T[K]'s value type. An earlier
+    // revision added an `IfNever<...>`-based filter to also drop
+    // never-typed keys (matching StrictPick's never-key filter), but that
+    // check on `T[K]` is evaluated even while `T` is still an unresolved
+    // generic type parameter in a deferred context, which can make TS treat
+    // an as-yet-unconstrained property as `never` and drop it prematurely -
+    // this broke real generic call sites downstream. Keep this simple.
     type I1 = {
       a?: number;
       b: string;
@@ -31,8 +39,39 @@ describe('Omit', () => {
       StrictOmit<I1, 'b'>,
       {
         a?: number;
+        c: never;
       }
     >(true);
+  });
+
+  it('StrictOmit stays usable inside a generic method with an open T', () => {
+    // Regression test: this is a compile-time check - it has nothing to
+    // assert at runtime. If StrictOmit's key-remapping ever again depends
+    // on T[K] (the value type) instead of only K (the key), this file
+    // fails to compile with "Object literal may only specify known
+    // properties, and 'filter' does not exist", because `T` is still an
+    // open, uninstantiated generic parameter at the `useService` call site
+    // below - this is the exact shape of a real regression found in a
+    // downstream consumer (a generic MongoDB collection service passing a
+    // `filter` object literal through a type built with StrictOmit).
+    interface FindOneOptionsBase<T> {
+      filter?: Partial<T>;
+      projection?: string[];
+    }
+
+    type FindOneOptions<T> = StrictOmit<FindOneOptionsBase<T>, 'projection'>;
+
+    class Service<T> {
+      findOne(options: FindOneOptions<T>) {
+        return options;
+      }
+    }
+
+    function useService<T>(svc: Service<T>) {
+      return svc.findOne({ filter: {} });
+    }
+
+    void useService;
   });
 
   it('OmitFunctions', () => {
