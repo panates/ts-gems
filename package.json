@@ -1,7 +1,7 @@
 {
   "name": "ts-gems",
   "description": "Valuable typing extensions for TypeScript",
-  "version": "3.13.0",
+  "version": "4.0.0",
   "license": "MIT",
   "type": "module",
   "module": "./lib/index.js",
