@@ -58,6 +58,7 @@ describe('Readonly', () => {
       a?: number;
       b: unmodified;
       c: unmodified[];
+      d: [unmodified, number];
       n: never;
       m?: never;
     };
@@ -67,6 +68,7 @@ describe('Readonly', () => {
         readonly a?: number;
         readonly b: modified;
         readonly c: modified[];
+        readonly d: [unmodified, number];
       }
     >(true);
   });
@@ -218,6 +220,19 @@ describe('Readonly', () => {
     >(true);
   });
 
+  it('DeeperPickReadonly preserves tuples', () => {
+    type I1 = {
+      readonly a: [string, number];
+      b: string;
+    };
+    exact<
+      DeeperPickReadonly<I1>,
+      {
+        readonly a: [string, number];
+      }
+    >(true);
+  });
+
   it('DeepOmitReadonly', () => {
     type I1 = {
       a: number;
@@ -246,6 +261,21 @@ describe('Readonly', () => {
     >(true);
   });
 
+  it('DeepOmitReadonly keeps mutable null-typed properties', () => {
+    // Regression test: the never-key filter must not drop a mutable
+    // property just because NonNullable<T[K]> is `never` (e.g. `null`).
+    type I1 = {
+      a: null;
+      readonly b: null;
+    };
+    exact<
+      DeepOmitReadonly<I1>,
+      {
+        a: null;
+      }
+    >(true);
+  });
+
   it('DeeperOmitReadonly', () => {
     type I1 = {
       a: number;
@@ -270,6 +300,19 @@ describe('Readonly', () => {
         a: number;
         e: { a?: string }[];
         g: () => void;
+      }
+    >(true);
+  });
+
+  it('DeeperOmitReadonly preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+      readonly b: string;
+    };
+    exact<
+      DeeperOmitReadonly<I1>,
+      {
+        a: [string, number];
       }
     >(true);
   });

@@ -1,6 +1,12 @@
 import type {
+  DeeperOmitOptional,
   DeeperPartial,
+  DeeperPickOptional,
+  DeepOmitOptional,
   DeepPartial,
+  DeepPickOptional,
+  OmitOptional,
+  OptionalKeys,
   PartialSome,
   Type,
 } from '../lib/index.js';
@@ -98,5 +104,47 @@ describe('DeepPartial', () => {
         readonly c?: modified[];
       }
     >(true);
+  });
+
+  it('DeeperPartial preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+    };
+    exact<
+      DeeperPartial<I1>,
+      {
+        a?: [string, number];
+      }
+    >(true);
+  });
+
+  it('OptionalKeys', () => {
+    type I1 = { a?: number; b: string };
+    exact<OptionalKeys<I1>, 'a'>(true);
+  });
+
+  it('OmitOptional', () => {
+    type I1 = { a?: number; b: string };
+    exact<OmitOptional<I1>, { b: string }>(true);
+  });
+
+  it('DeepPickOptional', () => {
+    type I1 = { a?: number; b: string };
+    exact<DeepPickOptional<I1>, { a?: number }>(true);
+  });
+
+  it('DeepOmitOptional', () => {
+    type I1 = { a?: number; b: string };
+    exact<DeepOmitOptional<I1>, { b: string }>(true);
+  });
+
+  it('DeeperPickOptional', () => {
+    type I1 = { a?: number; b: string };
+    exact<DeeperPickOptional<I1>, { a?: number }>(true);
+  });
+
+  it('DeeperOmitOptional', () => {
+    type I1 = { a?: number; b: string };
+    exact<DeeperOmitOptional<I1>, { b: string }>(true);
   });
 });

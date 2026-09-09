@@ -112,4 +112,16 @@ describe('DeepNullish', () => {
       }
     >(true);
   });
+
+  it('DeeperNullish preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+    };
+    exact<
+      DeeperNullish<I1>,
+      {
+        a?: [string, number] | null;
+      }
+    >(true);
+  });
 });

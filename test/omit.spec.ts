@@ -21,6 +21,20 @@ describe('Omit', () => {
     >(true);
   });
 
+  it('StrictOmit drops never-typed keys, consistent with StrictPick', () => {
+    type I1 = {
+      a?: number;
+      b: string;
+      c: never;
+    };
+    exact<
+      StrictOmit<I1, 'b'>,
+      {
+        a?: number;
+      }
+    >(true);
+  });
+
   it('OmitFunctions', () => {
     class TestClass {}
 
@@ -126,6 +140,18 @@ describe('Omit', () => {
       {
         a2: modified;
         a3?: modified[];
+      }
+    >(true);
+  });
+
+  it('DeeperOmitTypes preserves tuples', () => {
+    interface I1 {
+      a: [string, number];
+    }
+    exact<
+      DeeperOmitTypes<I1, boolean>,
+      {
+        a: [string, number];
       }
     >(true);
   });

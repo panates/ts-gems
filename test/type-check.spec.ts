@@ -14,6 +14,7 @@ import type {
   IfObjectOrAny,
   IfPrimitive,
   IfPrimitiveOrAny,
+  IfSymbol,
   IfTuple,
   IfTupleOrAny,
   IfUndefined,
@@ -113,15 +114,36 @@ describe('Type checks', () => {
 
   it('IfTuple', () => {
     assert<IfTuple<[any]>>(true);
+    assert<IfTuple<[string, number]>>(true);
+    assert<IfTuple<[string, number, boolean]>>(true);
+    assert<IfTuple<[]>>(true);
+    assert<IfTuple<readonly [string, number]>>(true);
     assert<IfTuple<any[]>>(false);
+    assert<IfTuple<string[]>>(false);
     assert<IfTuple<any>>(false);
     assert<IfTuple<never>>(false);
     assert<IfTuple<undefined>>(false);
     assert<IfTuple<null>>(false);
+    assert<IfTuple<{}>>(false);
+    assert<IfTuple<NotEmptyObj>>(false);
   });
 
   it('IfTupleOrAny', () => {
     assert<IfTupleOrAny<any>>(true);
+    assert<IfTupleOrAny<[string, number]>>(true);
+    assert<IfTupleOrAny<string[]>>(false);
+  });
+
+  it('IfSymbol', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const uniqueSym = Symbol('x');
+    assert<IfSymbol<symbol>>(true);
+    assert<IfSymbol<typeof uniqueSym>>(false);
+    assert<IfSymbol<string>>(false);
+    assert<IfSymbol<any>>(false);
+    assert<IfSymbol<never>>(false);
+    assert<IfSymbol<undefined>>(false);
+    assert<IfSymbol<null>>(false);
   });
 
   it('IfPrimitive', () => {

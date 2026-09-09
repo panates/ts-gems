@@ -135,4 +135,17 @@ describe('OmitUndefined', () => {
       }
     >(true);
   });
+
+  it('DeeperOmitUndefined preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+      b: undefined;
+    };
+    exact<
+      DeeperOmitUndefined<I1>,
+      {
+        a: [string, number];
+      }
+    >(true);
+  });
 });

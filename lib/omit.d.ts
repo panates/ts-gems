@@ -1,27 +1,38 @@
 import { IfNoDeepValue } from './helpers.js';
 import { Or } from './logical.js';
-import { IfFunction, IfNever } from './type-check.js';
+import { IfFunction, IfNever, IfTuple } from './type-check.js';
 
 /**
  * Construct a type with the properties of T except for those in type K,
  * while preserving strict type checking.
  */
 export type StrictOmit<T, X extends keyof T> = {
-  [K in keyof T as K extends X ? never : K]: T[K];
+  [
+    K in keyof T as Or<
+      // Omit never keys
+      IfNever<Exclude<T[K], undefined>>,
+      // Omit X
+      K extends X ? true : false
+    > extends true
+      ? never
+      : K
+  ]: T[K];
 };
 
 /**
  * Omit all function properties in T
  */
 export type OmitFunctions<T> = {
-  [K in keyof T as Or<
-    // Omit never keys
-    IfNever<Exclude<T[K], undefined>>,
-    // Omit functions
-    IfFunction<NonNullable<T[K]>>
-  > extends true
-    ? never
-    : K]: T[K];
+  [
+    K in keyof T as Or<
+      // Omit never keys
+      IfNever<Exclude<T[K], undefined>>,
+      // Omit functions
+      IfFunction<NonNullable<T[K]>>
+    > extends true
+      ? never
+      : K
+  ]: T[K];
 };
 
 /**
@@ -38,11 +49,9 @@ export type OmitTypes<T, X> = {
  * Omit all function properties in T
  */
 export type DeepOmitTypes<T, X> = {
-  [K in keyof T as IfNever<
-    Exclude<T[K], undefined | X>,
-    never,
-    K
-  >]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
+  [
+    K in keyof T as IfNever<Exclude<T[K], undefined | X>, never, K>
+  ]: IfNoDeepValue<Exclude<T[K], undefined>> extends true // Do not deep process No-Deep values
     ? Exclude<T[K], X>
     : // Deep process objects
       DeepOmitTypes<NonNullable<T[K]>, X>;
@@ -52,17 +61,17 @@ export type DeepOmitTypes<T, X> = {
  * Omit all function properties in T deeply including arrays
  */
 export type DeeperOmitTypes<T, X> = {
-  [K in keyof T as IfNever<
-    Exclude<T[K], undefined | X>,
-    never,
-    K
-  >]: NonNullable<
-    // Deep process arrays // Do not deep process No-Deep values
-    T[K]
-  > extends (infer U)[]
-    ? DeeperOmitTypes<U, X>[]
-    : IfNoDeepValue<NonNullable<T[K]>> extends true
-      ? Exclude<T[K], X>
-      : // Deep process objects
-        DeeperOmitTypes<NonNullable<T[K]>, X>;
+  [K in keyof T as IfNever<Exclude<T[K], undefined | X>, never, K>]: IfTuple<
+    NonNullable<T[K]>
+  > extends true // Leave fixed-length tuples untouched
+    ? Exclude<T[K], X>
+    : NonNullable<
+          // Deep process arrays // Do not deep process No-Deep values
+          T[K]
+        > extends (infer U)[]
+      ? DeeperOmitTypes<U, X>[]
+      : IfNoDeepValue<NonNullable<T[K]>> extends true
+        ? Exclude<T[K], X>
+        : // Deep process objects
+          DeeperOmitTypes<NonNullable<T[K]>, X>;
 };

@@ -7,6 +7,22 @@ import type {
 import { exact } from './_support/asserts.js';
 
 describe('UnNullish', () => {
+  it('UnNullish is shallow (does not recurse into nested objects)', () => {
+    // Regression test for the doc/behavior mismatch: UnNullish's JSDoc used
+    // to (wrongly) claim it strips nullish values "deeply". It doesn't -
+    // that's what DeepUnNullish is for. A nested null/undefined must survive
+    // untouched through the plain (shallow) UnNullish.
+    type I1 = {
+      a: { b: string | null } | null;
+    };
+    exact<
+      UnNullish<I1>,
+      {
+        a: { b: string | null };
+      }
+    >(true);
+  });
+
   it('UnNullish', () => {
     type unmodified = { a?: number | null; b: string | null; c: null };
     type I1 = {
@@ -101,6 +117,18 @@ describe('UnNullish', () => {
         a7: number;
         readonly a8: number;
         readonly c?: modified[];
+      }
+    >(true);
+  });
+
+  it('DeeperUnNullish preserves tuples', () => {
+    type I1 = {
+      a: [string, number] | null;
+    };
+    exact<
+      DeeperUnNullish<I1>,
+      {
+        a: [string, number];
       }
     >(true);
   });

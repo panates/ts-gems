@@ -7,7 +7,7 @@ import {
   OmitRequired,
   PickRequired,
 } from './required.js';
-import { IfNever } from './type-check.js';
+import { IfNever, IfTuple } from './type-check.js';
 
 /**
  * Marks given keys as optional
@@ -32,16 +32,17 @@ export type DeepPartial<T> = {
  * Partial but deeply including arrays
  */
 export type DeeperPartial<T> = {
-  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: NonNullable<
-    // Deep process arrays
-    T[K]
-  > extends (infer U)[]
-    ? DeeperPartial<U>[]
-    : // Do not deep process No-Deep values
-      IfNoDeepValue<NonNullable<T[K]>> extends true
-      ? T[K]
-      : // Deep process objects
-        DeeperPartial<NonNullable<T[K]>>;
+  [K in keyof T as IfNever<Exclude<T[K], undefined>, never, K>]?: IfTuple<
+    NonNullable<T[K]>
+  > extends true // Leave fixed-length tuples untouched
+    ? T[K]
+    : NonNullable<T[K]> extends (infer U)[] // Deep process arrays
+      ? DeeperPartial<U>[]
+      : // Do not deep process No-Deep values
+        IfNoDeepValue<NonNullable<T[K]>> extends true
+        ? T[K]
+        : // Deep process objects
+          DeeperPartial<NonNullable<T[K]>>;
 };
 
 /**

@@ -80,6 +80,37 @@ describe('DeepRequired', () => {
     >(true);
   });
 
+  it('DeeperRequired keeps array-awareness through nested objects', () => {
+    // Regression test: the object branch must recurse via DeeperRequired
+    // (not fall back to the non-array-aware DeepRequired), otherwise an
+    // array nested one level deeper silently stops being deep-processed.
+    type I1 = {
+      a?: {
+        b?: { c?: number }[];
+      };
+    };
+    exact<
+      DeeperRequired<I1>,
+      {
+        a: {
+          b: { c: number }[];
+        };
+      }
+    >(true);
+  });
+
+  it('DeeperRequired preserves tuples', () => {
+    type I1 = {
+      a: [{ c?: number }, string];
+    };
+    exact<
+      DeeperRequired<I1>,
+      {
+        a: [{ c?: number }, string];
+      }
+    >(true);
+  });
+
   it('PickRequired', () => {
     type unmodified = { a: number; b?: string };
     type I1 = {
@@ -241,6 +272,19 @@ describe('DeepRequired', () => {
     >(true);
   });
 
+  it('DeeperPickRequired preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+      b?: string;
+    };
+    exact<
+      DeeperPickRequired<I1>,
+      {
+        a: [string, number];
+      }
+    >(true);
+  });
+
   it('DeeperOmitRequired', () => {
     type unmodified = { a: number; b?: string };
     type modified = { b?: string };
@@ -277,6 +321,19 @@ describe('DeepRequired', () => {
           a8?: Type<unmodified>;
         };
         c?: modified[];
+      }
+    >(true);
+  });
+
+  it('DeeperOmitRequired preserves tuples', () => {
+    type I1 = {
+      a?: [string, number];
+      b: string;
+    };
+    exact<
+      DeeperOmitRequired<I1>,
+      {
+        a?: [string, number];
       }
     >(true);
   });

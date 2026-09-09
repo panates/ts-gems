@@ -1,8 +1,15 @@
 import type {
   DeeperMutable,
+  DeeperOmitMutable,
+  DeeperPickMutable,
   DeepMutable,
+  DeepOmitMutable,
+  DeepPickMutable,
   Mutable,
+  MutableKeys,
   MutableSome,
+  OmitMutable,
+  PickMutable,
 } from '../lib/index.js';
 import { exact } from './_support/asserts.js';
 
@@ -70,6 +77,7 @@ describe('Mutable', () => {
       readonly a?: number;
       readonly b: unmodified;
       readonly c: unmodified[];
+      readonly d: readonly [unmodified, number];
       readonly n: never;
       readonly m?: never;
     };
@@ -79,7 +87,43 @@ describe('Mutable', () => {
         a?: number;
         b: modified;
         c: modified[];
+        d: readonly [unmodified, number];
       }
     >(true);
+  });
+
+  it('MutableKeys', () => {
+    type I1 = { readonly a: number; b: string };
+    exact<MutableKeys<I1>, 'b'>(true);
+  });
+
+  it('PickMutable', () => {
+    type I1 = { readonly a: number; b: string };
+    exact<PickMutable<I1>, { b: string }>(true);
+  });
+
+  it('OmitMutable', () => {
+    type I1 = { readonly a: number; b: string };
+    exact<OmitMutable<I1>, { readonly a: number }>(true);
+  });
+
+  it('DeepPickMutable', () => {
+    type I1 = { readonly a: number; b: string };
+    exact<DeepPickMutable<I1>, { b: string }>(true);
+  });
+
+  it('DeepOmitMutable', () => {
+    type I1 = { readonly a: number; b: string };
+    exact<DeepOmitMutable<I1>, { readonly a: number }>(true);
+  });
+
+  it('DeeperPickMutable', () => {
+    type I1 = { readonly a: number; b: string };
+    exact<DeeperPickMutable<I1>, { b: string }>(true);
+  });
+
+  it('DeeperOmitMutable', () => {
+    type I1 = { readonly a: number; b: string };
+    exact<DeeperOmitMutable<I1>, { readonly a: number }>(true);
   });
 });

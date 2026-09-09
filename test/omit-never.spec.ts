@@ -133,4 +133,17 @@ describe('OmitNever', () => {
       }
     >(true);
   });
+
+  it('DeeperOmitNever preserves tuples', () => {
+    type I1 = {
+      a: [string, number];
+      b: never;
+    };
+    exact<
+      DeeperOmitNever<I1>,
+      {
+        a: [string, number];
+      }
+    >(true);
+  });
 });

@@ -1,7 +1,72 @@
-import type { PickOptional, PickTypes, StrictPickTypes } from '../lib/index.js';
+import type {
+  FunctionKeys,
+  KeysOfTypes,
+  NonFunctionKeys,
+  PickFunctions,
+  PickOptional,
+  PickTypes,
+  StrictKeysOfTypes,
+  StrictPick,
+  StrictPickTypes,
+} from '../lib/index.js';
 import { exact } from './_support/asserts.js';
 
 describe('Pick', () => {
+  it('StrictPick', () => {
+    type I1 = {
+      a?: number;
+      b: string;
+      c: never;
+    };
+    exact<
+      StrictPick<I1, 'a' | 'c'>,
+      {
+        a?: number;
+      }
+    >(true);
+  });
+
+  it('PickFunctions', () => {
+    class TestClass {}
+
+    type I1 = {
+      a1?: number;
+      a2: string;
+      a3: () => boolean;
+      a4: () => boolean;
+      a5: TestClass;
+      n: never;
+      m?: never;
+    };
+    exact<
+      PickFunctions<I1>,
+      {
+        a3: () => boolean;
+        a4: () => boolean;
+      }
+    >(true);
+  });
+
+  it('FunctionKeys', () => {
+    type I1 = { a: string; b: () => void };
+    exact<FunctionKeys<I1>, 'b'>(true);
+  });
+
+  it('NonFunctionKeys', () => {
+    type I1 = { a: string; b: () => void };
+    exact<NonFunctionKeys<I1>, 'a'>(true);
+  });
+
+  it('KeysOfTypes', () => {
+    type I1 = { a: number; b: string; c: number };
+    exact<KeysOfTypes<I1, number>, 'a' | 'c'>(true);
+  });
+
+  it('StrictKeysOfTypes', () => {
+    type I1 = { a: number; b: string; c: unknown };
+    exact<StrictKeysOfTypes<I1, number>, 'a'>(true);
+  });
+
   it('PickOptional', () => {
     type I1 = {
       a?: number;
